@@ -46,7 +46,8 @@ namespace AppText.Api
                     .AsImplementedInterfaces()
                     .WithScopedLifetime());
 
-            services.AddScoped<IContentItemStore>(sp => new ContentItemStore(Path.Combine(Env.ContentRootPath, "App_Data")));
+            var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
+            services.AddScoped<IContentItemStore>(sp => new ContentItemStore(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

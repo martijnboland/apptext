@@ -7,16 +7,16 @@ namespace AppText.Core.Storage.LiteDb
 {
     public class ContentItemStore : IContentItemStore
     {
-        private readonly string _dataFilePath;
+        private readonly string _connectionString;
 
-        public ContentItemStore(string dataFilePath)
+        public ContentItemStore(string connectionString)
         {
-            _dataFilePath = dataFilePath;
+            _connectionString = connectionString;
         }
 
         public ContentItem[] GetContentItems(ContentItemQuery query)
         {
-            using (var db = new LiteDatabase(_dataFilePath))
+            using (var db = new LiteDatabase(_connectionString))
             {
                 var queryParams = new List<Query>();
                 if (!string.IsNullOrEmpty(query.Id))
@@ -45,7 +45,7 @@ namespace AppText.Core.Storage.LiteDb
 
         public string InsertContentItem(ContentItem contentItem)
         {
-            using (var db = new LiteDatabase(_dataFilePath))
+            using (var db = new LiteDatabase(_connectionString))
             {
                 var collection = db.GetCollection<ContentItem>();
                 contentItem.Id = ObjectId.NewObjectId().ToString();
@@ -55,7 +55,7 @@ namespace AppText.Core.Storage.LiteDb
 
         public void UpdateContentItem(ContentItem contentItem)
         {
-            using (var db = new LiteDatabase(_dataFilePath))
+            using (var db = new LiteDatabase(_connectionString))
             {
                 var collection = db.GetCollection<ContentItem>();
                 collection.Update(contentItem);
