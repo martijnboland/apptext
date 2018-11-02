@@ -12,9 +12,9 @@ namespace AppText.Core.ContentManagement
 
     public class ContentItemQueryHandler : IQueryHandler<ContentItemQuery, ContentItem[]>
     {
-        private readonly IContentItemStore _contentItemStore;
+        private readonly IContentStore _contentItemStore;
 
-        public ContentItemQueryHandler(IContentItemStore contentItemStore)
+        public ContentItemQueryHandler(IContentStore contentItemStore)
         {
             _contentItemStore = contentItemStore;
         }

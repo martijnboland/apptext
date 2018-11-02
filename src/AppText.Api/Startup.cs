@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using AppText.Core.Infrastructure;
 using AppText.Core.Shared.Commands;
 using AppText.Core.Shared.Queries;
 using AppText.Core.Storage;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 namespace AppText.Api
@@ -27,27 +29,30 @@ namespace AppText.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc()
-                .AddJsonOptions(options =>
-                {
-                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
+            services.AddScoped<IContentStore>(serviceProvider => new ContentStore(connectionString));
+
+            services.AddScoped<Dispatcher>(serviceProvider => new Dispatcher(serviceProvider));
 
             services.Scan(s => s
                 .FromAssemblyOf<ICommand>()
                     .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<>)))
                     .AsImplementedInterfaces()
-                    .WithScopedLifetime());
+                    .WithTransientLifetime());
 
             services.Scan(s => s
                 .FromAssemblyOf<ICommand>()
                     .AddClasses(c => c.AssignableTo(typeof(IQueryHandler<,>)))
                     .AsImplementedInterfaces()
-                    .WithScopedLifetime());
+                    .WithTransientLifetime());
 
-            var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
-            services.AddScoped<IContentItemStore>(sp => new ContentItemStore(connectionString));
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,19 +5,19 @@ namespace AppText.Core.ContentManagement
 {
     public class SaveContentItemCommand : ICommand
     {
+        public ContentItem ContentItem { get; }
+
         public SaveContentItemCommand(ContentItem contentItem)
         {
             this.ContentItem = contentItem;
         }
-
-        public ContentItem ContentItem { get; }
     }
 
     public class SaveContentItemCommandHandler : ICommandHandler<SaveContentItemCommand>
     {
-        private readonly IContentItemStore _store;
+        private readonly IContentStore _store;
 
-        public SaveContentItemCommandHandler(IContentItemStore store)
+        public SaveContentItemCommandHandler(IContentStore store)
         {
             _store = store;
         }
