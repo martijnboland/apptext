@@ -27,12 +27,13 @@ namespace AppText.Core.ContentManagement
             var result = new CommandResult();
             if (command.ContentItem.Id == null)
             {
-                _store.InsertContentItem(command.ContentItem);
+                _store.AddContentItem(command.ContentItem);
             }
             else
             {
                 _store.UpdateContentItem(command.ContentItem);
             }
+            result.IsSuccess = true;
             return result;
         }
     }

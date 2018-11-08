@@ -43,7 +43,7 @@ namespace AppText.Core.Storage.LiteDb
             }
         }
 
-        public string InsertContentItem(ContentItem contentItem)
+        public string AddContentItem(ContentItem contentItem)
         {
             using (var db = new LiteDatabase(_connectionString))
             {
@@ -100,7 +100,7 @@ namespace AppText.Core.Storage.LiteDb
             }
         }
 
-        public string InsertContentCollection(ContentCollection contentCollection)
+        public string AddContentCollection(ContentCollection contentCollection)
         {
             using (var db = new LiteDatabase(_connectionString))
             {

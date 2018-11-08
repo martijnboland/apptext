@@ -1,4 +1,6 @@
-﻿namespace AppText.Core.ContentDefinition
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AppText.Core.ContentDefinition
 {
     public class ContentType
     {
@@ -9,5 +11,7 @@
         public Field[] MetaFields { get; set; }
 
         public Field[] ContentFields { get; set; }
+
+        public int Version { get; set; }
     }
 }

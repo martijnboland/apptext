@@ -3,6 +3,7 @@ using System.Linq;
 using AppText.Core.Infrastructure;
 using AppText.Core.Shared.Commands;
 using AppText.Core.Shared.Queries;
+using AppText.Core.Shared.Validation;
 using AppText.Core.Storage;
 using AppText.Core.Storage.LiteDb;
 using Microsoft.AspNetCore.Builder;
@@ -29,21 +30,35 @@ namespace AppText.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Data store
             var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
-            services.AddScoped<IContentStore>(serviceProvider => new ContentStore(connectionString));
+            services.AddScoped<IContentDefinitionStore>(sp => new ContentDefinitionStore(connectionString));
+            services.AddScoped<IContentStore>(sp => new ContentStore(connectionString));
 
-            services.AddScoped<Dispatcher>(serviceProvider => new Dispatcher(serviceProvider));
+            // Dispatcher
+            services.AddScoped(serviceProvider => new Dispatcher(serviceProvider));
+
+            // Command & Query handlers 
+            var coreAssembly = typeof(Dispatcher).Assembly;
 
             services.Scan(s => s
-                .FromAssemblyOf<ICommand>()
+                .FromAssemblies(coreAssembly)
                     .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<>)))
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
 
             services.Scan(s => s
-                .FromAssemblyOf<ICommand>()
+                .FromAssemblies(coreAssembly)
                     .AddClasses(c => c.AssignableTo(typeof(IQueryHandler<,>)))
                     .AsImplementedInterfaces()
+                    .WithTransientLifetime());
+
+            // Validators
+            services.AddTransient(typeof(IValidator<>), typeof(Validator<>));
+            services.Scan(s => s
+                .FromAssemblies(coreAssembly)
+                    .AddClasses(c => c.AssignableTo(typeof(IValidator<>)))
+                    .AsSelf()
                     .WithTransientLifetime());
 
             services.AddMvc()

@@ -1,8 +1,5 @@
 ﻿using AppText.Core.Shared.Queries;
 using AppText.Core.Storage;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AppText.Core.ContentManagement
 {

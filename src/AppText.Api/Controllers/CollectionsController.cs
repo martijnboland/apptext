@@ -7,11 +7,11 @@ namespace AppText.Api.Controllers
 {
     [Route("collections")]
     [ApiController]
-    public class ContentCollectionController : ControllerBase
+    public class CollectionsController : ControllerBase
     {
         private readonly Dispatcher _dispatcher;
 
-        public ContentCollectionController(Dispatcher dispatcher)
+        public CollectionsController(Dispatcher dispatcher)
         {
             _dispatcher = dispatcher;
         }
@@ -19,13 +19,13 @@ namespace AppText.Api.Controllers
         [HttpGet]
         public IActionResult Get([FromQuery]ContentCollectionQuery query)
         {
-            return Ok(_dispatcher.ExecuteQuery<ContentCollectionQuery, ContentCollection[]>(query));
+            return Ok(_dispatcher.ExecuteQuery(query));
         }
 
         [HttpGet("{id}")]
         public IActionResult GetOne(string id)
         {
-            var result = _dispatcher.ExecuteQuery<ContentCollectionQuery, ContentCollection[]>(new ContentCollectionQuery { Id = id });
+            var result = _dispatcher.ExecuteQuery(new ContentCollectionQuery { Id = id });
             if (result.Length == 0)
             {
                 return NotFound();
@@ -34,11 +34,18 @@ namespace AppText.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody]ContentCollection contentItem)
+        public IActionResult Create([FromBody]ContentCollection contentCollection)
         {
-            var command = new SaveContentCollectionCommand(contentItem);
-            _dispatcher.ExecuteCommand(command);
-            return Created(contentItem.Id, contentItem);
+            var command = new SaveContentCollectionCommand(contentCollection);
+            var result = _dispatcher.ExecuteCommand(command);
+            if (result.IsSuccess)
+            {
+                return Created(contentCollection.Id, contentCollection);
+            }
+            else
+            {
+                return UnprocessableEntity(result);
+            }
         }
 
         [HttpPut("{id}")]
@@ -48,6 +55,13 @@ namespace AppText.Api.Controllers
             command.ContentCollection.Id = id;
             _dispatcher.ExecuteCommand(command);
             return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(string id)
+        {
+            _dispatcher.ExecuteCommand(new DeleteContentCollectionCommand(id));
+            return NoContent();
         }
     }
 }

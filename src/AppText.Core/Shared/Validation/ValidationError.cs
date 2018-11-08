@@ -10,46 +10,17 @@ namespace AppText.Core.Shared.Validation
         /// <summary>
         /// The (property) name of this validation error.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The error message.
         /// </summary>
-        public string ErrorMessage { get; private set; }
+        public string ErrorMessage { get; set; }
 
         /// <summary>
         /// Optional parameters for the error message.
         /// </summary>
-        public object[] Parameters { get; private set; }
-
-        /// <summary>
-        /// Protected constructor. Use Create() to create a new ValidationError.
-        /// </summary>
-        protected ValidationError()
-        {}
-
-        /// <summary>
-        /// Create a new validator with the given name and error message.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="errorMessage"></param>
-        /// <returns></returns>
-        public static ValidationError Create(string name, string errorMessage)
-        {
-            return new ValidationError {Name = name, ErrorMessage = errorMessage, Parameters = null};
-        }
-
-        /// <summary>
-        /// Create a new validator with the given name, error message and parameters that can occur in the error message.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="errorMessage"></param>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
-        public static ValidationError Create(string name, string errorMessage, params object[] parameters)
-        {
-            return new ValidationError {Name = name, ErrorMessage = errorMessage, Parameters = parameters};
-        }
+        public object[] Parameters { get; set; }
 
         /// <summary>
         /// ToString() override. Returns the error message merged with the optional parameters.

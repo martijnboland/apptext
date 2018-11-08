@@ -15,23 +15,33 @@ namespace AppText.Core.ContentManagement
 
     public class SaveContentCollectionCommandHandler : ICommandHandler<SaveContentCollectionCommand>
     {
-        private readonly IContentStore _store;
+        private readonly IContentStore _contentStore;
+        private readonly ContentCollectionValidator _validator;
 
-        public SaveContentCollectionCommandHandler(IContentStore store)
+        public SaveContentCollectionCommandHandler(IContentStore contentStore, ContentCollectionValidator validator)
         {
-            _store = store;
+            _contentStore = contentStore;
+            _validator = validator;
         }
 
         public CommandResult Handle(SaveContentCollectionCommand command)
         {
             var result = new CommandResult();
-            if (command.ContentCollection.Id == null)
+            if (!_validator.IsValid(command.ContentCollection))
             {
-                _store.InsertContentCollection(command.ContentCollection);
+                result.UpdateFromValidator(_validator);
             }
             else
             {
-                _store.UpdateContentCollection(command.ContentCollection);
+                if (command.ContentCollection.Id == null)
+                {
+                    _contentStore.AddContentCollection(command.ContentCollection);
+                }
+                else
+                {
+                    _contentStore.UpdateContentCollection(command.ContentCollection);
+                }
+                result.IsSuccess = true;
             }
             return result;
         }

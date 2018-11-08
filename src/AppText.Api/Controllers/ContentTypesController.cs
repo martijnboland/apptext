@@ -1,24 +1,25 @@
-﻿using AppText.Core.ContentManagement;
+﻿using AppText.Core.ContentDefinition;
+using AppText.Core.ContentManagement;
 using AppText.Core.Infrastructure;
-using AppText.Core.Shared.Queries;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 
 namespace AppText.Api.Controllers
 {
-    [Route("content")]
+    [Route("contenttypes")]
     [ApiController]
-    public class ContentController : ControllerBase
+    public class ContentTypesController : ControllerBase
     {
         private readonly Dispatcher _dispatcher;
 
-        public ContentController(Dispatcher dispatcher)
+        public ContentTypesController(Dispatcher dispatcher)
         {
             _dispatcher = dispatcher;
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery]ContentItemQuery query)
+        public IActionResult Get([FromQuery]ContentTypeQuery query)
         {
             return Ok(_dispatcher.ExecuteQuery(query));
         }
@@ -26,7 +27,7 @@ namespace AppText.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetOne(string id)
         {
-            var result = _dispatcher.ExecuteQuery(new ContentItemQuery { Id = id });
+            var result = _dispatcher.ExecuteQuery(new ContentTypeQuery { Id = id });
             if (result.Length == 0)
             {
                 return NotFound();
@@ -35,18 +36,18 @@ namespace AppText.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody]ContentItem contentItem)
+        public IActionResult Create([FromBody]ContentType contentType)
         {
-            var command = new SaveContentItemCommand(contentItem);
+            var command = new SaveContentTypeCommand(contentType);
             _dispatcher.ExecuteCommand(command);
-            return Created(contentItem.Id, contentItem);
+            return Created(contentType.Id, contentType);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(string id, [FromBody]ContentItem contentItem)
+        public IActionResult Update(string id, [FromBody]ContentType contentType)
         {
-            var command = new SaveContentItemCommand(contentItem);
-            command.ContentItem.Id = id;
+            var command = new SaveContentTypeCommand(contentType);
+            command.ContentType.Id = id;
             _dispatcher.ExecuteCommand(command);
             return Ok();
         }
@@ -54,8 +55,7 @@ namespace AppText.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
-            var command = new DeleteContentItemCommand(id);
-            _dispatcher.ExecuteCommand(command);
+            _dispatcher.ExecuteCommand(new DeleteContentTypeCommand(id));
             return NoContent();
         }
     }

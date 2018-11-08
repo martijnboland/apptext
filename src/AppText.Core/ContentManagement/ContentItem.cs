@@ -9,6 +9,7 @@ namespace AppText.Core.ContentManagement
         public string Id { get; set; }
         [Required]
         public string ContentKey { get; set; }
+        [Required]
         public string CollectionId { get; set; }
         public Dictionary<string, object> Meta { get; set; }
         public Dictionary<string, Dictionary<string, object>> Content { get; set; }

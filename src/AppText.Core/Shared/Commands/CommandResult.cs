@@ -1,6 +1,8 @@
-﻿using AppText.Core.Shared.Validation;
+﻿using AppText.Core.ContentManagement;
+using AppText.Core.Shared.Validation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AppText.Core.Shared.Commands
 {
@@ -33,6 +35,15 @@ namespace AppText.Core.Shared.Commands
                 validationErrorsString += Environment.NewLine + validationError;
             }
             return $"CommandResult.IsSuccess: {IsSuccess}" + validationErrorsString;
+        }
+
+        public void UpdateFromValidator(ContentCollectionValidator validator)
+        {
+            IsSuccess = !validator.Errors.Any();
+            foreach (var validationError in validator.Errors)
+            {
+                AddValidationError(validationError);
+            }
         }
     }
 }
