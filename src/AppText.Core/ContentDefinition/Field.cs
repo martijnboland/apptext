@@ -9,8 +9,9 @@
 
     public enum FieldType
     {
-        Text,
+        ShortText,
+        LongText,
         Number,
-        Date
+        DateTime
     }
 }

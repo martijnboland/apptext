@@ -6,6 +6,7 @@ using AppText.Core.Shared.Queries;
 using AppText.Core.Shared.Validation;
 using AppText.Core.Storage;
 using AppText.Core.Storage.LiteDb;
+using LiteDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -32,8 +33,9 @@ namespace AppText.Api
         {
             // Data store
             var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
-            services.AddScoped<IContentDefinitionStore>(sp => new ContentDefinitionStore(connectionString));
-            services.AddScoped<IContentStore>(sp => new ContentStore(connectionString));
+            services.AddSingleton(sp => new LiteRepository(connectionString));
+            services.AddScoped<IContentDefinitionStore, ContentDefinitionStore>();
+            services.AddScoped<IContentStore, ContentStore>();
 
             // Dispatcher
             services.AddScoped(serviceProvider => new Dispatcher(serviceProvider));
