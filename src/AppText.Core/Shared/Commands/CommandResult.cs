@@ -1,8 +1,6 @@
-﻿using AppText.Core.ContentManagement;
-using AppText.Core.Shared.Validation;
+﻿using AppText.Core.Shared.Validation;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AppText.Core.Shared.Commands
 {
@@ -10,7 +8,7 @@ namespace AppText.Core.Shared.Commands
     {
         private readonly List<ValidationError> _validationErrors;
 
-        public bool IsSuccess { get; set; }
+        public ResultStatus Status { get; private set; }
 
         public IEnumerable<ValidationError> ValidationErrors
         {
@@ -20,11 +18,25 @@ namespace AppText.Core.Shared.Commands
         public CommandResult()
         {
             _validationErrors = new List<ValidationError>();
+            Status = ResultStatus.Success;
         }
 
         public void AddValidationError(ValidationError validationError)
         {
             _validationErrors.Add(validationError);
+            Status = ResultStatus.ValidationError;
+        }
+
+        public void AddValidationErrors(IEnumerable<ValidationError> validationErrors)
+        {
+            foreach (var validationError in validationErrors)
+            {
+                AddValidationError(validationError);
+            }
+        }
+        public void SetVersionError()
+        {
+            Status = ResultStatus.VersionError;
         }
 
         public override string ToString()
@@ -34,16 +46,14 @@ namespace AppText.Core.Shared.Commands
             {
                 validationErrorsString += Environment.NewLine + validationError;
             }
-            return $"CommandResult.IsSuccess: {IsSuccess}" + validationErrorsString;
+            return $"CommandResult.Status: {Status}" + validationErrorsString;
         }
+    }
 
-        public void UpdateFromValidator(ContentCollectionValidator validator)
-        {
-            IsSuccess = !validator.Errors.Any();
-            foreach (var validationError in validator.Errors)
-            {
-                AddValidationError(validationError);
-            }
-        }
+    public enum ResultStatus
+    {
+        Success,
+        ValidationError,
+        VersionError
     }
 }

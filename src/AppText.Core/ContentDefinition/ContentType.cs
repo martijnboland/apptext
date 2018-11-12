@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AppText.Core.Shared.Model;
 
 namespace AppText.Core.ContentDefinition
 {
-    public class ContentType
+    public class ContentType : IVersionable
     {
         public string Id { get; set; }
 

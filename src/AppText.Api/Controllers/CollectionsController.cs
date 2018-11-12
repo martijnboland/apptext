@@ -1,6 +1,9 @@
-﻿using AppText.Core.ContentManagement;
+﻿using AppText.Api.Infrastructure;
+using AppText.Core.ContentManagement;
 using AppText.Core.Infrastructure;
+using AppText.Core.Shared.Commands;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 
 namespace AppText.Api.Controllers
@@ -38,30 +41,23 @@ namespace AppText.Api.Controllers
         {
             var command = new SaveContentCollectionCommand(contentCollection);
             var result = _dispatcher.ExecuteCommand(command);
-            if (result.IsSuccess)
-            {
-                return Created(contentCollection.Id, contentCollection);
-            }
-            else
-            {
-                return UnprocessableEntity(result);
-            }
+            return this.HandleCreateCommandResult(result, contentCollection.Id, contentCollection);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(string id, [FromBody]ContentCollection contentItem)
+        public IActionResult Update(string id, [FromBody]ContentCollection contentCollection)
         {
-            var command = new SaveContentCollectionCommand(contentItem);
+            var command = new SaveContentCollectionCommand(contentCollection);
             command.ContentCollection.Id = id;
-            _dispatcher.ExecuteCommand(command);
-            return Ok();
+            var result = _dispatcher.ExecuteCommand(command);
+            return this.HandleUpdateCommandResult(result, contentCollection);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
-            _dispatcher.ExecuteCommand(new DeleteContentCollectionCommand(id));
-            return NoContent();
+            var result = _dispatcher.ExecuteCommand(new DeleteContentCollectionCommand(id));
+            return this.HandleDeleteCommandResult(result);
         }
     }
 }

@@ -7,9 +7,9 @@ namespace AppText.Core.Storage.LiteDb
     {
         private readonly LiteRepository _liteRepository;
 
-        public ContentStore(LiteRepository liteRepository)
+        public ContentStore(LiteDatabase liteDatabase)
         {
-            _liteRepository = liteRepository;
+            _liteRepository = new LiteRepository(liteDatabase);            
         }
 
         public ContentItem[] GetContentItems(ContentItemQuery query)

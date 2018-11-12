@@ -1,9 +1,10 @@
 ﻿using AppText.Core.ContentDefinition;
+using AppText.Core.Shared.Model;
 using System.ComponentModel.DataAnnotations;
 
 namespace AppText.Core.ContentManagement
 {
-    public class ContentCollection
+    public class ContentCollection : IVersionable
     {
         public string Id { get; set; }
         [Required]

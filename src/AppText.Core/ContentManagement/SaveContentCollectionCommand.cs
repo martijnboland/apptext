@@ -17,31 +17,40 @@ namespace AppText.Core.ContentManagement
     {
         private readonly IContentStore _contentStore;
         private readonly ContentCollectionValidator _validator;
+        private readonly IVersioner _versioner;
 
-        public SaveContentCollectionCommandHandler(IContentStore contentStore, ContentCollectionValidator validator)
+        public SaveContentCollectionCommandHandler(IContentStore contentStore, ContentCollectionValidator validator, IVersioner versioner)
         {
             _contentStore = contentStore;
             _validator = validator;
+            _versioner = versioner;
         }
 
         public CommandResult Handle(SaveContentCollectionCommand command)
         {
             var result = new CommandResult();
+
             if (!_validator.IsValid(command.ContentCollection))
             {
-                result.UpdateFromValidator(_validator);
+                result.AddValidationErrors(_validator.Errors);
             }
             else
             {
-                if (command.ContentCollection.Id == null)
+                if (!_versioner.SetVersion(command.ContentCollection))
                 {
-                    _contentStore.AddContentCollection(command.ContentCollection);
+                    result.SetVersionError();
                 }
                 else
                 {
-                    _contentStore.UpdateContentCollection(command.ContentCollection);
+                    if (command.ContentCollection.Id == null)
+                    {
+                        _contentStore.AddContentCollection(command.ContentCollection);
+                    }
+                    else
+                    {
+                        _contentStore.UpdateContentCollection(command.ContentCollection);
+                    }
                 }
-                result.IsSuccess = true;
             }
             return result;
         }

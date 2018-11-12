@@ -16,24 +16,34 @@ namespace AppText.Core.ContentManagement
     public class SaveContentItemCommandHandler : ICommandHandler<SaveContentItemCommand>
     {
         private readonly IContentStore _store;
+        private readonly IVersioner _versioner;
 
-        public SaveContentItemCommandHandler(IContentStore store)
+        public SaveContentItemCommandHandler(IContentStore store, IVersioner versioner)
         {
             _store = store;
+            _versioner = versioner;
         }
 
         public CommandResult Handle(SaveContentItemCommand command)
         {
             var result = new CommandResult();
-            if (command.ContentItem.Id == null)
+
+            if (!_versioner.SetVersion(command.ContentItem))
             {
-                _store.AddContentItem(command.ContentItem);
+                result.SetVersionError();
             }
             else
             {
-                _store.UpdateContentItem(command.ContentItem);
+                if (command.ContentItem.Id == null)
+                {
+                    _store.AddContentItem(command.ContentItem);
+                }
+                else
+                {
+                    _store.UpdateContentItem(command.ContentItem);
+                }
             }
-            result.IsSuccess = true;
+
             return result;
         }
     }

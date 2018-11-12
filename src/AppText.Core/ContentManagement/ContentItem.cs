@@ -1,10 +1,11 @@
-﻿using System;
+﻿using AppText.Core.Shared.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AppText.Core.ContentManagement
 {
-    public class ContentItem
+    public class ContentItem : IVersionable
     {
         public string Id { get; set; }
         [Required]

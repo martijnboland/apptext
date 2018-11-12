@@ -16,22 +16,32 @@ namespace AppText.Core.ContentDefinition
     public class SaveContentTypeCommandHandler : ICommandHandler<SaveContentTypeCommand>
     {
         private IContentDefinitionStore _store;
+        private readonly IVersioner _versioner;
 
-        public SaveContentTypeCommandHandler(IContentDefinitionStore store)
+        public SaveContentTypeCommandHandler(IContentDefinitionStore store, IVersioner versioner)
         {
             _store = store;
+            _versioner = versioner;
         }
 
         public CommandResult Handle(SaveContentTypeCommand command)
         {
             var result = new CommandResult();
-            if (command.ContentType.Id == null)
+
+            if (! _versioner.SetVersion(command.ContentType))
             {
-                _store.AddContentType(command.ContentType);
+                result.SetVersionError();
             }
             else
             {
-                _store.UpdateContentType(command.ContentType);
+                if (command.ContentType.Id == null)
+                {
+                    _store.AddContentType(command.ContentType);
+                }
+                else
+                {
+                    _store.UpdateContentType(command.ContentType);
+                }
             }
             return result;
         }

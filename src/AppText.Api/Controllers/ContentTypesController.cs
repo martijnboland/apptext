@@ -1,4 +1,5 @@
-﻿using AppText.Core.ContentDefinition;
+﻿using AppText.Api.Infrastructure;
+using AppText.Core.ContentDefinition;
 using AppText.Core.ContentManagement;
 using AppText.Core.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -39,8 +40,8 @@ namespace AppText.Api.Controllers
         public IActionResult Create([FromBody]ContentType contentType)
         {
             var command = new SaveContentTypeCommand(contentType);
-            _dispatcher.ExecuteCommand(command);
-            return Created(contentType.Id, contentType);
+            var result = _dispatcher.ExecuteCommand(command);
+            return this.HandleCreateCommandResult(result, contentType.Id, contentType);
         }
 
         [HttpPut("{id}")]
@@ -48,15 +49,15 @@ namespace AppText.Api.Controllers
         {
             var command = new SaveContentTypeCommand(contentType);
             command.ContentType.Id = id;
-            _dispatcher.ExecuteCommand(command);
-            return Ok();
+            var result = _dispatcher.ExecuteCommand(command);
+            return this.HandleUpdateCommandResult(result, contentType);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
-            _dispatcher.ExecuteCommand(new DeleteContentTypeCommand(id));
-            return NoContent();
+            var result = _dispatcher.ExecuteCommand(new DeleteContentTypeCommand(id));
+            return this.HandleDeleteCommandResult(result);
         }
     }
 }
