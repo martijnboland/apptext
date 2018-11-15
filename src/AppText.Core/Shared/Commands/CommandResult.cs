@@ -10,6 +10,8 @@ namespace AppText.Core.Shared.Commands
 
         public ResultStatus Status { get; private set; }
 
+        public object ResultData { get; private set; }
+
         public IEnumerable<ValidationError> ValidationErrors
         {
             get { return _validationErrors; }
@@ -39,6 +41,16 @@ namespace AppText.Core.Shared.Commands
             Status = ResultStatus.VersionError;
         }
 
+        public void SetNotFound()
+        {
+            Status = ResultStatus.NotFound;
+        }
+
+        public void SetResultData(object data)
+        {
+            ResultData = data;
+        }
+
         public override string ToString()
         {
             var validationErrorsString = String.Empty;
@@ -54,6 +66,7 @@ namespace AppText.Core.Shared.Commands
     {
         Success,
         ValidationError,
-        VersionError
+        VersionError,
+        NotFound
     }
 }

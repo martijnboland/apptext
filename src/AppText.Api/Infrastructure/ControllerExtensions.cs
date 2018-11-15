@@ -19,16 +19,18 @@ namespace AppText.Api.Infrastructure
             }
         }
 
-        public static IActionResult HandleUpdateCommandResult(this ControllerBase controller, CommandResult commandResult, object payload)
+        public static IActionResult HandleUpdateCommandResult(this ControllerBase controller, CommandResult commandResult)
         {
             switch (commandResult.Status)
             {
                 case ResultStatus.Success:
-                    return controller.Ok(payload);
+                    return controller.Ok();
                 case ResultStatus.ValidationError:
                     return controller.UnprocessableEntity(commandResult);
                 case ResultStatus.VersionError:
                     return controller.Conflict(commandResult);
+                case ResultStatus.NotFound:
+                    return controller.NotFound();
                 default:
                     throw new NotImplementedException();
             }

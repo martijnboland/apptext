@@ -1,7 +1,6 @@
 ﻿using AppText.Api.Infrastructure;
 using AppText.Core.ContentManagement;
 using AppText.Core.Infrastructure;
-using AppText.Core.Shared.Queries;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
@@ -36,20 +35,19 @@ namespace AppText.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody]ContentItem contentItem)
+        public IActionResult Create([FromBody]SaveContentItemCommand contentItemCommand)
         {
-            var command = new SaveContentItemCommand(contentItem);
-            var result = _dispatcher.ExecuteCommand(command);
-            return this.HandleCreateCommandResult(result, contentItem.Id, contentItem);
+            var result = _dispatcher.ExecuteCommand(contentItemCommand);
+            var id = (result.ResultData as ContentItem)?.Id;
+            return this.HandleCreateCommandResult(result, id, result.ResultData);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(string id, [FromBody]ContentItem contentItem)
+        public IActionResult Update(string id, [FromBody]SaveContentItemCommand contentItemCommand)
         {
-            var command = new SaveContentItemCommand(contentItem);
-            command.ContentItem.Id = id;
-            var result = _dispatcher.ExecuteCommand(command);
-            return this.HandleUpdateCommandResult(result, contentItem);
+            contentItemCommand.Id = id;
+            var result = _dispatcher.ExecuteCommand(contentItemCommand);
+            return this.HandleUpdateCommandResult(result);
         }
 
         [HttpDelete("{id}")]

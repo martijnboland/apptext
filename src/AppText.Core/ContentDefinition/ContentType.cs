@@ -13,5 +13,11 @@ namespace AppText.Core.ContentDefinition
         public Field[] ContentFields { get; set; }
 
         public int Version { get; set; }
+
+        public ContentType()
+        {
+            MetaFields = new Field[0];
+            ContentFields = new Field[0];
+        }
     }
 }

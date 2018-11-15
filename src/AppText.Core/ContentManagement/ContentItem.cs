@@ -1,4 +1,6 @@
 ﻿using AppText.Core.Shared.Model;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,11 +15,18 @@ namespace AppText.Core.ContentManagement
         [Required]
         public string CollectionId { get; set; }
         public Dictionary<string, object> Meta { get; set; }
-        public Dictionary<string, Dictionary<string, object>> Content { get; set; }
+        public Dictionary<string, object> Content { get; set; }
         public int Version { get; set; }
+        
         public DateTime? CreatedAt { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? LastModifiedAt { get; set; }
         public string LastModifiedBy { get; set; }
+
+        public ContentItem()
+        {
+            this.Meta = new Dictionary<string, object>();
+            this.Content = new Dictionary<string, object>();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using AppText.Core.Infrastructure;
 using AppText.Core.Shared.Commands;
 using AppText.Core.Shared.Queries;
@@ -9,6 +10,7 @@ using AppText.Core.Storage.LiteDb;
 using LiteDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +33,10 @@ namespace AppText.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // ClaimsPrincipal
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient(sp => sp.GetService<IHttpContextAccessor>().HttpContext.User);
+
             // Data store
             var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
             services.AddSingleton(sp => new LiteRepository(connectionString));

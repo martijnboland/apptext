@@ -3,7 +3,6 @@ using AppText.Core.ContentDefinition;
 using AppText.Core.ContentManagement;
 using AppText.Core.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Linq;
 
 namespace AppText.Api.Controllers
@@ -50,7 +49,7 @@ namespace AppText.Api.Controllers
             var command = new SaveContentTypeCommand(contentType);
             command.ContentType.Id = id;
             var result = _dispatcher.ExecuteCommand(command);
-            return this.HandleUpdateCommandResult(result, contentType);
+            return this.HandleUpdateCommandResult(result);
         }
 
         [HttpDelete("{id}")]

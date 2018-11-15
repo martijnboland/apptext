@@ -1,5 +1,8 @@
 ﻿using AppText.Core.ContentManagement;
 using LiteDB;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AppText.Core.Storage.LiteDb
 {
@@ -9,37 +12,7 @@ namespace AppText.Core.Storage.LiteDb
 
         public ContentStore(LiteDatabase liteDatabase)
         {
-            _liteRepository = new LiteRepository(liteDatabase);            
-        }
-
-        public ContentItem[] GetContentItems(ContentItemQuery query)
-        {
-            var q = _liteRepository.Query<ContentItem>();
-            if (!string.IsNullOrEmpty(query.Id))
-            {
-                q = q.Where(ci => ci.Id == query.Id);
-            }
-            if (! string.IsNullOrEmpty(query.CollectionId))
-            {
-                q = q.Where(ci => ci.CollectionId == query.CollectionId);
-            }
-            return q.ToArray();
-        }
-
-        public string AddContentItem(ContentItem contentItem)
-        {
-            contentItem.Id = ObjectId.NewObjectId().ToString();
-            return _liteRepository.Insert(contentItem);
-        }
-
-        public void UpdateContentItem(ContentItem contentItem)
-        {
-            _liteRepository.Update(contentItem);
-        }
-
-        public void DeleteContentItem(string id)
-        {
-            _liteRepository.Delete<ContentItem>(id);
+            _liteRepository = new LiteRepository(liteDatabase);
         }
 
         public ContentCollection[] GetContentCollections(ContentCollectionQuery query)
@@ -70,6 +43,63 @@ namespace AppText.Core.Storage.LiteDb
         public void DeleteContentCollection(string id)
         {
             _liteRepository.Delete<ContentCollection>(id);
+        }
+
+
+        public ContentItem[] GetContentItems(ContentItemQuery query)
+        {
+            var q = _liteRepository.Query<ContentItem>();
+            if (!string.IsNullOrEmpty(query.Id))
+            {
+                q = q.Where(ci => ci.Id == query.Id);
+            }
+            if (! string.IsNullOrEmpty(query.CollectionId))
+            {
+                q = q.Where(ci => ci.CollectionId == query.CollectionId);
+            }
+            return q.ToArray();
+        }
+
+        public ContentItem GetContentItem(string id)
+        {
+            return _liteRepository.SingleById<ContentItem>(id);
+        }
+
+        public bool ContentItemExists(string contentKey, string collectionId, string id)
+        {
+            return _liteRepository.Query<ContentItem>()
+                .Where(ci => ci.CollectionId == collectionId && ci.ContentKey == contentKey && ci.Id != id)
+                .Exists();
+        }
+
+        public string AddContentItem(ContentItem contentItem)
+        {
+            contentItem.Id = ObjectId.NewObjectId().ToString();
+            ConvertJObjectsToDictionaries(contentItem);
+            return _liteRepository.Insert(contentItem);
+        }
+
+        public void UpdateContentItem(ContentItem contentItem)
+        {
+            ConvertJObjectsToDictionaries(contentItem);
+            _liteRepository.Update(contentItem);
+        }
+
+        public void DeleteContentItem(string id)
+        {
+            _liteRepository.Delete<ContentItem>(id);
+        }
+
+        private void ConvertJObjectsToDictionaries(ContentItem contentItem)
+        {
+            // Convert JObject instances to Dictionary<string, object>, so LiteDB can store these properly
+            foreach (var contentPart in contentItem.Content.ToList())
+            {
+                if (contentPart.Value is JObject)
+                {
+                    contentItem.Content[contentPart.Key] = JObject.FromObject(contentPart.Value).ToObject<Dictionary<string, object>>();
+                }
+            }
         }
     }
 }
