@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace AppText.Api.Controllers
 {
-    [Route("contenttypes")]
+    [Route("{appPublicId}/contenttypes")]
     [ApiController]
     public class ContentTypesController : ControllerBase
     {
@@ -19,8 +19,9 @@ namespace AppText.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery]ContentTypeQuery query)
+        public IActionResult Get(string appPublicId, [FromQuery]ContentTypeQuery query)
         {
+            query.AppPublicId = appPublicId;
             return Ok(_dispatcher.ExecuteQuery(query));
         }
 
@@ -36,26 +37,26 @@ namespace AppText.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody]ContentType contentType)
+        public IActionResult Create(string appPublicId, [FromBody]ContentType contentType)
         {
-            var command = new SaveContentTypeCommand(contentType);
+            var command = new SaveContentTypeCommand(appPublicId, contentType);
             var result = _dispatcher.ExecuteCommand(command);
             return this.HandleCreateCommandResult(result, contentType.Id, contentType);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(string id, [FromBody]ContentType contentType)
+        public IActionResult Update(string appPublicId, string id, [FromBody]ContentType contentType)
         {
-            var command = new SaveContentTypeCommand(contentType);
+            var command = new SaveContentTypeCommand(appPublicId, contentType);
             command.ContentType.Id = id;
             var result = _dispatcher.ExecuteCommand(command);
             return this.HandleUpdateCommandResult(result);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
+        public IActionResult Delete(string appPublicId, string id)
         {
-            var result = _dispatcher.ExecuteCommand(new DeleteContentTypeCommand(id));
+            var result = _dispatcher.ExecuteCommand(new DeleteContentTypeCommand(appPublicId, id));
             return this.HandleDeleteCommandResult(result);
         }
     }

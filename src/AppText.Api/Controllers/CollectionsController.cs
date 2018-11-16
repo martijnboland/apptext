@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace AppText.Api.Controllers
 {
-    [Route("collections")]
+    [Route("{appPublicId}/collections")]
     [ApiController]
     public class CollectionsController : ControllerBase
     {
@@ -18,8 +18,9 @@ namespace AppText.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery]ContentCollectionQuery query)
+        public IActionResult Get(string appPublicId, [FromQuery]ContentCollectionQuery query)
         {
+            query.AppPublicId = appPublicId;
             return Ok(_dispatcher.ExecuteQuery(query));
         }
 

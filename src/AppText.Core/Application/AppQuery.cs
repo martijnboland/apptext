@@ -6,7 +6,7 @@ namespace AppText.Core.Application
     public class AppQuery : IQuery<App[]>
     {
         public string Id { get; set; }
-        public string PublicIdentifier { get; set; }
+        public string PublicId { get; set; }
     }
 
     public class AppQueryHandler : IQueryHandler<AppQuery, App[]>

@@ -9,17 +9,19 @@ namespace AppText.Core.ContentManagement
     {
         private readonly IContentDefinitionStore _contentDefinitionStore;
         private readonly IContentStore _contentStore;
+        private readonly IApplicationStore _applicationStore;
 
-        public ContentCollectionValidator(IContentDefinitionStore contentDefinitionStore, IContentStore contentStore)
+        public ContentCollectionValidator(IContentDefinitionStore contentDefinitionStore, IContentStore contentStore, IApplicationStore applicationStore)
         {
             _contentDefinitionStore = contentDefinitionStore;
             _contentStore = contentStore;
+            _applicationStore = applicationStore;
         }
 
-        protected override void ValidateCustom(ContentCollection contentCollection)
+        protected override void ValidateCustom(ContentCollection objectToValidate)
         {
             // Check content type
-            var contentTypeId = contentCollection.ContentType.Id;
+            var contentTypeId = objectToValidate.ContentType.Id;
             var contentType = _contentDefinitionStore.GetContentTypes(new ContentTypeQuery { Id = contentTypeId }).FirstOrDefault();
             if (contentType == null)
             {
@@ -28,15 +30,15 @@ namespace AppText.Core.ContentManagement
             else
             {
                 // Sync content type with collection when valid
-                contentCollection.ContentType = contentType;
+                objectToValidate.ContentType = contentType;
 
-                if (contentCollection.Id == null)
+                if (objectToValidate.Id == null)
                 {
                     // Check uniqueness of name
-                    var otherCollection = _contentStore.GetContentCollections(new ContentCollectionQuery { Name = contentCollection.Name }).FirstOrDefault();
+                    var otherCollection = _contentStore.GetContentCollections(new ContentCollectionQuery { Name = objectToValidate.Name }).FirstOrDefault();
                     if (otherCollection != null)
                     {
-                        AddError("Name", "AppText:DuplicateContentCollectionName", contentCollection.Name);
+                        AddError("Name", "AppText:DuplicateContentCollectionName", objectToValidate.Name);
                     }
                 }
             }

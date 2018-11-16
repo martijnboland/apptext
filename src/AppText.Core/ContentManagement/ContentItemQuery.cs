@@ -5,6 +5,7 @@ namespace AppText.Core.ContentManagement
 {
     public class ContentItemQuery : IQuery<ContentItem[]>
     {
+        public string AppPublicId { get; set; }
         public string Id { get; set; }
         public string CollectionId { get; set; }
         public string Language { get; set; }

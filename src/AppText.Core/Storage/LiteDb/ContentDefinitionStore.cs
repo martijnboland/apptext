@@ -15,6 +15,10 @@ namespace AppText.Core.Storage.LiteDb
         public ContentType[] GetContentTypes(ContentTypeQuery query)
         {
             var q = _liteRepository.Query<ContentType>();
+            if (! string.IsNullOrEmpty(query.AppPublicId))
+            {
+                q = q.Where(ct => ct.App.PublicId == query.AppPublicId);
+            }
             if (!string.IsNullOrEmpty(query.Id))
             {
                 q = q.Where(ct => ct.Id == query.Id);

@@ -7,7 +7,7 @@ namespace AppText.Core.Application
     public class CreateAppCommand : ICommand
     {
         [StringLength(20)]
-        public string PublicIdentifier { get; set; }
+        public string PublicId { get; set; }
         [Required]
         [StringLength(100)]
         public string DisplayName { get; set; }
@@ -18,7 +18,7 @@ namespace AppText.Core.Application
         {
             return new App
             {
-                PublicIdentifier = this.PublicIdentifier,
+                PublicId = this.PublicId,
                 DisplayName = this.DisplayName,
                 Languages = this.Languages,
                 DefaultLanguage = this.DefaultLanguage

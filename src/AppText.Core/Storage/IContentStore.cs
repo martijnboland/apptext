@@ -11,7 +11,7 @@ namespace AppText.Core.Storage
 
         ContentItem[] GetContentItems(ContentItemQuery query);
         ContentItem GetContentItem(string id);
-        bool ContentItemExists(string contentKey, string collectionId, string id);
+        bool ContentItemExists(string contentKey, string collectionId, string excludeId);
         string AddContentItem(ContentItem contentItem);
         void UpdateContentItem(ContentItem contentItem);
         void DeleteContentItem(string id);

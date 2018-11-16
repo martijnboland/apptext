@@ -15,13 +15,13 @@ namespace AppText.Core.Application
         protected override void ValidateCustom(App objectToValidate)
         {
             // Check uniqueness public identifier
-            if (_store.AppExists(objectToValidate.PublicIdentifier, objectToValidate.Id))
+            if (_store.AppExists(objectToValidate.PublicId, objectToValidate.Id))
             {
                 AddError(new ValidationError
                 {
-                    Name = "PublicIdentifier",
-                    ErrorMessage = "AppText:PublicIdentifierAlreadyExists",
-                    Parameters = new[] { objectToValidate.PublicIdentifier }
+                    Name = "PublicId",
+                    ErrorMessage = "AppText:PublicIdAlreadyExists",
+                    Parameters = new[] { objectToValidate.PublicId }
                 });
             }
         }

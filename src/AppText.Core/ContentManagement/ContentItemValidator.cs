@@ -1,4 +1,5 @@
-﻿using AppText.Core.Shared.Validation;
+﻿using AppText.Core.Application;
+using AppText.Core.Shared.Validation;
 using AppText.Core.Storage;
 using System;
 using System.Linq;
@@ -8,14 +9,26 @@ namespace AppText.Core.ContentManagement
     public class ContentItemValidator : Validator<ContentItem>
     {
         private readonly IContentStore _contentStore;
+        private readonly IApplicationStore _applicationStore;
 
-        public ContentItemValidator(IContentStore contentStore)
+        public ContentItemValidator(IContentStore contentStore, IApplicationStore applicationStore)
         {
             _contentStore = contentStore;
+            _applicationStore = applicationStore;
         }
 
         protected override void ValidateCustom(ContentItem objectToValidate)
         {
+            // Verify app reference
+            if (objectToValidate.App != null)
+            {
+                var app = _applicationStore.GetApps(new AppQuery { Id = objectToValidate.App.Id, PublicId = objectToValidate.App.PublicId }).SingleOrDefault();
+                if (app == null)
+                {
+                    AddError(new ValidationError { Name = "App", ErrorMessage = "AppText:AppNotFound", Parameters = new[] { objectToValidate.App.Id } });
+                }
+            }
+
             // Validate content type based on content type in collection
             var collection = _contentStore.GetContentCollections(new ContentCollectionQuery { Id = objectToValidate.CollectionId }).FirstOrDefault();
             if (collection == null)

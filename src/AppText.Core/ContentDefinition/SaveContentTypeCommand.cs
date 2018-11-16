@@ -1,15 +1,20 @@
-﻿using AppText.Core.Shared.Commands;
+﻿using AppText.Core.Application;
+using AppText.Core.Shared.Commands;
+using AppText.Core.Shared.Validation;
 using AppText.Core.Storage;
+using System.Linq;
 
 namespace AppText.Core.ContentDefinition
 {
     public class SaveContentTypeCommand : ICommand
     {
+        public string AppPublicId { get; }
         public ContentType ContentType { get; }
 
-        public SaveContentTypeCommand(ContentType contentType)
+        public SaveContentTypeCommand(string appPublicId, ContentType contentType)
         {
             this.ContentType = contentType;
+            AppPublicId = appPublicId;
         }
     }
 
@@ -17,11 +22,15 @@ namespace AppText.Core.ContentDefinition
     {
         private IContentDefinitionStore _store;
         private readonly IVersioner _versioner;
+        private readonly ContentTypeValidator _validator;
+        private readonly IApplicationStore _applicationStore;
 
-        public SaveContentTypeCommandHandler(IContentDefinitionStore store, IVersioner versioner)
+        public SaveContentTypeCommandHandler(IContentDefinitionStore store, IApplicationStore applicationStore, IVersioner versioner, ContentTypeValidator validator)
         {
             _store = store;
             _versioner = versioner;
+            _validator = validator;
+            _applicationStore = applicationStore;
         }
 
         public CommandResult Handle(SaveContentTypeCommand command)
@@ -34,13 +43,31 @@ namespace AppText.Core.ContentDefinition
             }
             else
             {
-                if (command.ContentType.Id == null)
+                if (! _validator.IsValid(command.ContentType))
                 {
-                    _store.AddContentType(command.ContentType);
+                    result.AddValidationErrors(_validator.Errors);
                 }
                 else
                 {
-                    _store.UpdateContentType(command.ContentType);
+                    if (command.ContentType.Id == null)
+                    {
+                        var appReference = _applicationStore.GetApps(new AppQuery { PublicId = command.AppPublicId })
+                            .Select(a => new AppReference { Id = a.Id, PublicId = a.PublicId })
+                            .FirstOrDefault();
+                        if (appReference == null)
+                        {
+                            result.AddValidationError(new ValidationError { Name = "AppPublicId", ErrorMessage = "AppText:InvalidApp", Parameters = new[] { command.AppPublicId } });
+                        }
+                        else
+                        {
+                            command.ContentType.App = appReference;
+                            _store.AddContentType(command.ContentType);
+                        }
+                    }
+                    else
+                    {
+                        _store.UpdateContentType(command.ContentType);
+                    }
                 }
             }
             return result;

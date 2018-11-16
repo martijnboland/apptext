@@ -24,9 +24,9 @@ namespace AppText.Core.Storage.LiteDb
             {
                 q = q.Where(a => a.Id == query.Id);
             }
-            if (!string.IsNullOrEmpty(query.PublicIdentifier))
+            if (!string.IsNullOrEmpty(query.PublicId))
             {
-                q = q.Where(a => a.PublicIdentifier == query.PublicIdentifier);
+                q = q.Where(a => a.PublicId == query.PublicId);
             }
             return q.ToArray();
         }
@@ -34,7 +34,7 @@ namespace AppText.Core.Storage.LiteDb
         public bool AppExists(string publicIdentifier, string id)
         {
             return _liteRepository.Query<App>()
-               .Where(a => a.PublicIdentifier == publicIdentifier && a.Id != id)
+               .Where(a => a.PublicId == publicIdentifier && a.Id != id)
                .Exists();
         }
 

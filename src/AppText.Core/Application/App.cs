@@ -7,7 +7,7 @@ namespace AppText.Core.Application
         public string Id { get; set; }
         [Required]
         [StringLength(20)]
-        public string PublicIdentifier { get; set; }
+        public string PublicId { get; set; }
         [Required]
         [StringLength(100)]
         public string DisplayName { get; set; }

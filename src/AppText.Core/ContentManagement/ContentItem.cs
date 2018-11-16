@@ -1,6 +1,6 @@
-﻿using AppText.Core.Shared.Model;
+﻿using AppText.Core.Application;
+using AppText.Core.Shared.Model;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +10,8 @@ namespace AppText.Core.ContentManagement
     public class ContentItem : IVersionable
     {
         public string Id { get; set; }
+        public AppReference App { get; set; }
+
         [Required]
         public string ContentKey { get; set; }
         [Required]

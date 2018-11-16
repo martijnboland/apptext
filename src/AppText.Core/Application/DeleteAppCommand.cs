@@ -25,6 +25,7 @@ namespace AppText.Core.Application
         public CommandResult Handle(DeleteAppCommand command)
         {
             var result = new CommandResult();
+            // TODO: check existence of content types, collections and content items
             _store.DeleteApp(command.Id);
             return result;
         }

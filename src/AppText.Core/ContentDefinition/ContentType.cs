@@ -1,10 +1,13 @@
-﻿using AppText.Core.Shared.Model;
+﻿using AppText.Core.Application;
+using AppText.Core.Shared.Model;
 
 namespace AppText.Core.ContentDefinition
 {
     public class ContentType : IVersionable
     {
         public string Id { get; set; }
+
+        public AppReference App { get; set; }
 
         public string Name { get; set; }
 

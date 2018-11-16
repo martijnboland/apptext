@@ -18,6 +18,10 @@ namespace AppText.Core.Storage.LiteDb
         public ContentCollection[] GetContentCollections(ContentCollectionQuery query)
         {
             var q = _liteRepository.Query<ContentCollection>();
+            if (! string.IsNullOrEmpty(query.AppPublicId))
+            {
+                q = q.Where(cc => cc.ContentType.App.PublicId == query.AppPublicId);
+            }
             if (!string.IsNullOrEmpty(query.Id))
             {
                 q = q.Where(cc => cc.Id == query.Id);
@@ -49,6 +53,10 @@ namespace AppText.Core.Storage.LiteDb
         public ContentItem[] GetContentItems(ContentItemQuery query)
         {
             var q = _liteRepository.Query<ContentItem>();
+            if (! string.IsNullOrEmpty(query.AppPublicId))
+            {
+                q = q.Where(ci => ci.App.PublicId == query.AppPublicId);
+            }
             if (!string.IsNullOrEmpty(query.Id))
             {
                 q = q.Where(ci => ci.Id == query.Id);
@@ -65,10 +73,10 @@ namespace AppText.Core.Storage.LiteDb
             return _liteRepository.SingleById<ContentItem>(id);
         }
 
-        public bool ContentItemExists(string contentKey, string collectionId, string id)
+        public bool ContentItemExists(string contentKey, string collectionId, string excludeId)
         {
             return _liteRepository.Query<ContentItem>()
-                .Where(ci => ci.CollectionId == collectionId && ci.ContentKey == contentKey && ci.Id != id)
+                .Where(ci => ci.CollectionId == collectionId && ci.ContentKey == contentKey && ci.Id != excludeId)
                 .Exists();
         }
 
