@@ -1,8 +1,11 @@
-﻿using AppText.Core.Shared.Commands;
+﻿using AppText.Core.Application;
+using AppText.Core.Shared.Commands;
+using AppText.Core.Shared.Validation;
 using AppText.Core.Storage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 
@@ -11,6 +14,7 @@ namespace AppText.Core.ContentManagement
     public class SaveContentItemCommand : ICommand
     {
         public string Id { get; set; }
+        public string AppPublicId { get; set; }
         [Required]
         public string ContentKey { get; set; }
         [Required]
@@ -63,13 +67,15 @@ namespace AppText.Core.ContentManagement
         private readonly IVersioner _versioner;
         private readonly ContentItemValidator _validator;
         private readonly ClaimsPrincipal _currentUser;
+        private readonly IApplicationStore _applicationStore;
 
-        public SaveContentItemCommandHandler(IContentStore store, IVersioner versioner, ContentItemValidator validator, ClaimsPrincipal currentUser)
+        public SaveContentItemCommandHandler(IContentStore store, IApplicationStore applicationStore, IVersioner versioner, ContentItemValidator validator, ClaimsPrincipal currentUser)
         {
             _store = store;
             _versioner = versioner;
             _validator = validator;
             _currentUser = currentUser;
+            _applicationStore = applicationStore;
         }
 
         public CommandResult Handle(SaveContentItemCommand command)
@@ -106,7 +112,18 @@ namespace AppText.Core.ContentManagement
                 {
                     if (contentItem.Id == null)
                     {
-                        _store.AddContentItem(contentItem);
+                        var appReference = _applicationStore.GetApps(new AppQuery { PublicId = command.AppPublicId })
+                            .Select(a => new AppReference { Id = a.Id, PublicId = a.PublicId })
+                            .FirstOrDefault();
+                        if (appReference == null)
+                        {
+                            result.AddValidationError(new ValidationError { Name = "AppPublicId", ErrorMessage = "AppText:InvalidApp", Parameters = new[] { command.AppPublicId } });
+                        }
+                        else
+                        {
+                            contentItem.App = appReference;
+                            _store.AddContentItem(contentItem);
+                        }
                     }
                     else
                     {

@@ -6,10 +6,12 @@ namespace AppText.Core.ContentManagement
     public class DeleteContentItemCommand : ICommand
     {
         public string Id { get; }
+        public string AppPublicId { get; }
 
-        public DeleteContentItemCommand(string id)
+        public DeleteContentItemCommand(string appPublicId, string id)
         {
             this.Id = id;
+            AppPublicId = appPublicId;
         }
     }
 

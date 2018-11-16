@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace AppText.Api.Controllers
 {
-    [Route("content")]
+    [Route("{appPublicId}/content")]
     [ApiController]
     public class ContentController : ControllerBase
     {
@@ -18,8 +18,9 @@ namespace AppText.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery]ContentItemQuery query)
+        public IActionResult Get(string appPublicId, [FromQuery]ContentItemQuery query)
         {
+            query.AppPublicId = appPublicId;
             return Ok(_dispatcher.ExecuteQuery(query));
         }
 
@@ -35,25 +36,27 @@ namespace AppText.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody]SaveContentItemCommand contentItemCommand)
+        public IActionResult Create(string appPublicId, [FromBody]SaveContentItemCommand contentItemCommand)
         {
+            contentItemCommand.AppPublicId = appPublicId;
             var result = _dispatcher.ExecuteCommand(contentItemCommand);
             var id = (result.ResultData as ContentItem)?.Id;
             return this.HandleCreateCommandResult(result, id, result.ResultData);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(string id, [FromBody]SaveContentItemCommand contentItemCommand)
+        public IActionResult Update(string appPublicId, string id, [FromBody]SaveContentItemCommand contentItemCommand)
         {
+            contentItemCommand.AppPublicId = appPublicId;
             contentItemCommand.Id = id;
             var result = _dispatcher.ExecuteCommand(contentItemCommand);
             return this.HandleUpdateCommandResult(result);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
+        public IActionResult Delete(string appPublicId, string id)
         {
-            var command = new DeleteContentItemCommand(id);
+            var command = new DeleteContentItemCommand(appPublicId, id);
             var result = _dispatcher.ExecuteCommand(command);
             return this.HandleDeleteCommandResult(result);
         }
