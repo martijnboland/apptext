@@ -41,6 +41,7 @@ namespace AppText.Api
             var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
             services.AddSingleton(sp => new LiteRepository(connectionString));
             services.AddSingleton(sp => new LiteDatabase(connectionString));
+            services.AddScoped<IApplicationStore, ApplicationStore>();
             services.AddScoped<IContentDefinitionStore, ContentDefinitionStore>();
             services.AddScoped<IContentStore, ContentStore>();
             services.AddScoped<IVersioner, Versioner>();
