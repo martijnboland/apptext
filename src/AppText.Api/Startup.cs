@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using AppText.Api.Infrastructure;
 using AppText.Core.Infrastructure;
 using AppText.Core.Shared.Commands;
 using AppText.Core.Shared.Queries;
@@ -33,44 +34,10 @@ namespace AppText.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // ClaimsPrincipal
-            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient(sp => sp.GetService<IHttpContextAccessor>().HttpContext.User);
+            var appTextOptions = new AppTextConfigurationOptions();
+            appTextOptions.ConnectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
 
-            // Data store
-            var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
-            services.AddSingleton(sp => new LiteDatabase(connectionString));
-            services.AddSingleton(sp => new LiteRepository(sp.GetRequiredService<LiteDatabase>()));
-            services.AddScoped<IApplicationStore, ApplicationStore>();
-            services.AddScoped<IContentDefinitionStore, ContentDefinitionStore>();
-            services.AddScoped<IContentStore, ContentStore>();
-            services.AddScoped<IVersioner, Versioner>();
-
-            // Dispatcher
-            services.AddScoped(serviceProvider => new Dispatcher(serviceProvider));
-
-            // Command & Query handlers 
-            var coreAssembly = typeof(Dispatcher).Assembly;
-
-            services.Scan(s => s
-                .FromAssemblies(coreAssembly)
-                    .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<>)))
-                    .AsImplementedInterfaces()
-                    .WithTransientLifetime());
-
-            services.Scan(s => s
-                .FromAssemblies(coreAssembly)
-                    .AddClasses(c => c.AssignableTo(typeof(IQueryHandler<,>)))
-                    .AsImplementedInterfaces()
-                    .WithTransientLifetime());
-
-            // Validators
-            services.AddTransient(typeof(IValidator<>), typeof(Validator<>));
-            services.Scan(s => s
-                .FromAssemblies(coreAssembly)
-                    .AddClasses(c => c.AssignableTo(typeof(IValidator<>)))
-                    .AsSelf()
-                    .WithTransientLifetime());
+            services.AddAppText(appTextOptions);
 
             services.AddMvc()
                 .AddJsonOptions(options =>
