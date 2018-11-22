@@ -27,6 +27,9 @@ namespace AppText.Core.ContentDefinition
                     AddError(new ValidationError { Name = "App", ErrorMessage = "AppText:AppNotFound", Parameters = new[] { objectToValidate.App.Id } } );
                 }
             }
+            else {
+                AddError(new ValidationError { Name = "App", ErrorMessage = "AppText:AppEmpty" } );
+            }
 
             // Duplicate content type name
             if (objectToValidate.Id == null)

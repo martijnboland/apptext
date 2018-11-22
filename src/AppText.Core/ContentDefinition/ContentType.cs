@@ -1,4 +1,5 @@
-﻿using AppText.Core.Application;
+﻿using System.ComponentModel.DataAnnotations;
+using AppText.Core.Application;
 using AppText.Core.Shared.Model;
 
 namespace AppText.Core.ContentDefinition
