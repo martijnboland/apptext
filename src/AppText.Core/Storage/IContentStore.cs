@@ -1,19 +1,20 @@
 ﻿using AppText.Core.ContentManagement;
+using System.Threading.Tasks;
 
 namespace AppText.Core.Storage
 {
     public interface IContentStore
     {
-        ContentCollection[] GetContentCollections(ContentCollectionQuery query);
-        string AddContentCollection(ContentCollection contentCollection);
-        void UpdateContentCollection(ContentCollection contentCollection);
-        void DeleteContentCollection(string id);
+        Task<ContentCollection[]> GetContentCollections(ContentCollectionQuery query);
+        Task<string> AddContentCollection(ContentCollection contentCollection);
+        Task UpdateContentCollection(ContentCollection contentCollection);
+        Task DeleteContentCollection(string id);
 
-        ContentItem[] GetContentItems(ContentItemQuery query);
-        ContentItem GetContentItem(string id);
-        bool ContentItemExists(string contentKey, string collectionId, string excludeId);
-        string AddContentItem(ContentItem contentItem);
-        void UpdateContentItem(ContentItem contentItem);
-        void DeleteContentItem(string id);
+        Task<ContentItem[]> GetContentItems(ContentItemQuery query);
+        Task<ContentItem> GetContentItem(string id);
+        Task<bool> ContentItemExists(string contentKey, string collectionId, string excludeId);
+        Task<string> AddContentItem(ContentItem contentItem);
+        Task UpdateContentItem(ContentItem contentItem);
+        Task DeleteContentItem(string id);
     }
 }

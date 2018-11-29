@@ -1,12 +1,13 @@
 ﻿using AppText.Core.ContentDefinition;
+using System.Threading.Tasks;
 
 namespace AppText.Core.Storage
 {
     public interface IContentDefinitionStore
     {
-        ContentType[] GetContentTypes(ContentTypeQuery query);
-        string AddContentType(ContentType contentType);
-        void UpdateContentType(ContentType contentType);
-        void DeleteContentType(string id);
+        Task<ContentType[]> GetContentTypes(ContentTypeQuery query);
+        Task<string> AddContentType(ContentType contentType);
+        Task UpdateContentType(ContentType contentType);
+        Task DeleteContentType(string id);
     }
 }

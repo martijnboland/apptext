@@ -3,6 +3,7 @@ using AppText.Core.Shared.Commands;
 using AppText.Core.Shared.Validation;
 using AppText.Core.Storage;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppText.Core.ContentDefinition
 {
@@ -33,23 +34,23 @@ namespace AppText.Core.ContentDefinition
             _applicationStore = applicationStore;
         }
 
-        public CommandResult Handle(SaveContentTypeCommand command)
+        public async Task<CommandResult> Handle(SaveContentTypeCommand command)
         {
             var result = new CommandResult();
 
-            if (! _versioner.SetVersion(command.ContentType))
+            if (! await _versioner.SetVersion(command.ContentType))
             {
                 result.SetVersionError();
             }
             else
             {
                 // Set app reference before validating
-                var appReference = _applicationStore.GetApps(new AppQuery { PublicId = command.AppPublicId })
+                var appReference = (await _applicationStore.GetApps(new AppQuery { PublicId = command.AppPublicId }))
                     .Select(a => new AppReference { Id = a.Id, PublicId = a.PublicId })
                     .FirstOrDefault();
                 command.ContentType.App = appReference;
                 
-                if (! _validator.IsValid(command.ContentType))
+                if (! await _validator.IsValid(command.ContentType))
                 {
                     result.AddValidationErrors(_validator.Errors);
                 }
@@ -57,11 +58,11 @@ namespace AppText.Core.ContentDefinition
                 {
                     if (command.ContentType.Id == null)
                     {
-                        _store.AddContentType(command.ContentType);
+                        await _store.AddContentType(command.ContentType);
                     }
                     else
                     {
-                        _store.UpdateContentType(command.ContentType);
+                        await _store.UpdateContentType(command.ContentType);
                     }
                 }
             }

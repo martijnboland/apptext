@@ -1,5 +1,6 @@
 ﻿using AppText.Core.Shared.Validation;
 using AppText.Core.Storage;
+using System.Threading.Tasks;
 
 namespace AppText.Core.Application
 {
@@ -12,10 +13,10 @@ namespace AppText.Core.Application
             _store = store;
         }
 
-        protected override void ValidateCustom(App objectToValidate)
+        protected override async Task ValidateCustom(App objectToValidate)
         {
             // Check uniqueness public identifier
-            if (_store.AppExists(objectToValidate.PublicId, objectToValidate.Id))
+            if (await _store.AppExists(objectToValidate.PublicId, objectToValidate.Id))
             {
                 AddError(new ValidationError
                 {

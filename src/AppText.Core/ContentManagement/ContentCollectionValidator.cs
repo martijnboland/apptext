@@ -2,6 +2,7 @@
 using AppText.Core.Shared.Validation;
 using AppText.Core.Storage;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppText.Core.ContentManagement
 {
@@ -18,11 +19,11 @@ namespace AppText.Core.ContentManagement
             _applicationStore = applicationStore;
         }
 
-        protected override void ValidateCustom(ContentCollection objectToValidate)
+        protected override async Task ValidateCustom(ContentCollection objectToValidate)
         {
             // Check content type
             var contentTypeId = objectToValidate.ContentType.Id;
-            var contentType = _contentDefinitionStore.GetContentTypes(new ContentTypeQuery { Id = contentTypeId }).FirstOrDefault();
+            var contentType = (await _contentDefinitionStore.GetContentTypes(new ContentTypeQuery { Id = contentTypeId })).FirstOrDefault();
             if (contentType == null)
             {
                 AddError("ContentType.Id", "AppText:UnknownContentType", contentTypeId);
@@ -35,7 +36,7 @@ namespace AppText.Core.ContentManagement
                 if (objectToValidate.Id == null)
                 {
                     // Check uniqueness of name
-                    var otherCollection = _contentStore.GetContentCollections(new ContentCollectionQuery { Name = objectToValidate.Name }).FirstOrDefault();
+                    var otherCollection = (await _contentStore.GetContentCollections(new ContentCollectionQuery { Name = objectToValidate.Name })).FirstOrDefault();
                     if (otherCollection != null)
                     {
                         AddError("Name", "AppText:DuplicateContentCollectionName", objectToValidate.Name);

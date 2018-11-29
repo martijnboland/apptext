@@ -3,6 +3,7 @@ using LiteDB;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppText.Core.Storage.LiteDb
 {
@@ -15,7 +16,7 @@ namespace AppText.Core.Storage.LiteDb
             _liteRepository = new LiteRepository(liteDatabase);
         }
 
-        public ContentCollection[] GetContentCollections(ContentCollectionQuery query)
+        public Task<ContentCollection[]> GetContentCollections(ContentCollectionQuery query)
         {
             var q = _liteRepository.Query<ContentCollection>();
             if (! string.IsNullOrEmpty(query.AppPublicId))
@@ -30,27 +31,29 @@ namespace AppText.Core.Storage.LiteDb
             {
                 q = q.Where(cc => cc.Name == query.Name);
             }
-            return q.ToArray();
+            return Task.FromResult(q.ToArray());
         }
 
-        public string AddContentCollection(ContentCollection contentCollection)
+        public Task<string> AddContentCollection(ContentCollection contentCollection)
         {
             contentCollection.Id = ObjectId.NewObjectId().ToString();
-            return _liteRepository.Insert(contentCollection);
+            return Task.FromResult(_liteRepository.Insert(contentCollection).ToString());
         }
 
-        public void UpdateContentCollection(ContentCollection contentCollection)
+        public Task UpdateContentCollection(ContentCollection contentCollection)
         {
             _liteRepository.Update(contentCollection);
+            return Task.CompletedTask;
         }
 
-        public void DeleteContentCollection(string id)
+        public Task DeleteContentCollection(string id)
         {
             _liteRepository.Delete<ContentCollection>(id);
+            return Task.CompletedTask;
         }
 
 
-        public ContentItem[] GetContentItems(ContentItemQuery query)
+        public Task<ContentItem[]> GetContentItems(ContentItemQuery query)
         {
             var q = _liteRepository.Query<ContentItem>();
             if (! string.IsNullOrEmpty(query.AppPublicId))
@@ -65,37 +68,39 @@ namespace AppText.Core.Storage.LiteDb
             {
                 q = q.Where(ci => ci.CollectionId == query.CollectionId);
             }
-            return q.ToArray();
+            return Task.FromResult(q.ToArray());
         }
 
-        public ContentItem GetContentItem(string id)
+        public Task<ContentItem> GetContentItem(string id)
         {
-            return _liteRepository.SingleById<ContentItem>(id);
+            return Task.FromResult(_liteRepository.SingleById<ContentItem>(id));
         }
 
-        public bool ContentItemExists(string contentKey, string collectionId, string excludeId)
+        public Task<bool> ContentItemExists(string contentKey, string collectionId, string excludeId)
         {
-            return _liteRepository.Query<ContentItem>()
+            return Task.FromResult(_liteRepository.Query<ContentItem>()
                 .Where(ci => ci.CollectionId == collectionId && ci.ContentKey == contentKey && ci.Id != excludeId)
-                .Exists();
+                .Exists());
         }
 
-        public string AddContentItem(ContentItem contentItem)
+        public Task<string> AddContentItem(ContentItem contentItem)
         {
             contentItem.Id = ObjectId.NewObjectId().ToString();
             ConvertJObjectsToDictionaries(contentItem);
-            return _liteRepository.Insert(contentItem);
+            return Task.FromResult(_liteRepository.Insert(contentItem).ToString());
         }
 
-        public void UpdateContentItem(ContentItem contentItem)
+        public Task UpdateContentItem(ContentItem contentItem)
         {
             ConvertJObjectsToDictionaries(contentItem);
             _liteRepository.Update(contentItem);
+            return Task.CompletedTask;
         }
 
-        public void DeleteContentItem(string id)
+        public Task DeleteContentItem(string id)
         {
             _liteRepository.Delete<ContentItem>(id);
+            return Task.CompletedTask;
         }
 
         private void ConvertJObjectsToDictionaries(ContentItem contentItem)

@@ -1,5 +1,6 @@
 ﻿using AppText.Core.Shared.Commands;
 using AppText.Core.Storage;
+using System.Threading.Tasks;
 
 namespace AppText.Core.Application
 {
@@ -22,11 +23,11 @@ namespace AppText.Core.Application
             _store = store;
         }
 
-        public CommandResult Handle(DeleteAppCommand command)
+        public async Task<CommandResult> Handle(DeleteAppCommand command)
         {
             var result = new CommandResult();
             // TODO: check existence of content types, collections and content items
-            _store.DeleteApp(command.Id);
+            await _store.DeleteApp(command.Id);
             return result;
         }
     }

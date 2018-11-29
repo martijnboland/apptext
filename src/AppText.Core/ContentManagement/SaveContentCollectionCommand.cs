@@ -1,5 +1,6 @@
 ﻿using AppText.Core.Shared.Commands;
 using AppText.Core.Storage;
+using System.Threading.Tasks;
 
 namespace AppText.Core.ContentManagement
 {
@@ -26,17 +27,17 @@ namespace AppText.Core.ContentManagement
             _versioner = versioner;
         }
 
-        public CommandResult Handle(SaveContentCollectionCommand command)
+        public async Task<CommandResult> Handle(SaveContentCollectionCommand command)
         {
             var result = new CommandResult();
 
-            if (!_validator.IsValid(command.ContentCollection))
+            if (! await _validator.IsValid(command.ContentCollection))
             {
                 result.AddValidationErrors(_validator.Errors);
             }
             else
             {
-                if (!_versioner.SetVersion(command.ContentCollection))
+                if (! await _versioner.SetVersion(command.ContentCollection))
                 {
                     result.SetVersionError();
                 }
@@ -44,11 +45,11 @@ namespace AppText.Core.ContentManagement
                 {
                     if (command.ContentCollection.Id == null)
                     {
-                        _contentStore.AddContentCollection(command.ContentCollection);
+                        await _contentStore.AddContentCollection(command.ContentCollection);
                     }
                     else
                     {
-                        _contentStore.UpdateContentCollection(command.ContentCollection);
+                        await _contentStore.UpdateContentCollection(command.ContentCollection);
                     }
                 }
             }

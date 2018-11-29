@@ -1,6 +1,7 @@
 ﻿using AppText.Core.Shared.Commands;
 using AppText.Core.Storage;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace AppText.Core.Application
 {
@@ -32,11 +33,11 @@ namespace AppText.Core.Application
             _validator = validator;
         }
 
-        public CommandResult Handle(UpdateAppCommand command)
+        public async Task<CommandResult> Handle(UpdateAppCommand command)
         {
             var result = new CommandResult();
 
-            var app = _store.GetApp(command.Id);
+            var app = await _store.GetApp(command.Id);
             if (app == null)
             {
                 result.SetNotFound();
@@ -44,13 +45,13 @@ namespace AppText.Core.Application
             }
             command.UpdateApp(app);
 
-            if (! _validator.IsValid(app))
+            if (! await _validator.IsValid(app))
             {
                 result.AddValidationErrors(_validator.Errors);
             }
             else
             {
-                _store.UpdateApp(app);
+                await _store.UpdateApp(app);
             }
 
             return result;

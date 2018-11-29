@@ -1,5 +1,6 @@
 ﻿using AppText.Core.Shared.Queries;
 using AppText.Core.Storage;
+using System.Threading.Tasks;
 
 namespace AppText.Core.Application
 {
@@ -18,7 +19,7 @@ namespace AppText.Core.Application
             _store = store;
         }
 
-        public App[] Handle(AppQuery query)
+        public Task<App[]> Handle(AppQuery query)
         {
             return _store.GetApps(query);
         }

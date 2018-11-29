@@ -2,6 +2,7 @@
 using AppText.Core.Shared.Validation;
 using AppText.Core.Storage;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppText.Core.ContentDefinition
 {
@@ -16,12 +17,12 @@ namespace AppText.Core.ContentDefinition
             _contentDefinitionStore = contentDefinitionStore;
         }
 
-        protected override void ValidateCustom(ContentType objectToValidate)
+        protected override async Task ValidateCustom(ContentType objectToValidate)
         {
             // Verify app reference
             if (objectToValidate.App != null)
             {
-                var app = _applicationStore.GetApps(new AppQuery { Id = objectToValidate.App.Id, PublicId = objectToValidate.App.PublicId }).SingleOrDefault();
+                var app = (await _applicationStore.GetApps(new AppQuery { Id = objectToValidate.App.Id, PublicId = objectToValidate.App.PublicId })).SingleOrDefault();
                 if (app == null)
                 {
                     AddError(new ValidationError { Name = "App", ErrorMessage = "AppText:AppNotFound", Parameters = new[] { objectToValidate.App.Id } } );
@@ -34,7 +35,7 @@ namespace AppText.Core.ContentDefinition
             // Duplicate content type name
             if (objectToValidate.Id == null)
             {
-                if (_contentDefinitionStore.GetContentTypes(new ContentTypeQuery { AppPublicId = objectToValidate.App.PublicId, Name = objectToValidate.Name }).Length > 0)
+                if ((await _contentDefinitionStore.GetContentTypes(new ContentTypeQuery { AppPublicId = objectToValidate.App.PublicId, Name = objectToValidate.Name })).Length > 0)
                 {
                     AddError(new ValidationError { Name = "Name", ErrorMessage = "AppText:DuplicateContentTypeName", Parameters = new[] { objectToValidate.Name } });
                 }

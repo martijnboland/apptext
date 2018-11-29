@@ -1,9 +1,10 @@
 ﻿using AppText.Core.Shared.Model;
+using System.Threading.Tasks;
 
 namespace AppText.Core.Storage
 {
     public interface IVersioner
     {
-        bool SetVersion<T>(T obj) where T : IVersionable;
+        Task<bool> SetVersion<T>(T obj) where T : IVersionable;
     }
 }

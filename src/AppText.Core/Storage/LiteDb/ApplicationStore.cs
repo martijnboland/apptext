@@ -1,5 +1,6 @@
 ﻿using AppText.Core.Application;
 using LiteDB;
+using System.Threading.Tasks;
 
 namespace AppText.Core.Storage.LiteDb
 {
@@ -12,12 +13,12 @@ namespace AppText.Core.Storage.LiteDb
             _liteRepository = liteRepository;
         }
 
-        public App GetApp(string id)
+        public Task<App> GetApp(string id)
         {
-            return _liteRepository.SingleById<App>(id);
+            return Task.FromResult(_liteRepository.SingleById<App>(id));
         }
 
-        public App[] GetApps(AppQuery query)
+        public Task<App[]> GetApps(AppQuery query)
         {
             var q = _liteRepository.Query<App>();
             if (!string.IsNullOrEmpty(query.Id))
@@ -28,30 +29,32 @@ namespace AppText.Core.Storage.LiteDb
             {
                 q = q.Where(a => a.PublicId == query.PublicId);
             }
-            return q.ToArray();
+            return Task.FromResult(q.ToArray());
         }
 
-        public bool AppExists(string publicIdentifier, string id)
+        public Task<bool> AppExists(string publicIdentifier, string id)
         {
-            return _liteRepository.Query<App>()
+            return Task.FromResult(_liteRepository.Query<App>()
                .Where(a => a.PublicId == publicIdentifier && a.Id != id)
-               .Exists();
+               .Exists());
         }
 
-        public string AddApp(App app)
+        public Task<string> AddApp(App app)
         {
             app.Id = ObjectId.NewObjectId().ToString();
-            return _liteRepository.Insert(app);
+            return Task.FromResult(_liteRepository.Insert(app).ToString());
         }
 
-        public void UpdateApp(App app)
+        public Task UpdateApp(App app)
         {
             _liteRepository.Update(app);
+            return Task.CompletedTask;
         }
 
-        public void DeleteApp(string id)
+        public Task DeleteApp(string id)
         {
             _liteRepository.Delete<App>(id);
+            return Task.CompletedTask;
         }
 
     }

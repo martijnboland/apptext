@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Threading.Tasks;
 
 namespace AppText.Core.ContentManagement
 {
@@ -78,7 +79,7 @@ namespace AppText.Core.ContentManagement
             _applicationStore = applicationStore;
         }
 
-        public CommandResult Handle(SaveContentItemCommand command)
+        public async Task<CommandResult> Handle(SaveContentItemCommand command)
         {
             var result = new CommandResult();
 
@@ -89,7 +90,7 @@ namespace AppText.Core.ContentManagement
             }
             else
             {
-                contentItem = _store.GetContentItem(command.Id);
+                contentItem = await _store.GetContentItem(command.Id);
                 if (contentItem == null)
                 {
                     result.SetNotFound();
@@ -98,13 +99,13 @@ namespace AppText.Core.ContentManagement
                 command.UpdateContentItem(contentItem, _currentUser);
             }
 
-            if (!_validator.IsValid(contentItem))
+            if (! await _validator.IsValid(contentItem))
             {
                 result.AddValidationErrors(_validator.Errors);
             }
             else
             {
-                if (!_versioner.SetVersion(contentItem))
+                if (! await _versioner.SetVersion(contentItem))
                 {
                     result.SetVersionError();
                 }
@@ -112,7 +113,7 @@ namespace AppText.Core.ContentManagement
                 {
                     if (contentItem.Id == null)
                     {
-                        var appReference = _applicationStore.GetApps(new AppQuery { PublicId = command.AppPublicId })
+                        var appReference = (await _applicationStore.GetApps(new AppQuery { PublicId = command.AppPublicId }))
                             .Select(a => new AppReference { Id = a.Id, PublicId = a.PublicId })
                             .FirstOrDefault();
                         if (appReference == null)
@@ -122,12 +123,12 @@ namespace AppText.Core.ContentManagement
                         else
                         {
                             contentItem.App = appReference;
-                            _store.AddContentItem(contentItem);
+                            await _store.AddContentItem(contentItem);
                         }
                     }
                     else
                     {
-                        _store.UpdateContentItem(contentItem);
+                        await _store.UpdateContentItem(contentItem);
                     }
                     result.SetResultData(contentItem);
                 }

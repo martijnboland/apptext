@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppText.Core.Shared.Validation
 {
@@ -18,13 +19,12 @@ namespace AppText.Core.Shared.Validation
         /// </summary>
         /// <param name="objectToValidate"></param>
         /// <returns></returns>
-        public bool IsValid(T objectToValidate)
+        public async Task<bool> IsValid(T objectToValidate)
         {
             _errors.Clear();
-            Validate(objectToValidate);
+            await ValidateAsync(objectToValidate);
             return _errors.Count == 0;
         }
-
         /// <summary>
         /// Returns the list of validation errors.
         /// </summary>
@@ -38,23 +38,23 @@ namespace AppText.Core.Shared.Validation
         /// Validate the given object with data annotations and perform any custom validations afterwards.
         /// </summary>
         /// <param name="objectToValidate"></param>
-        protected void Validate(T objectToValidate)
+        /// <returns></returns>
+        protected Task ValidateAsync(T objectToValidate)
         {
             // Data annotations validation
             AddErrors(from prop in TypeDescriptor.GetProperties(objectToValidate).Cast<PropertyDescriptor>()
-                from attribute in prop.Attributes.OfType<ValidationAttribute>()
-                where ! prop.Attributes.OfType<IgnoreValidationAttribute>().Any() && !attribute.IsValid(prop.GetValue(objectToValidate))
-                select new ValidationError { Name = prop.Name, ErrorMessage = attribute.FormatErrorMessage(prop.Name) });
+                      from attribute in prop.Attributes.OfType<ValidationAttribute>()
+                      where !prop.Attributes.OfType<IgnoreValidationAttribute>().Any() && !attribute.IsValid(prop.GetValue(objectToValidate))
+                      select new ValidationError { Name = prop.Name, ErrorMessage = attribute.FormatErrorMessage(prop.Name) });
+
             // Hook for custom validation for inheritors.
-            ValidateCustom(objectToValidate);
+            return ValidateCustom(objectToValidate);
         }
 
-        /// <summary>
-        /// Perform custom validation logic.
-        /// </summary>
-        protected virtual void ValidateCustom(T objectToValidate)
+        protected virtual Task ValidateCustom(T objectToValidate)
         {
-            // nothing in the base class.
+            // Nothing in the base class
+            return Task.CompletedTask;
         }
 
         /// <summary>

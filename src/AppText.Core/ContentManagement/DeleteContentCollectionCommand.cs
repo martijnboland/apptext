@@ -1,5 +1,6 @@
 ﻿using AppText.Core.Shared.Commands;
 using AppText.Core.Storage;
+using System.Threading.Tasks;
 
 namespace AppText.Core.ContentManagement
 {
@@ -22,10 +23,10 @@ namespace AppText.Core.ContentManagement
             _contentItemStore = contentItemStore;
         }
 
-        public CommandResult Handle(DeleteContentCollectionCommand command)
+        public async Task<CommandResult> Handle(DeleteContentCollectionCommand command)
         {
             var result = new CommandResult();
-            _contentItemStore.DeleteContentCollection(command.Id);
+            await _contentItemStore.DeleteContentCollection(command.Id);
             return result;
         }
     }

@@ -3,6 +3,7 @@ using AppText.Core.ContentManagement;
 using AppText.Core.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppText.Api.Controllers
 {
@@ -18,16 +19,16 @@ namespace AppText.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(string appPublicId, [FromQuery]ContentCollectionQuery query)
+        public async Task<IActionResult> Get(string appPublicId, [FromQuery]ContentCollectionQuery query)
         {
             query.AppPublicId = appPublicId;
             return Ok(_dispatcher.ExecuteQuery(query));
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetOne(string id)
+        public async Task<IActionResult> GetOne(string id)
         {
-            var result = _dispatcher.ExecuteQuery(new ContentCollectionQuery { Id = id });
+            var result = await _dispatcher.ExecuteQuery(new ContentCollectionQuery { Id = id });
             if (result.Length == 0)
             {
                 return NotFound();
@@ -36,26 +37,26 @@ namespace AppText.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody]ContentCollection contentCollection)
+        public async Task<IActionResult> Create([FromBody]ContentCollection contentCollection)
         {
             var command = new SaveContentCollectionCommand(contentCollection);
-            var result = _dispatcher.ExecuteCommand(command);
+            var result = await _dispatcher.ExecuteCommand(command);
             return this.HandleCreateCommandResult(result, contentCollection.Id, contentCollection);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(string id, [FromBody]ContentCollection contentCollection)
+        public async Task<IActionResult> Update(string id, [FromBody]ContentCollection contentCollection)
         {
             var command = new SaveContentCollectionCommand(contentCollection);
             command.ContentCollection.Id = id;
-            var result = _dispatcher.ExecuteCommand(command);
+            var result = await _dispatcher.ExecuteCommand(command);
             return this.HandleUpdateCommandResult(result);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var result = _dispatcher.ExecuteCommand(new DeleteContentCollectionCommand(id));
+            var result = await _dispatcher.ExecuteCommand(new DeleteContentCollectionCommand(id));
             return this.HandleDeleteCommandResult(result);
         }
     }

@@ -1,14 +1,15 @@
 ﻿using AppText.Core.Application;
+using System.Threading.Tasks;
 
 namespace AppText.Core.Storage
 {
     public interface IApplicationStore
     {
-        App[] GetApps(AppQuery query);
-        App GetApp(string id);
-        bool AppExists(string publicIdentifier, string id);
-        string AddApp(App app);
-        void UpdateApp(App app);
-        void DeleteApp(string id);
+        Task<App[]> GetApps(AppQuery query);
+        Task<App> GetApp(string id);
+        Task<bool> AppExists(string publicIdentifier, string id);
+        Task<string> AddApp(App app);
+        Task UpdateApp(App app);
+        Task DeleteApp(string id);
     } 
 }

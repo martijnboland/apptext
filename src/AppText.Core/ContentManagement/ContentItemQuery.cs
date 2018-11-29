@@ -1,5 +1,6 @@
 ﻿using AppText.Core.Shared.Queries;
 using AppText.Core.Storage;
+using System.Threading.Tasks;
 
 namespace AppText.Core.ContentManagement
 {
@@ -20,7 +21,7 @@ namespace AppText.Core.ContentManagement
             _contentItemStore = contentItemStore;
         }
 
-        public ContentItem[] Handle(ContentItemQuery query)
+        public Task<ContentItem[]> Handle(ContentItemQuery query)
         {
             return _contentItemStore.GetContentItems(query);
         }

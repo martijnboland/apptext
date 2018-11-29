@@ -1,5 +1,6 @@
 ﻿using AppText.Core.ContentDefinition;
 using LiteDB;
+using System.Threading.Tasks;
 
 namespace AppText.Core.Storage.LiteDb
 {
@@ -12,7 +13,7 @@ namespace AppText.Core.Storage.LiteDb
             _liteRepository = new LiteRepository(liteDatabase);
         }
 
-        public ContentType[] GetContentTypes(ContentTypeQuery query)
+        public Task<ContentType[]> GetContentTypes(ContentTypeQuery query)
         {
             var q = _liteRepository.Query<ContentType>();
             if (! string.IsNullOrEmpty(query.AppPublicId))
@@ -27,24 +28,25 @@ namespace AppText.Core.Storage.LiteDb
             {
                 q = q.Where(ct => ct.Name == query.Name);
             }
-            return q.ToArray();
+            return Task.FromResult(q.ToArray());
         }
 
-        public string AddContentType(ContentType contentType)
+        public Task<string> AddContentType(ContentType contentType)
         {
             contentType.Id = ObjectId.NewObjectId().ToString();
-            return _liteRepository.Insert(contentType);
+            return Task.FromResult(_liteRepository.Insert(contentType).ToString());
         }
 
-        public void UpdateContentType(ContentType contentType)
+        public Task UpdateContentType(ContentType contentType)
         {
             _liteRepository.Update(contentType);
+            return Task.CompletedTask;
         }
 
-        public void DeleteContentType(string id)
+        public Task DeleteContentType(string id)
         {
             _liteRepository.Delete<ContentType>(id);
-
+            return Task.CompletedTask;
         }
     }
 }

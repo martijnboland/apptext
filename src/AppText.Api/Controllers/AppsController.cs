@@ -3,6 +3,7 @@ using AppText.Core.Application;
 using AppText.Core.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppText.Api.Controllers
 {
@@ -18,15 +19,15 @@ namespace AppText.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery]AppQuery query)
+        public async Task<IActionResult> Get([FromQuery]AppQuery query)
         {
-            return Ok(_dispatcher.ExecuteQuery(query));
+            return Ok(await _dispatcher.ExecuteQuery(query));
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetOne(string id)
+        public async Task<IActionResult> GetOne(string id)
         {
-            var result = _dispatcher.ExecuteQuery(new AppQuery { Id = id });
+            var result = await _dispatcher.ExecuteQuery(new AppQuery { Id = id });
             if (result.Length == 0)
             {
                 return NotFound();
@@ -35,25 +36,25 @@ namespace AppText.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody]CreateAppCommand command)
+        public async Task<IActionResult> Create([FromBody]CreateAppCommand command)
         {
-            var result = _dispatcher.ExecuteCommand(command);
+            var result = await _dispatcher.ExecuteCommand(command);
             var id = (result.ResultData as App)?.Id;
             return this.HandleCreateCommandResult(result, id, result.ResultData);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(string id, [FromBody]UpdateAppCommand command)
+        public async Task<IActionResult> Update(string id, [FromBody]UpdateAppCommand command)
         {
             command.Id = id;
-            var result = _dispatcher.ExecuteCommand(command);
+            var result = await _dispatcher.ExecuteCommand(command);
             return this.HandleUpdateCommandResult(result);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var result = _dispatcher.ExecuteCommand(new DeleteAppCommand(id));
+            var result = await _dispatcher.ExecuteCommand(new DeleteAppCommand(id));
             return this.HandleDeleteCommandResult(result);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AppText.Core.Shared.Validation
 {
@@ -9,7 +10,7 @@ namespace AppText.Core.Shared.Validation
         /// </summary>
         /// <param name="objectToValidate"></param>
         /// <returns></returns>
-        bool IsValid(T objectToValidate);
+        Task<bool> IsValid(T objectToValidate);
 
         /// <summary>
         /// Returns the list of validation errors.

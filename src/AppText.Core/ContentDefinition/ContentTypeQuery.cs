@@ -1,5 +1,6 @@
 ﻿using AppText.Core.Shared.Queries;
 using AppText.Core.Storage;
+using System.Threading.Tasks;
 
 namespace AppText.Core.ContentDefinition
 {
@@ -21,7 +22,7 @@ namespace AppText.Core.ContentDefinition
             _store = store;
         }
 
-        public ContentType[] Handle(ContentTypeQuery query)
+        public Task<ContentType[]> Handle(ContentTypeQuery query)
         {
             return _store.GetContentTypes(query);
         }

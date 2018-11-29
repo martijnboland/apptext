@@ -1,6 +1,7 @@
 ﻿using AppText.Core.Shared.Commands;
 using AppText.Core.Shared.Queries;
 using System;
+using System.Threading.Tasks;
 
 namespace AppText.Core.Infrastructure
 {
@@ -16,7 +17,7 @@ namespace AppText.Core.Infrastructure
             _serviceProvider = serviceProvider;
         }
 
-        public CommandResult ExecuteCommand<T>(T command) where T: ICommand
+        public Task<CommandResult> ExecuteCommand<T>(T command) where T: ICommand
         {
             var handlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
             var handler = _serviceProvider.GetService(handlerType) as ICommandHandler<T>;
@@ -27,7 +28,7 @@ namespace AppText.Core.Infrastructure
             throw new Exception("No handler found for command {0} " + command.ToString());
         }
 
-        public TResult ExecuteQuery<TResult>(IQuery<TResult> query)
+        public Task<TResult> ExecuteQuery<TResult>(IQuery<TResult> query)
         {
             var queryType = query.GetType();
             var handlerType = typeof(IQueryHandler<,>).MakeGenericType(queryType, typeof(TResult));

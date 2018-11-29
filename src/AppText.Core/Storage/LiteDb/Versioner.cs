@@ -1,5 +1,6 @@
 ﻿using AppText.Core.Shared.Model;
 using LiteDB;
+using System.Threading.Tasks;
 
 namespace AppText.Core.Storage.LiteDb
 {
@@ -12,7 +13,7 @@ namespace AppText.Core.Storage.LiteDb
             _liteDatabase = liteDatabase;
         }
 
-        public bool SetVersion<T>(T obj) where T : IVersionable
+        public Task<bool> SetVersion<T>(T obj) where T : IVersionable
         {
             if (obj.Id != null)
             {
@@ -20,12 +21,12 @@ namespace AppText.Core.Storage.LiteDb
                 var collection = _liteDatabase.GetCollection<T>();
                 if (!collection.Exists(Query.And(Query.EQ("_id", obj.Id), Query.EQ("Version", obj.Version))))
                 {
-                    return false;
+                    return Task.FromResult(false);
                 }
             }
             obj.Version++;
 
-            return true;
+            return Task.FromResult(true);
         }
     }
 }
