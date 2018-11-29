@@ -1,4 +1,5 @@
-﻿using AppText.Core.Shared.Commands;
+﻿using System;
+using AppText.Core.Shared.Commands;
 using AppText.Core.Shared.Infrastructure;
 using AppText.Core.Shared.Queries;
 using AppText.Core.Shared.Validation;

@@ -6,7 +6,7 @@ namespace AppText.Core.ContentDefinition
 {
     public class ContentTypeQuery : IQuery<ContentType[]>
     {
-        public string AppPublicId { get; set; }
+        public string AppId { get; set; }
 
         public string Id { get; set; }
 

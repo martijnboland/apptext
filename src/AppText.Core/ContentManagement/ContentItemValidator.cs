@@ -1,5 +1,4 @@
-﻿using AppText.Core.Application;
-using AppText.Core.Shared.Validation;
+﻿using AppText.Core.Shared.Validation;
 using AppText.Core.Storage;
 using System;
 using System.Linq;
@@ -21,17 +20,18 @@ namespace AppText.Core.ContentManagement
         protected override async Task ValidateCustom(ContentItem objectToValidate)
         {
             // Verify app reference
-            if (objectToValidate.App != null)
+            if (! String.IsNullOrEmpty(objectToValidate.AppId))
             {
-                var app = (await _applicationStore.GetApps(new AppQuery { Id = objectToValidate.App.Id, PublicId = objectToValidate.App.PublicId })).SingleOrDefault();
+                var app = await _applicationStore.GetApp(objectToValidate.AppId);
                 if (app == null)
                 {
-                    AddError(new ValidationError { Name = "App", ErrorMessage = "AppText:AppNotFound", Parameters = new[] { objectToValidate.App.Id } });
+                    AddError(new ValidationError { Name = "App", ErrorMessage = "AppText:AppNotFound", Parameters = new[] { objectToValidate.AppId } });
+                    return;
                 }
             }
 
             // Validate content type based on content type in collection
-            var collection = (await _contentStore.GetContentCollections(new ContentCollectionQuery { Id = objectToValidate.CollectionId })).FirstOrDefault();
+            var collection = (await _contentStore.GetContentCollections(new ContentCollectionQuery { Id = objectToValidate.CollectionId, AppId = objectToValidate.AppId })).FirstOrDefault();
             if (collection == null)
             {
                 AddError(new ValidationError
@@ -44,7 +44,7 @@ namespace AppText.Core.ContentManagement
             }
 
             // Check uniqueness of key
-            if (await _contentStore.ContentItemExists(objectToValidate.ContentKey, objectToValidate.CollectionId, objectToValidate.Id))
+            if (await _contentStore.ContentItemExists(objectToValidate.ContentKey, objectToValidate.CollectionId, objectToValidate.Id, objectToValidate.AppId))
             {
                 AddError(new ValidationError
                 {

@@ -1,21 +1,18 @@
-﻿using AppText.Core.Application;
-using AppText.Core.Shared.Commands;
-using AppText.Core.Shared.Validation;
+﻿using AppText.Core.Shared.Commands;
 using AppText.Core.Storage;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppText.Core.ContentDefinition
 {
     public class SaveContentTypeCommand : ICommand
     {
-        public string AppPublicId { get; }
+        public string AppId { get; }
         public ContentType ContentType { get; }
 
-        public SaveContentTypeCommand(string appPublicId, ContentType contentType)
+        public SaveContentTypeCommand(string appId, ContentType contentType)
         {
             this.ContentType = contentType;
-            AppPublicId = appPublicId;
+            this.AppId = appId;
         }
     }
 
@@ -38,18 +35,12 @@ namespace AppText.Core.ContentDefinition
         {
             var result = new CommandResult();
 
-            if (! await _versioner.SetVersion(command.ContentType))
+            if (! await _versioner.SetVersion(command.AppId, command.ContentType))
             {
                 result.SetVersionError();
             }
             else
             {
-                // Set app reference before validating
-                var appReference = (await _applicationStore.GetApps(new AppQuery { PublicId = command.AppPublicId }))
-                    .Select(a => new AppReference { Id = a.Id, PublicId = a.PublicId })
-                    .FirstOrDefault();
-                command.ContentType.App = appReference;
-                
                 if (! await _validator.IsValid(command.ContentType))
                 {
                     result.AddValidationErrors(_validator.Errors);

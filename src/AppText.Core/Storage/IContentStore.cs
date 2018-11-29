@@ -8,13 +8,13 @@ namespace AppText.Core.Storage
         Task<ContentCollection[]> GetContentCollections(ContentCollectionQuery query);
         Task<string> AddContentCollection(ContentCollection contentCollection);
         Task UpdateContentCollection(ContentCollection contentCollection);
-        Task DeleteContentCollection(string id);
+        Task DeleteContentCollection(string id, string appId);
 
         Task<ContentItem[]> GetContentItems(ContentItemQuery query);
-        Task<ContentItem> GetContentItem(string id);
-        Task<bool> ContentItemExists(string contentKey, string collectionId, string excludeId);
+        Task<ContentItem> GetContentItem(string id, string appId);
+        Task<bool> ContentItemExists(string contentKey, string collectionId, string excludeId, string appId);
         Task<string> AddContentItem(ContentItem contentItem);
         Task UpdateContentItem(ContentItem contentItem);
-        Task DeleteContentItem(string id);
+        Task DeleteContentItem(string id, string appId);
     }
 }

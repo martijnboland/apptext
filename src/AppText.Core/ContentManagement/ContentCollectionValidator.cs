@@ -23,7 +23,8 @@ namespace AppText.Core.ContentManagement
         {
             // Check content type
             var contentTypeId = objectToValidate.ContentType.Id;
-            var contentType = (await _contentDefinitionStore.GetContentTypes(new ContentTypeQuery { Id = contentTypeId })).FirstOrDefault();
+            var appId = objectToValidate.ContentType.AppId;
+            var contentType = (await _contentDefinitionStore.GetContentTypes(new ContentTypeQuery { Id = contentTypeId, AppId = appId })).FirstOrDefault();
             if (contentType == null)
             {
                 AddError("ContentType.Id", "AppText:UnknownContentType", contentTypeId);
@@ -36,7 +37,7 @@ namespace AppText.Core.ContentManagement
                 if (objectToValidate.Id == null)
                 {
                     // Check uniqueness of name
-                    var otherCollection = (await _contentStore.GetContentCollections(new ContentCollectionQuery { Name = objectToValidate.Name })).FirstOrDefault();
+                    var otherCollection = (await _contentStore.GetContentCollections(new ContentCollectionQuery { Name = objectToValidate.Name, AppId = appId })).FirstOrDefault();
                     if (otherCollection != null)
                     {
                         AddError("Name", "AppText:DuplicateContentCollectionName", objectToValidate.Name);

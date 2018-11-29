@@ -7,10 +7,12 @@ namespace AppText.Core.ContentManagement
     public class DeleteContentCollectionCommand : ICommand
     {
         public string Id { get; }
+        public string AppId { get; }
 
-        public DeleteContentCollectionCommand(string id)
+        public DeleteContentCollectionCommand(string id, string appId)
         {
             this.Id = id;
+            this.AppId = appId;
         }
     }
 
@@ -26,7 +28,7 @@ namespace AppText.Core.ContentManagement
         public async Task<CommandResult> Handle(DeleteContentCollectionCommand command)
         {
             var result = new CommandResult();
-            await _contentItemStore.DeleteContentCollection(command.Id);
+            await _contentItemStore.DeleteContentCollection(command.Id, command.AppId);
             return result;
         }
     }

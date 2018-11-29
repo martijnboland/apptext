@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using AppText.Core.Configuration;
-using AppText.Core.Storage.LiteDb;
+using AppText.Core.Storage.NoDb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -32,10 +32,11 @@ namespace AppText.Api
             services.TryAddTransient(sp => sp.GetService<IHttpContextAccessor>().HttpContext.User);
 
             // AppText
-            var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
-
+            //var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
+            var dataPath = Path.Combine(Env.ContentRootPath, "App_Data");
             services.AddAppText()
-                .AddLiteDbStorage(connectionString);
+                .AddNoDbStorage(dataPath);
+//                .AddLiteDbStorage(connectionString);
 
             // Mvc
             services.AddMvc()

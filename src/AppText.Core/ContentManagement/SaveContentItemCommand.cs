@@ -1,11 +1,8 @@
-﻿using AppText.Core.Application;
-using AppText.Core.Shared.Commands;
-using AppText.Core.Shared.Validation;
+﻿using AppText.Core.Shared.Commands;
 using AppText.Core.Storage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -15,19 +12,27 @@ namespace AppText.Core.ContentManagement
     public class SaveContentItemCommand : ICommand
     {
         public string Id { get; set; }
-        public string AppPublicId { get; set; }
+
+        [Required]
+        public string AppId { get; set; }
+
         [Required]
         public string ContentKey { get; set; }
+
         [Required]
         public string CollectionId { get; set; }
+
         public Dictionary<string, object> Meta { get; set; }
+
         public Dictionary<string, object> Content { get; set; }
+
         public int Version { get; set; }
 
         public ContentItem CreateContentItem(IPrincipal currentUser)
         {
             var contentItem = new ContentItem
             {
+                AppId = this.AppId,
                 ContentKey = this.ContentKey,
                 CollectionId = this.CollectionId,
                 CreatedAt = DateTime.UtcNow,
@@ -90,7 +95,7 @@ namespace AppText.Core.ContentManagement
             }
             else
             {
-                contentItem = await _store.GetContentItem(command.Id);
+                contentItem = await _store.GetContentItem(command.Id, command.AppId);
                 if (contentItem == null)
                 {
                     result.SetNotFound();
@@ -105,7 +110,7 @@ namespace AppText.Core.ContentManagement
             }
             else
             {
-                if (! await _versioner.SetVersion(contentItem))
+                if (! await _versioner.SetVersion(command.AppId, contentItem))
                 {
                     result.SetVersionError();
                 }
@@ -113,18 +118,7 @@ namespace AppText.Core.ContentManagement
                 {
                     if (contentItem.Id == null)
                     {
-                        var appReference = (await _applicationStore.GetApps(new AppQuery { PublicId = command.AppPublicId }))
-                            .Select(a => new AppReference { Id = a.Id, PublicId = a.PublicId })
-                            .FirstOrDefault();
-                        if (appReference == null)
-                        {
-                            result.AddValidationError(new ValidationError { Name = "AppPublicId", ErrorMessage = "AppText:InvalidApp", Parameters = new[] { command.AppPublicId } });
-                        }
-                        else
-                        {
-                            contentItem.App = appReference;
-                            await _store.AddContentItem(contentItem);
-                        }
+                        await _store.AddContentItem(contentItem);
                     }
                     else
                     {

@@ -1,5 +1,4 @@
-﻿using AppText.Api.Infrastructure;
-using AppText.Api.Infrastructure.Mvc;
+﻿using AppText.Api.Infrastructure.Mvc;
 using AppText.Core.ContentDefinition;
 using AppText.Core.ContentManagement;
 using AppText.Core.Shared.Infrastructure;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AppText.Api.Controllers
 {
-    [Route("{appPublicId}/contenttypes")]
+    [Route("{appId}/contenttypes")]
     [ApiController]
     public class ContentTypesController : ControllerBase
     {
@@ -21,16 +20,16 @@ namespace AppText.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(string appPublicId, [FromQuery]ContentTypeQuery query)
+        public async Task<IActionResult> Get(string appId, [FromQuery]ContentTypeQuery query)
         {
-            query.AppPublicId = appPublicId;
+            query.AppId = appId;
             return Ok(await _dispatcher.ExecuteQuery(query));
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOne(string id)
+        public async Task<IActionResult> GetOne(string appId, string id)
         {
-            var result = await _dispatcher.ExecuteQuery(new ContentTypeQuery { Id = id });
+            var result = await _dispatcher.ExecuteQuery(new ContentTypeQuery { Id = id, AppId = appId });
             if (result.Length == 0)
             {
                 return NotFound();
@@ -39,26 +38,26 @@ namespace AppText.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(string appPublicId, [FromBody]ContentType contentType)
+        public async Task<IActionResult> Create(string appId, [FromBody]ContentType contentType)
         {
-            var command = new SaveContentTypeCommand(appPublicId, contentType);
+            var command = new SaveContentTypeCommand(appId, contentType);
             var result = await _dispatcher.ExecuteCommand(command);
             return this.HandleCreateCommandResult(result, contentType.Id, contentType);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string appPublicId, string id, [FromBody]ContentType contentType)
+        public async Task<IActionResult> Update(string appId, string id, [FromBody]ContentType contentType)
         {
-            var command = new SaveContentTypeCommand(appPublicId, contentType);
+            var command = new SaveContentTypeCommand(appId, contentType);
             command.ContentType.Id = id;
             var result = await _dispatcher.ExecuteCommand(command);
             return this.HandleUpdateCommandResult(result);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string appPublicId, string id)
+        public async Task<IActionResult> Delete(string appId, string id)
         {
-            var result = await _dispatcher.ExecuteCommand(new DeleteContentTypeCommand(appPublicId, id));
+            var result = await _dispatcher.ExecuteCommand(new DeleteContentTypeCommand(appId, id));
             return this.HandleDeleteCommandResult(result);
         }
     }

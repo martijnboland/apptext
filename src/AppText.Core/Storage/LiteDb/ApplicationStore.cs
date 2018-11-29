@@ -25,17 +25,13 @@ namespace AppText.Core.Storage.LiteDb
             {
                 q = q.Where(a => a.Id == query.Id);
             }
-            if (!string.IsNullOrEmpty(query.PublicId))
-            {
-                q = q.Where(a => a.PublicId == query.PublicId);
-            }
             return Task.FromResult(q.ToArray());
         }
 
-        public Task<bool> AppExists(string publicIdentifier, string id)
+        public Task<bool> AppExists(string id)
         {
             return Task.FromResult(_liteRepository.Query<App>()
-               .Where(a => a.PublicId == publicIdentifier && a.Id != id)
+               .Where(a => a.Id == id)
                .Exists());
         }
 

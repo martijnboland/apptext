@@ -1,5 +1,4 @@
-﻿using AppText.Core.Application;
-using AppText.Core.Shared.Model;
+﻿using AppText.Core.Shared.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -10,19 +9,28 @@ namespace AppText.Core.ContentManagement
     public class ContentItem : IVersionable
     {
         public string Id { get; set; }
-        public AppReference App { get; set; }
+
+        [Required]
+        public string AppId { get; set; }
 
         [Required]
         public string ContentKey { get; set; }
+
         [Required]
         public string CollectionId { get; set; }
+
         public Dictionary<string, object> Meta { get; set; }
+
         public Dictionary<string, object> Content { get; set; }
+
         public int Version { get; set; }
         
         public DateTime? CreatedAt { get; set; }
+
         public string CreatedBy { get; set; }
+
         public DateTime? LastModifiedAt { get; set; }
+
         public string LastModifiedBy { get; set; }
 
         public ContentItem()

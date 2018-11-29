@@ -8,10 +8,13 @@ namespace AppText.Core.Application
     public class UpdateAppCommand : ICommand
     {
         public string Id { get; set; }
+
         [Required]
         [StringLength(100)]
         public string DisplayName { get; set; }
+
         public string[] Languages { get; set; }
+
         public string DefaultLanguage { get; set; }
 
         public void UpdateApp(App app)
@@ -25,12 +28,10 @@ namespace AppText.Core.Application
     public class UpdateAppCommandHandler : ICommandHandler<UpdateAppCommand>
     {
         private readonly IApplicationStore _store;
-        private readonly AppValidator _validator;
 
-        public UpdateAppCommandHandler(IApplicationStore store, AppValidator validator)
+        public UpdateAppCommandHandler(IApplicationStore store)
         {
             _store = store;
-            _validator = validator;
         }
 
         public async Task<CommandResult> Handle(UpdateAppCommand command)
@@ -45,14 +46,7 @@ namespace AppText.Core.Application
             }
             command.UpdateApp(app);
 
-            if (! await _validator.IsValid(app))
-            {
-                result.AddValidationErrors(_validator.Errors);
-            }
-            else
-            {
-                await _store.UpdateApp(app);
-            }
+            await _store.UpdateApp(app);
 
             return result;
         }

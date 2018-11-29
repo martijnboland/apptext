@@ -7,10 +7,12 @@ namespace AppText.Core.ContentManagement
     public class SaveContentCollectionCommand : ICommand
     {
         public ContentCollection ContentCollection { get; }
+        public string AppId { get; }
 
-        public SaveContentCollectionCommand(ContentCollection contentCollection)
+        public SaveContentCollectionCommand(string appId, ContentCollection contentCollection)
         {
             this.ContentCollection = contentCollection;
+            this.AppId = appId;
         }
     }
 
@@ -37,7 +39,7 @@ namespace AppText.Core.ContentManagement
             }
             else
             {
-                if (! await _versioner.SetVersion(command.ContentCollection))
+                if (! await _versioner.SetVersion(command.AppId, command.ContentCollection))
                 {
                     result.SetVersionError();
                 }

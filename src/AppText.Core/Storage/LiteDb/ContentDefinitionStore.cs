@@ -16,9 +16,9 @@ namespace AppText.Core.Storage.LiteDb
         public Task<ContentType[]> GetContentTypes(ContentTypeQuery query)
         {
             var q = _liteRepository.Query<ContentType>();
-            if (! string.IsNullOrEmpty(query.AppPublicId))
+            if (! string.IsNullOrEmpty(query.AppId))
             {
-                q = q.Where(ct => ct.App.PublicId == query.AppPublicId);
+                q = q.Where(ct => ct.AppId == query.AppId);
             }
             if (!string.IsNullOrEmpty(query.Id))
             {
@@ -43,7 +43,7 @@ namespace AppText.Core.Storage.LiteDb
             return Task.CompletedTask;
         }
 
-        public Task DeleteContentType(string id)
+        public Task DeleteContentType(string id, string appId)
         {
             _liteRepository.Delete<ContentType>(id);
             return Task.CompletedTask;

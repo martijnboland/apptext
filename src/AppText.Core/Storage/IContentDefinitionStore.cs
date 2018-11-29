@@ -8,6 +8,6 @@ namespace AppText.Core.Storage
         Task<ContentType[]> GetContentTypes(ContentTypeQuery query);
         Task<string> AddContentType(ContentType contentType);
         Task UpdateContentType(ContentType contentType);
-        Task DeleteContentType(string id);
+        Task DeleteContentType(string id, string appId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AppText.Core.Shared.Commands;
+using AppText.Core.Shared.Validation;
 using AppText.Core.Storage;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -7,19 +8,23 @@ namespace AppText.Core.Application
 {
     public class CreateAppCommand : ICommand
     {
+        [Required]
         [StringLength(20)]
-        public string PublicId { get; set; }
+        public string Id { get; set; }
+
         [Required]
         [StringLength(100)]
         public string DisplayName { get; set; }
+
         public string[] Languages { get; set; }
+
         public string DefaultLanguage { get; set; }
 
         public App CreateApp()
         {
             return new App
             {
-                PublicId = this.PublicId,
+                Id = this.Id,
                 DisplayName = this.DisplayName,
                 Languages = this.Languages,
                 DefaultLanguage = this.DefaultLanguage
@@ -30,12 +35,10 @@ namespace AppText.Core.Application
     public class CreateAppCommandHandler : ICommandHandler<CreateAppCommand>
     {
         private readonly IApplicationStore _store;
-        private readonly AppValidator _validator;
 
-        public CreateAppCommandHandler(IApplicationStore store, AppValidator validator)
+        public CreateAppCommandHandler(IApplicationStore store)
         {
             _store = store;
-            _validator = validator;
         }
 
         public async Task<CommandResult> Handle(CreateAppCommand command)
@@ -44,9 +47,14 @@ namespace AppText.Core.Application
 
             var app = command.CreateApp();
 
-            if (! await _validator.IsValid(app))
+            if (await _store.AppExists(app.Id))
             {
-                result.AddValidationErrors(_validator.Errors);
+                result.AddValidationError(new ValidationError
+                {
+                    Name = "Id",
+                    ErrorMessage = "AppText:IdAlreadyExists",
+                    Parameters = new[] { app.Id }
+                });
             }
             else
             {

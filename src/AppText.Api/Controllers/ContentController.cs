@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AppText.Api.Controllers
 {
-    [Route("{appPublicId}/content")]
+    [Route("{appId}/content")]
     [ApiController]
     public class ContentController : ControllerBase
     {
@@ -20,9 +20,9 @@ namespace AppText.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(string appPublicId, [FromQuery]ContentItemQuery query)
+        public async Task<IActionResult> Get(string appId, [FromQuery]ContentItemQuery query)
         {
-            query.AppPublicId = appPublicId;
+            query.AppId = appId;
             return Ok(await _dispatcher.ExecuteQuery(query));
         }
 
@@ -38,27 +38,27 @@ namespace AppText.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(string appPublicId, [FromBody]SaveContentItemCommand contentItemCommand)
+        public async Task<IActionResult> Create(string appId, [FromBody]SaveContentItemCommand contentItemCommand)
         {
-            contentItemCommand.AppPublicId = appPublicId;
+            contentItemCommand.AppId = appId;
             var result = await _dispatcher.ExecuteCommand(contentItemCommand);
             var id = (result.ResultData as ContentItem)?.Id;
             return this.HandleCreateCommandResult(result, id, result.ResultData);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string appPublicId, string id, [FromBody]SaveContentItemCommand contentItemCommand)
+        public async Task<IActionResult> Update(string appId, string id, [FromBody]SaveContentItemCommand contentItemCommand)
         {
-            contentItemCommand.AppPublicId = appPublicId;
+            contentItemCommand.AppId = appId;
             contentItemCommand.Id = id;
             var result = await _dispatcher.ExecuteCommand(contentItemCommand);
             return this.HandleUpdateCommandResult(result);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string appPublicId, string id)
+        public async Task<IActionResult> Delete(string appId, string id)
         {
-            var command = new DeleteContentItemCommand(appPublicId, id);
+            var command = new DeleteContentItemCommand(appId, id);
             var result = await _dispatcher.ExecuteCommand(command);
             return this.HandleDeleteCommandResult(result);
         }

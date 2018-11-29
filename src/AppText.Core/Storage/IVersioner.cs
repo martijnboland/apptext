@@ -5,6 +5,6 @@ namespace AppText.Core.Storage
 {
     public interface IVersioner
     {
-        Task<bool> SetVersion<T>(T obj) where T : IVersionable;
+        Task<bool> SetVersion<T>(string appId, T obj) where T : class, IVersionable;
     }
 }

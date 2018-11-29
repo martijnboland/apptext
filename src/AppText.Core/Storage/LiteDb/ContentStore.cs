@@ -19,9 +19,9 @@ namespace AppText.Core.Storage.LiteDb
         public Task<ContentCollection[]> GetContentCollections(ContentCollectionQuery query)
         {
             var q = _liteRepository.Query<ContentCollection>();
-            if (! string.IsNullOrEmpty(query.AppPublicId))
+            if (! string.IsNullOrEmpty(query.AppId))
             {
-                q = q.Where(cc => cc.ContentType.App.PublicId == query.AppPublicId);
+                q = q.Where(cc => cc.ContentType.AppId == query.AppId);
             }
             if (!string.IsNullOrEmpty(query.Id))
             {
@@ -46,19 +46,18 @@ namespace AppText.Core.Storage.LiteDb
             return Task.CompletedTask;
         }
 
-        public Task DeleteContentCollection(string id)
+        public Task DeleteContentCollection(string id, string appId)
         {
             _liteRepository.Delete<ContentCollection>(id);
             return Task.CompletedTask;
         }
 
-
         public Task<ContentItem[]> GetContentItems(ContentItemQuery query)
         {
             var q = _liteRepository.Query<ContentItem>();
-            if (! string.IsNullOrEmpty(query.AppPublicId))
+            if (! string.IsNullOrEmpty(query.AppId))
             {
-                q = q.Where(ci => ci.App.PublicId == query.AppPublicId);
+                q = q.Where(ci => ci.AppId == query.AppId);
             }
             if (!string.IsNullOrEmpty(query.Id))
             {
@@ -71,12 +70,12 @@ namespace AppText.Core.Storage.LiteDb
             return Task.FromResult(q.ToArray());
         }
 
-        public Task<ContentItem> GetContentItem(string id)
+        public Task<ContentItem> GetContentItem(string id, string appId)
         {
             return Task.FromResult(_liteRepository.SingleById<ContentItem>(id));
         }
 
-        public Task<bool> ContentItemExists(string contentKey, string collectionId, string excludeId)
+        public Task<bool> ContentItemExists(string contentKey, string collectionId, string excludeId, string appId)
         {
             return Task.FromResult(_liteRepository.Query<ContentItem>()
                 .Where(ci => ci.CollectionId == collectionId && ci.ContentKey == contentKey && ci.Id != excludeId)
@@ -97,7 +96,7 @@ namespace AppText.Core.Storage.LiteDb
             return Task.CompletedTask;
         }
 
-        public Task DeleteContentItem(string id)
+        public Task DeleteContentItem(string id, string appId)
         {
             _liteRepository.Delete<ContentItem>(id);
             return Task.CompletedTask;

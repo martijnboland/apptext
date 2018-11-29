@@ -8,7 +8,7 @@ namespace AppText.Core.ContentDefinition
     {
         public string Id { get; set; }
 
-        public AppReference App { get; set; }
+        public string AppId { get; set; }
 
         public string Name { get; set; }
 

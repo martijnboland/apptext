@@ -7,7 +7,7 @@ namespace AppText.Core.Storage
     {
         Task<App[]> GetApps(AppQuery query);
         Task<App> GetApp(string id);
-        Task<bool> AppExists(string publicIdentifier, string id);
+        Task<bool> AppExists(string id);
         Task<string> AddApp(App app);
         Task UpdateApp(App app);
         Task DeleteApp(string id);

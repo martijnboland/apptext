@@ -13,7 +13,7 @@ namespace AppText.Core.Storage.LiteDb
             _liteDatabase = liteDatabase;
         }
 
-        public Task<bool> SetVersion<T>(T obj) where T : IVersionable
+        public Task<bool> SetVersion<T>(string appId, T obj) where T : class, IVersionable
         {
             if (obj.Id != null)
             {

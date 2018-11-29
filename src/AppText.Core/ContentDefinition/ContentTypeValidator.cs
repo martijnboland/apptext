@@ -1,7 +1,6 @@
-﻿using AppText.Core.Application;
-using AppText.Core.Shared.Validation;
+﻿using AppText.Core.Shared.Validation;
 using AppText.Core.Storage;
-using System.Linq;
+using System;
 using System.Threading.Tasks;
 
 namespace AppText.Core.ContentDefinition
@@ -20,22 +19,22 @@ namespace AppText.Core.ContentDefinition
         protected override async Task ValidateCustom(ContentType objectToValidate)
         {
             // Verify app reference
-            if (objectToValidate.App != null)
+            if (! String.IsNullOrEmpty(objectToValidate.AppId))
             {
-                var app = (await _applicationStore.GetApps(new AppQuery { Id = objectToValidate.App.Id, PublicId = objectToValidate.App.PublicId })).SingleOrDefault();
+                var app = await _applicationStore.GetApp(objectToValidate.AppId);
                 if (app == null)
                 {
-                    AddError(new ValidationError { Name = "App", ErrorMessage = "AppText:AppNotFound", Parameters = new[] { objectToValidate.App.Id } } );
+                    AddError(new ValidationError { Name = "AppId", ErrorMessage = "AppText:AppNotFound", Parameters = new[] { objectToValidate.AppId } } );
                 }
             }
             else {
-                AddError(new ValidationError { Name = "App", ErrorMessage = "AppText:AppEmpty" } );
+                AddError(new ValidationError { Name = "App", ErrorMessage = "AppText:AppIdEmpty" } );
             }
 
             // Duplicate content type name
             if (objectToValidate.Id == null)
             {
-                if ((await _contentDefinitionStore.GetContentTypes(new ContentTypeQuery { AppPublicId = objectToValidate.App.PublicId, Name = objectToValidate.Name })).Length > 0)
+                if ((await _contentDefinitionStore.GetContentTypes(new ContentTypeQuery { AppId = objectToValidate.AppId, Name = objectToValidate.Name })).Length > 0)
                 {
                     AddError(new ValidationError { Name = "Name", ErrorMessage = "AppText:DuplicateContentTypeName", Parameters = new[] { objectToValidate.Name } });
                 }
