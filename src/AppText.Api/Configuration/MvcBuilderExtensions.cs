@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AppText.Api.Infrastructure.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace AppText.Api.Infrastructure
+namespace AppText.Api.Configuration
 {
     public static class MvcBuilderExtensions
     {

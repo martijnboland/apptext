@@ -1,4 +1,4 @@
-﻿using AppText.Core.Shared.Infrastructure;
+﻿using AppText.Core.Configuration;
 using LiteDB;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -1,4 +1,5 @@
 ﻿using AppText.Api.Infrastructure;
+using AppText.Api.Infrastructure.Mvc;
 using AppText.Core.Application;
 using AppText.Core.Shared.Infrastructure;
 using Microsoft.AspNetCore.Mvc;

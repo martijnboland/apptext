@@ -1,9 +1,10 @@
 ﻿using AppText.Core.Shared.Commands;
+using AppText.Core.Shared.Infrastructure;
 using AppText.Core.Shared.Queries;
 using AppText.Core.Shared.Validation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AppText.Core.Shared.Infrastructure
+namespace AppText.Core.Configuration
 {
     public class AppTextBuilder
     {

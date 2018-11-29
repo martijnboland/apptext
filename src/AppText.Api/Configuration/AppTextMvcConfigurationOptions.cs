@@ -1,4 +1,4 @@
-﻿namespace AppText.Api.Infrastructure
+﻿namespace AppText.Api.Configuration
 {
     public class AppTextMvcConfigurationOptions
     {

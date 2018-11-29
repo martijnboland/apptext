@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 
-namespace AppText.Api.Infrastructure
+namespace AppText.Api.Infrastructure.Mvc
 {
     public static class ControllerExtensions
     {

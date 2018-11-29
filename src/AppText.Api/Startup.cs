@@ -1,6 +1,5 @@
 ﻿using System.IO;
-using AppText.Api.Infrastructure;
-using AppText.Core.Infrastructure;
+using AppText.Core.Configuration;
 using AppText.Core.Storage.LiteDb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

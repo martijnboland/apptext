@@ -4,7 +4,7 @@ using AppText.Core.Storage.LiteDb;
 using LiteDB;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AppText.Core.Infrastructure
+namespace AppText.Core.Configuration
 {
     public static class ServiceCollectionExtensions
     {

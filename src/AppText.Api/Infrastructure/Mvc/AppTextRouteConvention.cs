@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using System.Linq;
 
-namespace AppText.Api.Infrastructure
+namespace AppText.Api.Infrastructure.Mvc
 {
     /// <summary>
     /// This convention adds a route prefix to all AppText route attributes.
