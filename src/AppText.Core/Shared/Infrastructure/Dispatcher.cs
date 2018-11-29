@@ -3,7 +3,7 @@ using AppText.Core.Shared.Queries;
 using System;
 using System.Threading.Tasks;
 
-namespace AppText.Core.Infrastructure
+namespace AppText.Core.Shared.Infrastructure
 {
     /// <summary>
     /// Mediator class for dispatching queries and commands.

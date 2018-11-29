@@ -1,7 +1,7 @@
 ﻿using AppText.Api.Infrastructure;
 using AppText.Core.ContentDefinition;
 using AppText.Core.ContentManagement;
-using AppText.Core.Infrastructure;
+using AppText.Core.Shared.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;

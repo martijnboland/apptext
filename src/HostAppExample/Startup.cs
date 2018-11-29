@@ -14,6 +14,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AppText.Api.Infrastructure;
 using System.IO;
+using AppText.Core.Infrastructure;
+using AppText.Core.Storage.LiteDb;
 
 namespace HostAppExample
 {
@@ -44,13 +46,15 @@ namespace HostAppExample
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
+
+            services.AddAppText()
+                .AddLiteDbStorage(connectionString);
+
             services
                 .AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                    .AddAppText(options =>
-                    {
-                        options.ConnectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
-                    });
+                    .AddAppText();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

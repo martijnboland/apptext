@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace AppText.Api.Infrastructure
 {
     public static class MvcBuilderExtensions
     {
-        public static IMvcCoreBuilder AddAppText(this IMvcCoreBuilder builder, Action<AppTextConfigurationOptions> configureOptionsAction = null)
+        public static IMvcCoreBuilder AddAppText(this IMvcCoreBuilder builder, Action<AppTextMvcConfigurationOptions> configureOptionsAction = null)
         {
             var options = GetOptions(configureOptionsAction);
 
@@ -15,11 +14,10 @@ namespace AppText.Api.Infrastructure
             {
                 mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix));
             });
-            builder.Services.AddAppText(options);
             return builder;
         }
 
-        public static IMvcBuilder AddAppText(this IMvcBuilder builder, Action<AppTextConfigurationOptions> configureOptionsAction = null)
+        public static IMvcBuilder AddAppText(this IMvcBuilder builder, Action<AppTextMvcConfigurationOptions> configureOptionsAction = null)
         {
             var options = GetOptions(configureOptionsAction);
 
@@ -28,14 +26,13 @@ namespace AppText.Api.Infrastructure
             {
                 mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix));
             });
-            builder.Services.AddAppText(options);
             return builder;
         }
 
-        private static AppTextConfigurationOptions GetOptions(Action<AppTextConfigurationOptions> configureOptionsAction = null)
+        private static AppTextMvcConfigurationOptions GetOptions(Action<AppTextMvcConfigurationOptions> configureOptionsAction = null)
         {
             var enrichOptions = configureOptionsAction ?? delegate { };
-            var options = new AppTextConfigurationOptions();
+            var options = new AppTextMvcConfigurationOptions();
             enrichOptions(options);
 
             return options;

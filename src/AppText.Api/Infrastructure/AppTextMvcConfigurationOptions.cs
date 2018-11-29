@@ -1,16 +1,14 @@
 ﻿namespace AppText.Api.Infrastructure
 {
-    public class AppTextConfigurationOptions
+    public class AppTextMvcConfigurationOptions
     {
         public const string DefaultRoutePrefix = "cms";
 
-        public AppTextConfigurationOptions()
+        public AppTextMvcConfigurationOptions()
         {
             this.RoutePrefix = DefaultRoutePrefix;
         }
 
         public string RoutePrefix { get; set; }
-
-        public string ConnectionString { get; set; }
     }
 }
