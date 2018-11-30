@@ -13,7 +13,6 @@ namespace AppText.Core.ContentManagement
     {
         public string Id { get; set; }
 
-        [Required]
         public string AppId { get; set; }
 
         [Required]

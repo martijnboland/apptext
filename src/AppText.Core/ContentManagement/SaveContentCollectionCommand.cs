@@ -32,6 +32,7 @@ namespace AppText.Core.ContentManagement
         public async Task<CommandResult> Handle(SaveContentCollectionCommand command)
         {
             var result = new CommandResult();
+            command.ContentCollection.ContentType.AppId = command.AppId;
 
             if (! await _validator.IsValid(command.ContentCollection))
             {

@@ -8,7 +8,7 @@ using HostAppExample.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
-using AppText.Core.Storage.LiteDb;
+using AppText.Core.Storage.NoDb;
 using AppText.Core.Configuration;
 using AppText.Api.Configuration;
 
@@ -41,10 +41,11 @@ namespace HostAppExample
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
+            //            var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
+            var baseFolder = Path.Combine(Env.ContentRootPath, "App_Data");
 
             services.AddAppText()
-                .AddLiteDbStorage(connectionString);
+                .AddNoDbStorage(baseFolder);
 
             services
                 .AddMvc()
