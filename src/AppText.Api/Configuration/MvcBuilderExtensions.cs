@@ -1,5 +1,7 @@
 ﻿using AppText.Api.Infrastructure.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 
 namespace AppText.Api.Configuration
@@ -14,6 +16,7 @@ namespace AppText.Api.Configuration
             builder.AddMvcOptions(mvcOptions =>
             {
                 mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix));
+                mvcOptions.Conventions.Add(new AppTextAuthorizationConvention(options.RequireAuthenticatedUser, options.RequiredAuthorizationPolicy));
             });
             return builder;
         }
@@ -26,6 +29,7 @@ namespace AppText.Api.Configuration
             builder.AddMvcOptions(mvcOptions =>
             {
                 mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix));
+                mvcOptions.Conventions.Add(new AppTextAuthorizationConvention(options.RequireAuthenticatedUser, options.RequiredAuthorizationPolicy));
             });
             return builder;
         }
@@ -36,7 +40,18 @@ namespace AppText.Api.Configuration
             var options = new AppTextMvcConfigurationOptions(services);
             enrichOptions(options);
 
+            if (options.RegisterClaimsPrincipal)
+            {
+                RegisterClaimsPrincipal(services);
+            }
+
             return options;
+        }
+
+        private static void RegisterClaimsPrincipal(IServiceCollection services)
+        {
+            services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.TryAddTransient(sp => sp.GetService<IHttpContextAccessor>().HttpContext.User);
         }
     }
 }

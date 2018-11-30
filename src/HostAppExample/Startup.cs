@@ -11,6 +11,10 @@ using System.IO;
 using AppText.Core.Storage.NoDb;
 using AppText.Core.Configuration;
 using AppText.Api.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace HostAppExample
 {
@@ -20,6 +24,7 @@ namespace HostAppExample
         {
             Configuration = configuration;
             Env = env;
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
         public IConfiguration Configuration { get; }
@@ -41,6 +46,27 @@ namespace HostAppExample
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddAuthentication()
+                .AddCookie(cfg => cfg.SlidingExpiration = true)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, cfg =>
+                {
+                    cfg.SaveToken = true;
+
+                    cfg.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidIssuer = Configuration["Tokens:Issuer"],
+                        ValidAudience = Configuration["Tokens:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
+                    };
+                });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AppText", policy => policy
+                    .RequireAuthenticatedUser()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme));
+            });
+
             // var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
             var baseFolder = Path.Combine(Env.ContentRootPath, "App_Data");
 
@@ -50,6 +76,7 @@ namespace HostAppExample
                     .AddAppText(options =>
                     {
                         options.RoutePrefix = "apptext";
+                        options.RequiredAuthorizationPolicy = "AppText";
                         options.AppTextServices
                             .AddNoDbStorage(baseFolder);
                     });
