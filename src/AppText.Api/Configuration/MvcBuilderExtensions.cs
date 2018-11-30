@@ -8,7 +8,7 @@ namespace AppText.Api.Configuration
     {
         public static IMvcCoreBuilder AddAppText(this IMvcCoreBuilder builder, Action<AppTextMvcConfigurationOptions> configureOptionsAction = null)
         {
-            var options = GetOptions(configureOptionsAction);
+            var options = GetOptions(builder.Services, configureOptionsAction);
 
             builder.AddApplicationPart(typeof(Startup).Assembly);
             builder.AddMvcOptions(mvcOptions =>
@@ -20,7 +20,7 @@ namespace AppText.Api.Configuration
 
         public static IMvcBuilder AddAppText(this IMvcBuilder builder, Action<AppTextMvcConfigurationOptions> configureOptionsAction = null)
         {
-            var options = GetOptions(configureOptionsAction);
+            var options = GetOptions(builder.Services, configureOptionsAction);
 
             builder.AddApplicationPart(typeof(Startup).Assembly);
             builder.AddMvcOptions(mvcOptions =>
@@ -30,10 +30,10 @@ namespace AppText.Api.Configuration
             return builder;
         }
 
-        private static AppTextMvcConfigurationOptions GetOptions(Action<AppTextMvcConfigurationOptions> configureOptionsAction = null)
+        private static AppTextMvcConfigurationOptions GetOptions(IServiceCollection services, Action<AppTextMvcConfigurationOptions> configureOptionsAction = null)
         {
             var enrichOptions = configureOptionsAction ?? delegate { };
-            var options = new AppTextMvcConfigurationOptions();
+            var options = new AppTextMvcConfigurationOptions(services);
             enrichOptions(options);
 
             return options;

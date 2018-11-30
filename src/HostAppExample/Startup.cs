@@ -41,16 +41,18 @@ namespace HostAppExample
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            //            var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
+            // var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
             var baseFolder = Path.Combine(Env.ContentRootPath, "App_Data");
-
-            services.AddAppText()
-                .AddNoDbStorage(baseFolder);
 
             services
                 .AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                    .AddAppText();
+                    .AddAppText(options =>
+                    {
+                        options.RoutePrefix = "apptext";
+                        options.AppTextServices
+                            .AddNoDbStorage(baseFolder);
+                    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
