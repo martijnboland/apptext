@@ -1,8 +1,11 @@
 ﻿using System;
 using AppText.Core.Shared.Commands;
+using AppText.Core.Shared.GraphQL;
 using AppText.Core.Shared.Infrastructure;
 using AppText.Core.Shared.Queries;
 using AppText.Core.Shared.Validation;
+using GraphQL;
+using GraphQL.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppText.Core.Configuration
@@ -44,6 +47,11 @@ namespace AppText.Core.Configuration
                     .AddClasses(c => c.AssignableTo(typeof(IValidator<>)))
                     .AsSelf()
                     .WithTransientLifetime());
+
+            // Graphql
+            Services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+            Services.AddSingleton<IDocumentWriter, DocumentWriter>();
+            Services.AddScoped<SchemaResolver>();
         }
     }
 }
