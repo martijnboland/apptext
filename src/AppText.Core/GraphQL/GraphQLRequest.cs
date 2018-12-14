@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace AppText.Core.Shared.GraphQL
+namespace AppText.Core.GraphQL
 {
     public class GraphQLRequest
     {

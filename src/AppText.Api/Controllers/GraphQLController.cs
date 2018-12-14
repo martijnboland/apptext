@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using AppText.Api.Graphiql;
-using AppText.Core.Shared.GraphQL;
+using AppText.Core.GraphQL;
 using GraphQL;
 using GraphQL.Http;
 using GraphQL.Instrumentation;

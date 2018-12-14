@@ -1,15 +1,14 @@
-﻿using AppText.Core.Storage;
-using GraphQL.Resolvers;
+﻿using AppText.Core.GraphQL.Types;
+using AppText.Core.Storage;
 using GraphQL.Types;
-using System;
 
-namespace AppText.Core.Shared.GraphQL
+namespace AppText.Core.GraphQL
 {
     public class SchemaResolver
     {
         private readonly IContentStore _contentStore;
 
-        public SchemaResolver(IContentStore contentStore)
+        public SchemaResolver(IContentStore contentStore, IContentDefinitionStore contentDefinitionStore)
         {
             _contentStore = contentStore;
         }
@@ -45,25 +44,5 @@ namespace AppText.Core.Shared.GraphQL
     public class SomeObject
     {
         public string Name { get; set; }
-    }
-
-    public static class ObjectGraphTypeExtensions
-    {
-        public static void Field(
-            this IObjectGraphType obj,
-            string name,
-            IGraphType type,
-            string description = null,
-            QueryArguments arguments = null,
-            Func<ResolveFieldContext, object> resolve = null)
-        {
-            var field = new FieldType();
-            field.Name = name;
-            field.Description = description;
-            field.Arguments = arguments;
-            field.ResolvedType = type;
-            field.Resolver = resolve != null ? new FuncFieldResolver<object>(resolve) : null;
-            obj.AddField(field);
-        }
     }
 }
