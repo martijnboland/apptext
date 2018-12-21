@@ -86,7 +86,7 @@ namespace AppText.Api.Controllers
 
         private async Task<ActionResult> ExecuteInternal(GraphQLRequest gqlRequest, string appId)
         {
-            var schema = _schemaResolver.Resolve(appId);
+            var schema = await _schemaResolver.Resolve(appId);
             if (schema == null)
             {
                 return BadRequest($"No schema for {appId} could be resolved");
