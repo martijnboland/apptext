@@ -102,6 +102,7 @@ namespace AppText.Api.Controllers
 
                 options.ComplexityConfiguration = new ComplexityConfiguration { MaxDepth = 15 };
                 options.FieldMiddleware.Use<InstrumentFieldsMiddleware>();
+                options.ExposeExceptions = true;
 
             }).ConfigureAwait(false);
 

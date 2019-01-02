@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using GraphQL.Types;
+using Newtonsoft.Json;
 
 namespace AppText.Core.ContentDefinition.FieldTypes
 {
@@ -13,5 +14,7 @@ namespace AppText.Core.ContentDefinition.FieldTypes
         {
             return $"FieldType = {this.GetType().Name}, IsLocalizable = {IsLocalizable}";
         }
+
+        public abstract ScalarGraphType GraphQLType { get; }
     }
 }

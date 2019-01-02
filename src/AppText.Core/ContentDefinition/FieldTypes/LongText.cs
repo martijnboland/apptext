@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using GraphQL.Types;
+using Newtonsoft.Json.Linq;
 using System.Linq;
 
 namespace AppText.Core.ContentDefinition.FieldTypes
@@ -6,6 +7,8 @@ namespace AppText.Core.ContentDefinition.FieldTypes
     public class LongText : FieldType
     {
         public override bool IsLocalizable => true;
+
+        public override ScalarGraphType GraphQLType => new StringGraphType();
 
         public override bool CanContainContent(object contentValue, bool contentMightBeLocalizable)
         {
