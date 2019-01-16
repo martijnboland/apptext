@@ -31,6 +31,9 @@ namespace AppText.Api
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.TryAddTransient(sp => sp.GetService<IHttpContextAccessor>().HttpContext.User);
 
+            // Caching
+            services.AddMemoryCache();
+
             // AppText
             //var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
             var dataPath = Path.Combine(Env.ContentRootPath, "App_Data");

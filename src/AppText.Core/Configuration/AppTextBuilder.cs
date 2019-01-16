@@ -8,6 +8,7 @@ using AppText.Core.Storage;
 using GraphQL;
 using GraphQL.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace AppText.Core.Configuration
 {
@@ -59,7 +60,7 @@ namespace AppText.Core.Configuration
             Services.AddSingleton<Func<IApplicationStore>>(sp => 
                 () => sp.GetRequiredService<IScopedServiceFactory>().GetService<IApplicationStore>());
             Services.AddSingleton<Func<IContentStore>>(sp => 
-                () => sp.GetRequiredService<IScopedServiceFactory>().GetService<IContentStore>());
+                () => sp.GetRequiredService<IScopedServiceFactory>().GetService<IContentStore>());            
         }
     }
 }
