@@ -28,7 +28,7 @@ namespace AppText.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // ClaimsPrincipal
-            services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.TryAddTransient(sp => sp.GetService<IHttpContextAccessor>().HttpContext.User);
 
             // AppText

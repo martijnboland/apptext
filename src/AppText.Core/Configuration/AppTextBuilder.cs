@@ -52,10 +52,14 @@ namespace AppText.Core.Configuration
             // Graphql
             Services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             Services.AddSingleton<IDocumentWriter, DocumentWriter>();
-            Services.AddScoped<SchemaResolver>();
+            Services.AddSingleton<SchemaResolver>();
 
-            // Factories
-            Services.AddScoped<Func<IContentStore>>(serviceProvider => () => serviceProvider.GetRequiredService<IContentStore>());
+            // Store factories
+            Services.AddSingleton<IScopedServiceFactory, HttpContextScopedServiceFactory>();
+            Services.AddSingleton<Func<IApplicationStore>>(sp => 
+                () => sp.GetRequiredService<IScopedServiceFactory>().GetService<IApplicationStore>());
+            Services.AddSingleton<Func<IContentStore>>(sp => 
+                () => sp.GetRequiredService<IScopedServiceFactory>().GetService<IContentStore>());
         }
     }
 }
