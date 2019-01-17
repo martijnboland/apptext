@@ -1,6 +1,7 @@
 ﻿using GraphQL.Resolvers;
 using GraphQL.Types;
 using System;
+using GraphQLFieldType = GraphQL.Types.FieldType;
 
 namespace AppText.Core.GraphQL.Types
 {
@@ -14,7 +15,7 @@ namespace AppText.Core.GraphQL.Types
             QueryArguments arguments = null,
             Func<ResolveFieldContext, object> resolve = null)
         {
-            var field = new FieldType();
+            var field = new GraphQLFieldType();
             field.Name = name;
             field.Description = description;
             field.Arguments = arguments;

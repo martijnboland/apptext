@@ -17,6 +17,7 @@ namespace AppText.Core.GraphQL.Types
                 Field(cc => cc.Id).Description("The id of the content collection.");
                 Field(cc => cc.Name).Description("The name of the content collection.");
                 Field(cc => cc.Version).Description("The version of the content collection.");
+                Field<ContentTypeType>("ContentType");
 
                 var contentItemType = new ContentItemType(contentCollection, getContentStore, languages);
                 var itemsType = new ListGraphType(contentItemType);

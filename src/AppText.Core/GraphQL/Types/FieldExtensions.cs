@@ -17,6 +17,7 @@ namespace AppText.Core.GraphQL.Types
                 {
                     Name = "LocalizableGraphType"
                 };
+                // Add a field for every language
                 foreach (var language in languages)
                 {
                     localizableGraphType.Field(language, scalarGraphType, resolve: ctx =>
@@ -29,6 +30,16 @@ namespace AppText.Core.GraphQL.Types
                         return null;
                     });
                 }
+                // Also add a language-neutral 'value' field
+                localizableGraphType.Field("neutral", scalarGraphType, resolve: ctx =>
+                {
+                    var parsedScalarValue = scalarGraphType.ParseValue(ctx.Source);
+                    if (parsedScalarValue == ctx.Source)
+                    {
+                        return parsedScalarValue;
+                    }
+                    return null;
+                });
                 return localizableGraphType;
             }
             else

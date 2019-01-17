@@ -1,10 +1,8 @@
-﻿using AppText.Core.Application;
-using AppText.Core.ContentDefinition;
+﻿using AppText.Core.ContentDefinition;
 using AppText.Core.ContentManagement;
 using AppText.Core.Storage;
 using GraphQL.Types;
 using System;
-using System.Threading.Tasks;
 
 namespace AppText.Core.GraphQL.Types
 {
@@ -24,13 +22,13 @@ namespace AppText.Core.GraphQL.Types
             {
                 Name = graphQLName;
 
-                Field(ci => ci.Id);
-                Field(ci => ci.Version);
-                Field(ci => ci.ContentKey);
-                Field(ci => ci.CreatedAt, nullable: true);
-                Field(ci => ci.CreatedBy, nullable: true);
-                Field(ci => ci.LastModifiedAt, nullable: true);
-                Field(ci => ci.LastModifiedBy, nullable: true);
+                Field(ci => ci.Id).Description("Content item global unique identifier");
+                Field(ci => ci.Version).Description("Content item version");
+                Field(ci => ci.ContentKey).Description("Content item key. Use this key to retrieve individual content items.");
+                Field<DateTimeGraphType>("CreatedAt");
+                Field(ci => ci.CreatedBy, nullable: true).Description("The user that created the content item");
+                Field<DateTimeGraphType>("LastModifiedAt");
+                Field(ci => ci.LastModifiedBy, nullable: true).Description("The user that last modified the content item");
 
                 foreach (var metaField in contentCollection.ContentType.MetaFields)
                 {
@@ -46,7 +44,7 @@ namespace AppText.Core.GraphQL.Types
                             return null;
                         }
                     };
-                    AddField(metaField, resolveFunc);
+                    AddField(metaField, resolveFunc, "Meta field");
                 }
 
                 foreach (var contentField in contentCollection.ContentType.ContentFields)
@@ -63,7 +61,7 @@ namespace AppText.Core.GraphQL.Types
                             return null;
                         }
                     };
-                    AddField(contentField, resolveFunc);
+                    AddField(contentField, resolveFunc, "Content field");
                 }
             }
             else
@@ -72,13 +70,13 @@ namespace AppText.Core.GraphQL.Types
             }
         }
 
-        private void AddField(Field field, Func<ResolveFieldContext, object> resolveFunc)
+        private void AddField(Field field, Func<ResolveFieldContext, object> resolveFunc, string description = null)
         {
             if (NameConverter.TryConvertToGraphQLName(field.Name, out string graphQLFieldName))
             {
                 // Create type from Field
                 var fieldGraphType = field.CreateGraphQLType(_languages);
-                this.Field(graphQLFieldName, fieldGraphType, resolve: resolveFunc);
+                this.Field(graphQLFieldName, fieldGraphType, resolve: resolveFunc, description: description);
             }
         }
     }
