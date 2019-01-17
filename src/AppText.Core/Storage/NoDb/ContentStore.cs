@@ -75,6 +75,18 @@ namespace AppText.Core.Storage.NoDb
             {
                 contentItems = contentItems.Where(ci => ci.CollectionId == query.CollectionId);
             }
+            if (!string.IsNullOrEmpty(query.ContentKeyStartsWith))
+            {
+                contentItems = contentItems.Where(ci => ci.ContentKey.StartsWith(query.ContentKeyStartsWith));
+            }
+            if (query.Offset.HasValue)
+            {
+                contentItems = contentItems.Skip(query.Offset.Value);
+            }
+            if (query.First.HasValue)
+            {
+                contentItems = contentItems.Take(query.First.Value);
+            }
             return contentItems.ToArray();
         }
 

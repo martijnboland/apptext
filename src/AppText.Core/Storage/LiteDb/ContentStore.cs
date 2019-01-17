@@ -67,6 +67,19 @@ namespace AppText.Core.Storage.LiteDb
             {
                 q = q.Where(ci => ci.CollectionId == query.CollectionId);
             }
+            if (!string.IsNullOrEmpty(query.ContentKeyStartsWith))
+            {
+                q = q.Where(ci => ci.ContentKey.StartsWith(query.ContentKeyStartsWith));
+            }
+            if (query.Offset.HasValue)
+            {
+                q = q.Skip(query.Offset.Value);
+            }
+            if (query.First.HasValue)
+            {
+                q = q.Limit(query.First.Value);
+            }
+
             return Task.FromResult(q.ToArray());
         }
 

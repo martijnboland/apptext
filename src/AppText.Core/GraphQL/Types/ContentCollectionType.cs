@@ -21,19 +21,34 @@ namespace AppText.Core.GraphQL.Types
 
                 var contentItemType = new ContentItemType(contentCollection, getContentStore, languages);
                 var itemsType = new ListGraphType(contentItemType);
-                this.Field("items", itemsType, resolve: ctx =>
-                {
-                    var collection = ctx.Source as ContentCollection;
-                    if (collection != null)
+                this.Field("items",
+                    itemsType,
+                    arguments: new QueryArguments(
+                        new QueryArgument<StringGraphType>() { Name = "contentKeyStartsWith" },
+                        new QueryArgument<IntGraphType>() { Name = "first" },
+                        new QueryArgument<IntGraphType>() { Name = "offset" }
+                    ),
+                    resolve: ctx =>
                     {
-                        var contentStore = getContentStore();
-                        return contentStore.GetContentItems(new ContentItemQuery { AppId = contentCollection.ContentType.AppId, CollectionId = collection.Id });
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                });
+                        var collection = ctx.Source as ContentCollection;
+                        if (collection != null)
+                        {
+                            var contentStore = getContentStore();
+                            var contentItemQuery = new ContentItemQuery
+                            {
+                                AppId = contentCollection.ContentType.AppId,
+                                CollectionId = collection.Id,
+                                ContentKeyStartsWith = ctx.GetArgument<string>("contentKeyStartsWith"),
+                                First = ctx.GetArgument<int?>("first"),
+                                Offset = ctx.GetArgument<int?>("offset")
+                            };
+                            return contentStore.GetContentItems(contentItemQuery);
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    });
             }
             else
             {
