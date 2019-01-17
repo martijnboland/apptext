@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppText.Core", "src\AppText.Core\AppText.Core.csproj", "{D518880E-2DA7-46CC-9913-B6846B1D6035}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppText", "src\AppText\AppText.csproj", "{BB15B9A7-9740-4A9E-B6BB-B49627F2EF93}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppText.Api", "src\AppText.Api\AppText.Api.csproj", "{BB15B9A7-9740-4A9E-B6BB-B49627F2EF93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostAppExample", "src\HostAppExample\HostAppExample.csproj", "{93C0AF5D-CD3F-4DB4-85AC-0FE5E3D975B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HostAppExample", "src\HostAppExample\HostAppExample.csproj", "{93C0AF5D-CD3F-4DB4-85AC-0FE5E3D975B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppText.Storage.LiteDB", "src\AppText.Storage.LiteDb\AppText.Storage.LiteDb.csproj", "{502B7201-0E5D-496F-B85E-79A3198B294E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D518880E-2DA7-46CC-9913-B6846B1D6035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D518880E-2DA7-46CC-9913-B6846B1D6035}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D518880E-2DA7-46CC-9913-B6846B1D6035}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D518880E-2DA7-46CC-9913-B6846B1D6035}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BB15B9A7-9740-4A9E-B6BB-B49627F2EF93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BB15B9A7-9740-4A9E-B6BB-B49627F2EF93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB15B9A7-9740-4A9E-B6BB-B49627F2EF93}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,6 +23,10 @@ Global
 		{93C0AF5D-CD3F-4DB4-85AC-0FE5E3D975B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93C0AF5D-CD3F-4DB4-85AC-0FE5E3D975B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93C0AF5D-CD3F-4DB4-85AC-0FE5E3D975B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{502B7201-0E5D-496F-B85E-79A3198B294E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{502B7201-0E5D-496F-B85E-79A3198B294E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{502B7201-0E5D-496F-B85E-79A3198B294E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{502B7201-0E5D-496F-B85E-79A3198B294E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

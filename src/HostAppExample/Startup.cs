@@ -8,13 +8,14 @@ using HostAppExample.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
-using AppText.Core.Storage.NoDb;
-using AppText.Core.Configuration;
-using AppText.Api.Configuration;
+using AppText.Storage.NoDb;
+using AppText.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using AppText.Storage.LiteDb;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace HostAppExample
 {
@@ -67,8 +68,7 @@ namespace HostAppExample
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme));
             });
 
-            // var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
-            var baseFolder = Path.Combine(Env.ContentRootPath, "App_Data");
+            var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
 
             services
                 .AddMvc()
@@ -76,9 +76,10 @@ namespace HostAppExample
                     .AddAppText(options =>
                     {
                         options.RoutePrefix = "apptext";
-                        options.RequiredAuthorizationPolicy = "AppText";
+                        options.RequireAuthenticatedUser = true;
+                        //options.RequiredAuthorizationPolicy = "AppText";
                         options.AppTextServices
-                            .AddNoDbStorage(baseFolder);
+                            .AddLiteDbStorage(connectionString);
                     });
         }
 
