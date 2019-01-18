@@ -17,6 +17,7 @@ namespace AppText.Configuration
             {
                 mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix));
                 mvcOptions.Conventions.Add(new AppTextAuthorizationConvention(options.RequireAuthenticatedUser, options.RequiredAuthorizationPolicy));
+                mvcOptions.Conventions.Add(new AppTextGraphiqlConvention(options.EnableGraphiql));
             });
             return builder;
         }
@@ -30,6 +31,7 @@ namespace AppText.Configuration
             {
                 mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix));
                 mvcOptions.Conventions.Add(new AppTextAuthorizationConvention(options.RequireAuthenticatedUser, options.RequiredAuthorizationPolicy));
+                mvcOptions.Conventions.Add(new AppTextGraphiqlConvention(options.EnableGraphiql));
             });
             return builder;
         }

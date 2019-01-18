@@ -31,6 +31,11 @@ namespace AppText.Configuration
         /// </summary>
         public bool RegisterClaimsPrincipal { get; set; }
 
+        /// <summary>
+        /// Enable the interactive Graphql browser (located at /{RoutePrefix}/graphql/graphiql)
+        /// </summary>
+        public bool EnableGraphiql { get; set; }
+
         public AppTextMvcConfigurationOptions(IServiceCollection services)
         {
             this.RoutePrefix = DefaultRoutePrefix;
@@ -38,6 +43,7 @@ namespace AppText.Configuration
             this.RequireAuthenticatedUser = false;
             this.RequiredAuthorizationPolicy = null;
             this.RegisterClaimsPrincipal = true;
+            this.EnableGraphiql = false;
         }
     }
 }

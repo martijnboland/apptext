@@ -48,7 +48,6 @@ namespace HostAppExample
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddAuthentication()
-                .AddCookie(cfg => cfg.SlidingExpiration = true)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, cfg =>
                 {
                     cfg.SaveToken = true;
@@ -65,7 +64,7 @@ namespace HostAppExample
             {
                 options.AddPolicy("AppText", policy => policy
                     .RequireAuthenticatedUser()
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme));
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, IdentityConstants.ApplicationScheme));
             });
 
             var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
@@ -76,10 +75,10 @@ namespace HostAppExample
                     .AddAppText(options =>
                     {
                         options.RoutePrefix = "apptext";
-                        options.RequireAuthenticatedUser = true;
-                        //options.RequiredAuthorizationPolicy = "AppText";
+                        options.RequiredAuthorizationPolicy = "AppText";
                         options.AppTextServices
                             .AddLiteDbStorage(connectionString);
+                        options.EnableGraphiql = true;
                     });
         }
 
