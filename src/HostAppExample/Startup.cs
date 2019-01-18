@@ -16,6 +16,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using AppText.Storage.LiteDb;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using AppText.Features.Application;
 
 namespace HostAppExample
 {
@@ -77,7 +78,8 @@ namespace HostAppExample
                         options.RoutePrefix = "apptext";
                         options.RequiredAuthorizationPolicy = "AppText";
                         options.AppTextServices
-                            .AddLiteDbStorage(connectionString);
+                            .AddLiteDbStorage(connectionString)
+                            .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en");
                         options.EnableGraphiql = true;
                     });
         }

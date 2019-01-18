@@ -9,7 +9,7 @@ namespace AppText.Storage.NoDb
 {
     public static class AppTextBuilderExtensions
     {
-        public static void AddNoDbStorage(this AppTextBuilder builder, string baseFolder)
+        public static AppTextBuilder AddNoDbStorage(this AppTextBuilder builder, string baseFolder)
         {
             builder.Services.AddNoDb<App>();
             builder.Services.AddNoDb<ContentType>();
@@ -22,6 +22,8 @@ namespace AppText.Storage.NoDb
             builder.Services.AddScoped<IContentDefinitionStore, ContentDefinitionStore>();
             builder.Services.AddScoped<IContentStore, ContentStore>();
             builder.Services.AddScoped<IVersioner, Versioner>();
+
+            return builder;
         }
     }
 }

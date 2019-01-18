@@ -56,8 +56,6 @@ namespace AppText.Configuration
             Services.AddSingleton<IDocumentWriter, DocumentWriter>();
             Services.AddSingleton<SchemaResolver>();
 
-
-
             // Store factories
             Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             Services.AddSingleton<IScopedServiceFactory, HttpContextScopedServiceFactory>();
@@ -69,9 +67,6 @@ namespace AppText.Configuration
 
             // Cache
             Services.AddMemoryCache();
-
-            // ClaimsPrincipal
-            Services.TryAddTransient(sp => sp.GetService<IHttpContextAccessor>().HttpContext.User);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace AppText.Storage.LiteDb
 {
     public static class AppTextBuilderExtensions
     {
-        public static void AddLiteDbStorage(this AppTextBuilder builder, string connectionString)
+        public static AppTextBuilder AddLiteDbStorage(this AppTextBuilder builder, string connectionString)
         {
             builder.Services.AddSingleton(sp => new LiteDatabase(connectionString));
             builder.Services.AddSingleton(sp => new LiteRepository(sp.GetRequiredService<LiteDatabase>()));
@@ -15,6 +15,8 @@ namespace AppText.Storage.LiteDb
             builder.Services.AddScoped<IContentDefinitionStore, ContentDefinitionStore>();
             builder.Services.AddScoped<IContentStore, ContentStore>();
             builder.Services.AddScoped<IVersioner, Versioner>();
+
+            return builder;
         }
     }
 }
