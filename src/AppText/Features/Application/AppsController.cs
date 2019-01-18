@@ -1,7 +1,5 @@
 ﻿using AppText.Shared.Infrastructure;
 using AppText.Shared.Infrastructure.Mvc;
-using AppText.Features.Application;
-using AppText.Shared.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;

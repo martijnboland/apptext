@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using HostAppExample.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +16,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using AppText.Storage.LiteDb;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using AppText.Features.Application;
+using Microsoft.EntityFrameworkCore;
 
 namespace HostAppExample
 {
@@ -43,8 +43,7 @@ namespace HostAppExample
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlite($"Data Source={Path.Combine(Env.ContentRootPath, "App_Data", "Application.db")}"));
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
