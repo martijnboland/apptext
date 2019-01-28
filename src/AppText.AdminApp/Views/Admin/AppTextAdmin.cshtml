@@ -1,0 +1,23 @@
+﻿@model AppText.AdminApp.Controllers.AdminAppModel
+@{ 
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link rel="stylesheet" href="~/dist/test.css" />
+  </head>
+  <body>
+    <h1>AppText Admin</h1>
+    <p id="dynamic"></p>
+    <script src="~/dist/test.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+      window.appText = {
+        apiBaseUrl: '@Model.ApiBaseUrl'
+      }
+    </script>
+  </body>
+</html>

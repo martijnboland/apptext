@@ -1,45 +1,29 @@
-﻿using System.IO;
-using AppText.Configuration;
-using AppText.Storage.NoDb;
+﻿using AppText.AdminApp.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 
-namespace AppText
+namespace AppText.AdminApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            Env = env;
         }
 
         public IConfiguration Configuration { get; }
-        public IHostingEnvironment Env { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // AppText
-            var dataPath = Path.Combine(Env.ContentRootPath, "App_Data");
-            services.AddAppText()
-                .AddNoDbStorage(dataPath);
-
-            // Mvc
-            services.AddMvc()
-                .AddJsonOptions(options =>
-                {
-                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSingleton(new AppTextAdminConfigurationOptions
+            {
+                ApiBaseUrl = "https://localhost:5001"
+            });
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +40,7 @@ namespace AppText
 
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseStaticFiles();
         }
     }
 }

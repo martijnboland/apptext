@@ -10,12 +10,14 @@ namespace AppText.Configuration
     {
         public static IMvcCoreBuilder AddAppText(this IMvcCoreBuilder builder, Action<AppTextMvcConfigurationOptions> configureOptionsAction = null)
         {
+            var assembly = typeof(Startup).Assembly;
+            builder.AddApplicationPart(assembly);
+
             var options = GetOptions(builder.Services, configureOptionsAction);
 
-            builder.AddApplicationPart(typeof(Startup).Assembly);
             builder.AddMvcOptions(mvcOptions =>
             {
-                mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix));
+                mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix, assembly));
                 mvcOptions.Conventions.Add(new AppTextAuthorizationConvention(options.RequireAuthenticatedUser, options.RequiredAuthorizationPolicy));
                 mvcOptions.Conventions.Add(new AppTextGraphiqlConvention(options.EnableGraphiql));
             });
@@ -24,19 +26,24 @@ namespace AppText.Configuration
 
         public static IMvcBuilder AddAppText(this IMvcBuilder builder, Action<AppTextMvcConfigurationOptions> configureOptionsAction = null)
         {
+            var assembly = typeof(Startup).Assembly;
+            builder.AddApplicationPart(assembly);
+
             var options = GetOptions(builder.Services, configureOptionsAction);
 
-            builder.AddApplicationPart(typeof(Startup).Assembly);
             builder.AddMvcOptions(mvcOptions =>
             {
-                mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix));
+                mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix, assembly));
                 mvcOptions.Conventions.Add(new AppTextAuthorizationConvention(options.RequireAuthenticatedUser, options.RequiredAuthorizationPolicy));
                 mvcOptions.Conventions.Add(new AppTextGraphiqlConvention(options.EnableGraphiql));
             });
             return builder;
         }
 
-        private static AppTextMvcConfigurationOptions GetOptions(IServiceCollection services, Action<AppTextMvcConfigurationOptions> configureOptionsAction = null)
+        private static AppTextMvcConfigurationOptions GetOptions(
+            IServiceCollection services,
+            Action<AppTextMvcConfigurationOptions> configureOptionsAction = null
+        )
         {
             var enrichOptions = configureOptionsAction ?? delegate { };
             var options = new AppTextMvcConfigurationOptions(services);
@@ -46,6 +53,9 @@ namespace AppText.Configuration
             {
                 RegisterClaimsPrincipal(services);
             }
+
+            // Register public options as singleton for other modules
+            services.AddSingleton(options.ToPublicConfiguration());
 
             return options;
         }

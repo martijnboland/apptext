@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using System.Linq;
+using System.Reflection;
 
 namespace AppText.Shared.Infrastructure.Mvc
 {
@@ -11,22 +12,23 @@ namespace AppText.Shared.Infrastructure.Mvc
     public class AppTextRouteConvention : IApplicationModelConvention
     {
         private readonly AttributeRouteModel _appTextPrefixModel;
+        private readonly Assembly _assembly;
 
-        public AppTextRouteConvention(string prefix)
+        public AppTextRouteConvention(string prefix, Assembly assembly)
         {
             if (! string.IsNullOrEmpty(prefix))
             {
                 var routeTemplateProvider = new RouteAttribute(prefix);
                 _appTextPrefixModel = new AttributeRouteModel(routeTemplateProvider);
             }
+            _assembly = assembly;
         }
 
         public void Apply(ApplicationModel application)
         {
             if (_appTextPrefixModel != null)
             {
-                var assemblyType = this.GetType().Assembly;
-                var appTextControllers = application.Controllers.Where(c => c.ControllerType.Assembly == assemblyType);
+                var appTextControllers = application.Controllers.Where(c => c.ControllerType.Assembly == _assembly);
                 foreach (var controller in appTextControllers)
                 {
                     var matchedSelectors = controller.Selectors.Where(x => x.AttributeRouteModel != null).ToList();

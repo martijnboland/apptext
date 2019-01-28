@@ -1,22 +1,21 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
+﻿using AppText.AdminApp.Configuration;
+using AppText.Configuration;
+using AppText.Features.Application;
+using AppText.Storage.LiteDb;
+using HostAppExample.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using HostAppExample.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.IO;
-using AppText.Storage.NoDb;
-using AppText.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using AppText.Storage.LiteDb;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using AppText.Features.Application;
-using Microsoft.EntityFrameworkCore;
+using System.IO;
+using System.Text;
 
 namespace HostAppExample
 {
@@ -80,7 +79,8 @@ namespace HostAppExample
                             .AddLiteDbStorage(connectionString)
                             .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en");
                         options.EnableGraphiql = true;
-                    });
+                    })
+                    .AddAppTextAdmin();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

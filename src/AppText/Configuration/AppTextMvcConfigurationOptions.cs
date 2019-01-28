@@ -45,5 +45,19 @@ namespace AppText.Configuration
             this.RegisterClaimsPrincipal = true;
             this.EnableGraphiql = false;
         }
+
+        /// <summary>
+        /// Returns a configuration DTO that can be stored or serialized and contains settings that could be interesting for other modules.
+        /// </summary>
+        /// <returns></returns>
+        public AppTextPublicConfiguration ToPublicConfiguration()
+        {
+            return new AppTextPublicConfiguration
+            {
+                RoutePrefix = this.RoutePrefix,
+                RequireAuthenticatedUser = this.RequireAuthenticatedUser,
+                RequiredAuthorizationPolicy = this.RequiredAuthorizationPolicy
+            };
+        }
     }
 }

@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppText", "src\AppText\AppT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostAppExample", "src\HostAppExample\HostAppExample.csproj", "{93C0AF5D-CD3F-4DB4-85AC-0FE5E3D975B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppText.Storage.LiteDB", "src\AppText.Storage.LiteDb\AppText.Storage.LiteDb.csproj", "{502B7201-0E5D-496F-B85E-79A3198B294E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppText.Storage.LiteDb", "src\AppText.Storage.LiteDb\AppText.Storage.LiteDb.csproj", "{502B7201-0E5D-496F-B85E-79A3198B294E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppText.AdminApp", "src\AppText.AdminApp\AppText.AdminApp.csproj", "{F0D67EF9-548A-49F9-BC2D-62102667587D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{502B7201-0E5D-496F-B85E-79A3198B294E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{502B7201-0E5D-496F-B85E-79A3198B294E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{502B7201-0E5D-496F-B85E-79A3198B294E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0D67EF9-548A-49F9-BC2D-62102667587D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0D67EF9-548A-49F9-BC2D-62102667587D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0D67EF9-548A-49F9-BC2D-62102667587D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0D67EF9-548A-49F9-BC2D-62102667587D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
