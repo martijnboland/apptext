@@ -13,7 +13,7 @@ module.exports = (env = {}, argv = {}) => {
     },
     output: {
       path: path.resolve(__dirname, '../wwwroot/dist'),
-      filename: '[name].[chunkhash].js',
+      filename: '[name].[hash].js',
       publicPath: '~/dist'
     },
     resolve: {
@@ -66,7 +66,7 @@ module.exports = (env = {}, argv = {}) => {
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: '[name].[chunkhash].css'
+        filename: '[name].[hash].css'
       }),
       new HtmlWebpackPlugin({
         filename: '../../Views/Admin/AppTextAdmin.cshtml',
