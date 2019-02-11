@@ -1,7 +1,7 @@
-import '../styles/test.css';
+import '../styles/styles.scss';
 
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 
 const renderApp = () => {

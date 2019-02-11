@@ -1,0 +1,69 @@
+@import '../styles/variables';
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins/breakpoints";
+
+.page-wrapper {
+  height: 100vh;
+
+  .sidebar-wrapper {
+    background-color: #fff;
+    width: $sidebar-width;
+    height: 100%;
+    max-height: 100%;
+    position: fixed;
+    top: 0;
+    left: -$sidebar-width;
+    z-index: 999;
+    transition: left .3s ease, width .3s ease;
+    @include media-breakpoint-up(md) {
+      left: 0;
+    }
+  }
+  
+  .page-content {
+
+      display: inline-block;
+      width: 100%;
+      transition: padding-left .3s ease;
+      overflow-x: hidden;
+      @include media-breakpoint-up(md) {
+        padding-left: $sidebar-width;
+      }
+
+      .overlay {
+          position: fixed;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          z-index: 998;
+          background: #000;
+          opacity: .5;
+          display: none;
+      }
+  }
+
+  &.toggled {
+
+      .sidebar-wrapper {
+          left: 0px;
+          @include media-breakpoint-up(md) {
+            left: -$sidebar-width;
+          }
+      }
+
+      .page-content {
+          @include media-breakpoint-up(md) {
+              padding-left: 0;
+          }
+
+          .overlay {
+
+              @include media-breakpoint-down(sm) {
+                  display: block;
+              }
+          }
+      }
+  }
+}

@@ -1,12 +1,36 @@
-import * as React from 'react';
+import React, { useState } from 'react';
+import classNames from 'classnames';
 
-interface AppProps {
-}
+import Header from './navigation/Header';
+import Sidebar from './navigation/Sidebar';
 
-export const App: React.SFC<AppProps> = (props) => {
+import './App.scss';
+
+export const App: React.FunctionComponent = () => {
+
+  const [sidebarToggled, setSidebarToggled] = useState(false);
+
+  const onToggleSidebar = () => {
+    setSidebarToggled(!sidebarToggled);
+  };
+
+  const onSidebarClose = () => {
+    setSidebarToggled(!sidebarToggled);
+  };
+
   return (
-    <h1>Hello from App!</h1>
+    <div className={classNames('page-wrapper', { 'toggled': sidebarToggled })}>
+      <nav className="sidebar-wrapper">
+        <Sidebar close={onSidebarClose} />
+      </nav>
+      <main className="page-content">
+        <div className="overlay"></div>
+        <Header sidebarToggled={sidebarToggled} toggleSidebar={onToggleSidebar} />
+        <div className="container-fluid">
+          
+        </div>  
+      </main>
+    </div>
   );
-};
 
-//export default App;
+};
