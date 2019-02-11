@@ -12,8 +12,16 @@
   },
   "author": "Martijn Boland",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "react-hot-loader": "^4.6.5"
+  },
   "devDependencies": {
+    "@types/node": "^10.12.24",
+    "@types/react": "^16.8.2",
+    "@types/react-dom": "^16.8.0",
+    "@types/webpack-env": "^1.13.7",
     "aspnet-webpack": "^3.0.0",
     "autoprefixer": "^9.4.7",
     "css-loader": "^2.1.0",

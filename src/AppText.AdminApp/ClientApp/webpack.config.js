@@ -9,15 +9,15 @@ module.exports = (env = {}, argv = {}) => {
   const config = {
     mode: argv.mode || 'development', // we default to development when no 'mode' arg is passed
     entry: {
-      main: './main'
+      main: './src/main'
     },
     output: {
       path: path.resolve(__dirname, '../wwwroot/dist'),
       filename: '[name].[hash].js',
-      publicPath: '~/dist'
+      publicPath: '~/dist/'
     },
     resolve: {
-      extensions: ['.ts', '.js'],
+      extensions: ['.ts', '.tsx', '.js'],
     },
     module: {
       rules: [
