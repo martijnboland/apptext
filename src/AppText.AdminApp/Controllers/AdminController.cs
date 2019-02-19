@@ -1,5 +1,7 @@
 ﻿using AppText.AdminApp.Configuration;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Linq;
 
 namespace AppText.AdminApp.Controllers
 {
@@ -13,7 +15,7 @@ namespace AppText.AdminApp.Controllers
             _options = options;
         }
 
-        [HttpGet]
+        [HttpGet("{*catchall}")]
         public IActionResult AppTextAdmin()
         {
             var appBaseUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
@@ -35,9 +37,23 @@ namespace AppText.AdminApp.Controllers
 
         public string ApiBaseUrl
         {
+            get { return _options.ApiBaseUrl ?? $"{_appBaseUrl}/{_options.RoutePrefix}"; }
+        }
+
+        public string AuthType
+        {
+            get { return _options.AuthType.ToString(); }
+        }
+
+        public string OidcSettings
+        {
             get
             {
-                return _options.ApiBaseUrl ?? $"{_appBaseUrl}/{_options.RoutePrefix}";
+                if (_options.OidcSettings.Any())
+                {
+                    return JsonConvert.SerializeObject(_options.OidcSettings, Formatting.Indented);
+                }
+                return null;
             }
         }
     }

@@ -1,4 +1,4 @@
-@model AppText.AdminApp.Controllers.AdminAppModel
+﻿@model AppText.AdminApp.Controllers.AdminAppModel
 @{ 
     Layout = null;
 }
@@ -10,6 +10,21 @@
     <title></title>
   </head>
   <body>
+    <script type="text/javascript">
+      window.__AppTextConfig__ = {};
+      @if (! String.IsNullOrEmpty(Model.ApiBaseUrl))
+      {
+        <text>window.__AppTextConfig__.apiBaseUrl = '@Model.ApiBaseUrl';</text>
+      }
+      @if (! String.IsNullOrEmpty(Model.AuthType))
+      {
+        <text>window.__AppTextConfig__.authType = '@Model.AuthType';</text>
+      }
+      @if (! String.IsNullOrEmpty(Model.OidcSettings))
+      {
+        <text>window.__AppTextConfig__.oidcSettings = @Html.Raw(Model.OidcSettings);</text>
+      }
+    </script>
     <div id="app"></div>
   </body>
 </html>

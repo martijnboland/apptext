@@ -22,6 +22,10 @@ namespace AppText.AdminApp.Configuration
             builder.AddMvcOptions(mvcOptions =>
             {
                 mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix, assembly));
+                mvcOptions.Conventions.Add(new AppTextAuthorizationConvention(
+                    options.RequireAuthenticatedUser.HasValue ? options.RequireAuthenticatedUser.Value : false, 
+                    options.RequiredAuthorizationPolicy, 
+                    assembly));
             });
             return builder;
         }
@@ -38,6 +42,10 @@ namespace AppText.AdminApp.Configuration
             builder.AddMvcOptions(mvcOptions =>
             {
                 mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix, assembly));
+                mvcOptions.Conventions.Add(new AppTextAuthorizationConvention(
+                    options.RequireAuthenticatedUser.HasValue ? options.RequireAuthenticatedUser.Value : false, 
+                    options.RequiredAuthorizationPolicy, 
+                    assembly));
             });
             return builder;
         }
@@ -52,15 +60,22 @@ namespace AppText.AdminApp.Configuration
 
             enrichOptions(options);
 
-            if (String.IsNullOrEmpty(options.RoutePrefix))
+            // Try to set empty options from AppText API configuration
+            var serviceProvider = services.BuildServiceProvider();
+            var appTextConfiguration = serviceProvider.GetService<AppTextPublicConfiguration>();
+            if (appTextConfiguration != null)
             {
-                // No route prefix is set, try to get the route prefix from AppText (via intermediate service provider).
-                var serviceProvider = services.BuildServiceProvider();
-                var appTextConfiguration = serviceProvider.GetService<AppTextPublicConfiguration>();
-                if (appTextConfiguration != null)
+                if (String.IsNullOrEmpty(options.RoutePrefix))
                 {
-                    // Configuration found. Set route prefix and API base url
                     options.RoutePrefix = appTextConfiguration.RoutePrefix;
+                }
+                if (!options.RequireAuthenticatedUser.HasValue)
+                {
+                    options.RequireAuthenticatedUser = appTextConfiguration.RequireAuthenticatedUser;
+                }
+                if (options.RequiredAuthorizationPolicy == null)
+                {
+                    options.RequiredAuthorizationPolicy = appTextConfiguration.RequiredAuthorizationPolicy;
                 }
             }
 

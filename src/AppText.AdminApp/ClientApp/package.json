@@ -6,8 +6,8 @@
     "url": "https://github.com/martijnboland/apptext"
   },
   "scripts": {
-    "start": "webpack --mode development --watch --progress",
-    "build": "webpack --mode development --progress --profile",
+    "start": "rimraf ../wwwroot/dist && webpack --mode development --watch --progress",
+    "build": "rimraf ../wwwroot/dist && webpack --mode development --progress --profile",
     "prod": "rimraf ../wwwroot/dist && webpack --mode production --progress"
   },
   "author": "Martijn Boland",
@@ -15,9 +15,11 @@
   "dependencies": {
     "bootstrap": "^4.2.1",
     "classnames": "^2.2.6",
+    "oidc-client": "^1.6.1",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
-    "react-hot-loader": "^4.6.5"
+    "react-hot-loader": "^4.6.5",
+    "react-router-dom": "^4.3.1"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.7",
@@ -25,6 +27,7 @@
     "@types/react": "^16.8.2",
     "@types/react-dom": "^16.8.0",
     "@types/react-hot-loader": "^4.1.0",
+    "@types/react-router-dom": "^4.3.1",
     "@types/webpack-env": "^1.13.7",
     "aspnet-webpack": "^3.0.0",
     "autoprefixer": "^9.4.7",

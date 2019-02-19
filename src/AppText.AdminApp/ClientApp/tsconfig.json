@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "../wwwroot/dist",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noEmitOnError": true,
     "removeComments": true,
     "sourceMap": true,

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using System.IO;
 
 namespace AppText.AdminApp
@@ -44,10 +45,9 @@ namespace AppText.AdminApp
             {
                 app.UseHsts();
             }
-
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseMvc();
-            app.UseStaticFiles();
         }
     }
 }
