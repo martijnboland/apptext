@@ -1,28 +1,22 @@
-import * as React from 'react';
-import * as H from 'history';
+import React, { useContext } from 'react';
+import H from 'history';
 
-import { completeAuthentication } from './userContext';
+import UserContext from './UserContext';
 import { returnUrlStorageKey } from '../config/constants';
 
 interface ILoginCallbackProps {
   history: H.History
 }
 
-export default class LoginCallback extends React.Component<ILoginCallbackProps, object> {
+const LoginCallback: React.FunctionComponent<ILoginCallbackProps> = (props) => {
+  const userContext = useContext(UserContext);
+  const returnUrl = window.sessionStorage.getItem(returnUrlStorageKey) || '/';
+  userContext.completeAuthentication()
+    .then(() => {
+      this.props.history.push(returnUrl);
+    });
 
-  constructor(props: ILoginCallbackProps) {
-    super(props);
-  }
-
-  componentWillMount(): void {
-    var returnUrl = window.sessionStorage.getItem(returnUrlStorageKey) || '/';
-    completeAuthentication()
-      .then(() => {
-        this.props.history.push(returnUrl);
-      });
-  }
-
-  render(): any {
-    return null;
-  }
+  return (<div>Completing authentication...</div>);
 }
+
+export default LoginCallback;

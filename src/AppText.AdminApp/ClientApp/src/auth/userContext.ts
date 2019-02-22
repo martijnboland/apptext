@@ -1,57 +1,16 @@
-import { appConfig, AuthType } from '../config/AppConfig';
+import React from 'react';
 
-import { UserManager, User } from 'oidc-client';
+export type UserContextState = {
+  isAuthenticated: boolean,
+  userId?: string
+  userName?: string,
+  claims?: any,
+  startAuthentication?: (redirectUrl: string) => Promise<any>,
+  completeAuthentication?: () => Promise<any>
+};
 
-export interface UserContext {
-  authType: string,
-  isLoggedIn: boolean,
-  claims: any,
-  accessToken?: string
-}
+const UserContext = React.createContext<Partial<UserContextState>>({
+  isAuthenticated: false
+});
 
-let oidcUserManager: UserManager = null;
-
-let userContext: UserContext = {
-  authType: appConfig.authType,
-  isLoggedIn: false,
-  claims: {}
-}
-
-function updateUserContextFromOidcUser(user: User) {
-  console.log('OIDC user => ', user);
-  if (user) {
-    userContext.isLoggedIn = true;
-    userContext.claims = user.profile;
-    userContext.accessToken = user.access_token;  
-  }
-}
-
-export function initUserContext(): Promise<any> {
-  if (appConfig.authType === AuthType.Oidc) {
-    oidcUserManager = new UserManager(appConfig.oidcSettings);
-    return oidcUserManager.getUser()
-      .then(updateUserContextFromOidcUser);
-  }
-  else {
-    userContext.isLoggedIn = true;
-    return Promise.resolve();
-  }
-}
-
-export function startAuthentication(): Promise<any> {
-  if (appConfig.authType == AuthType.Oidc && oidcUserManager) {
-    return oidcUserManager.signinRedirect();
-  }
-
-}
-
-export function completeAuthentication(): Promise<any> {
-  if (oidcUserManager !== null) {
-    return oidcUserManager.signinRedirectCallback()
-      .then(updateUserContextFromOidcUser);
-  }
-}
-
-export function getCurrentContext(): UserContext {
-  return userContext;
-}
+export default UserContext;

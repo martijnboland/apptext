@@ -32,6 +32,16 @@ namespace AppText
             services.AddAppText()
                 .AddNoDbStorage(dataPath);
 
+            // Cors
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowLocalhost",
+                    builder => builder
+                        .WithOrigins("https://localhost:5101")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+            });
+
             // Mvc
             services.AddMvc()
                 .AddJsonOptions(options =>
@@ -53,6 +63,8 @@ namespace AppText
             {
                 app.UseHsts();
             }
+
+            app.UseCors("AllowLocalhost");
 
             app.UseHttpsRedirection();
             app.UseMvc();

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import classNames from 'classnames';
 
+import UserContextProvider from './auth/UserContextProvider';
 import Header from './navigation/Header';
 import Sidebar from './navigation/Sidebar';
 import LoginCallback from './auth/LoginCallback';
@@ -24,21 +25,23 @@ export const App: React.FunctionComponent = () => {
 
   return (
     <BrowserRouter>
-      <div className={classNames('page-wrapper', { 'toggled': sidebarToggled })}>
-        <nav className="sidebar-wrapper">
-          <Sidebar close={onSidebarClose} />
-        </nav>
-        <main className="page-content">
-          <div className="overlay"></div>
-          <Header sidebarToggled={sidebarToggled} toggleSidebar={onToggleSidebar} />
-          <div className="container-fluid">
-            <Switch>
-              <Route exact path="/login-callback" component={LoginCallback} />
-              <ProtectedRoute path="/" component={Dashboard} />
-            </Switch>
-          </div>  
-        </main>
-      </div>
+      <UserContextProvider>
+        <div className={classNames('page-wrapper', { 'toggled': sidebarToggled })}>
+          <nav className="sidebar-wrapper">
+            <Sidebar close={onSidebarClose} />
+          </nav>
+          <main className="page-content">
+            <div className="overlay"></div>
+            <Header sidebarToggled={sidebarToggled} toggleSidebar={onToggleSidebar} />
+            <div className="container-fluid">
+              <Switch>
+                <Route exact path="/login-callback" component={LoginCallback} />
+                <ProtectedRoute path="/" component={Dashboard} />
+              </Switch>
+            </div>  
+          </main>
+        </div>
+      </UserContextProvider>
     </BrowserRouter>
   );
 

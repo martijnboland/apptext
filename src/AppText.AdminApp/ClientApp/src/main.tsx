@@ -1,5 +1,4 @@
 import '../styles/styles.scss';
-import { initUserContext } from './auth/userContext';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -28,7 +27,4 @@ if (module.hot) {
   });
 }
 
-initUserContext()
-  .then(() => {
-    renderApp();
-  });
+renderApp();

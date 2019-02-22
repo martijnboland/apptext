@@ -1,26 +1,17 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 
-import { startAuthentication } from './userContext';
-import { returnUrlStorageKey } from '../config/constants';
+import UserContext from './UserContext';
 
 interface ILoginProps {
   redirectUrl: string
 }
 
-export default class Login extends React.Component<ILoginProps, object> {
-
-  constructor(props: ILoginProps) {
-    super(props);
-  }
-
-  componentWillMount(): void {
-    startAuthentication()
-      .then(() => {
-        window.sessionStorage.setItem(returnUrlStorageKey, this.props.redirectUrl);
-      });
-  }
-
-  render(): any {
-    return null;
-  }
+const Login : React.FunctionComponent<ILoginProps> = ({ redirectUrl }) => {
+  const userContext = useContext(UserContext);
+  userContext.startAuthentication(redirectUrl);
+  return (
+    <div>Authenticating...</div>
+  );
 }
+
+export default Login;
