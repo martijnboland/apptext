@@ -4,6 +4,7 @@ export const AuthType = {
 }
 
 export interface AppConfig {
+  clientBaseRoute: string,
   apiBaseUrl: string,
   authType: string,
   oidcSettings: {

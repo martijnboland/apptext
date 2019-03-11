@@ -5,11 +5,11 @@ import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 
 const renderApp = () => {
-  const App = require('./App').App;
+  const AdminApp = require('./AdminApp').AdminApp;
 
   ReactDOM.render(
     <AppContainer>
-      <App />
+      <AdminApp />
     </AppContainer>,
     document.getElementById('app')
   );
@@ -20,7 +20,7 @@ if (module.hot) {
     renderApp();
   };
 
-  module.hot.accept('./App', () => {
+  module.hot.accept('./AdminApp', () => {
     setImmediate(() => {
       reRenderApp();
     });

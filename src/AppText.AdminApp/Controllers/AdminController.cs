@@ -1,4 +1,5 @@
 ﻿using AppText.AdminApp.Configuration;
+using AppText.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace AppText.AdminApp.Controllers
         public IActionResult AppTextAdmin()
         {
             var appBaseUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
-            var model = new AdminAppModel(_options, appBaseUrl);
+            var model = new AdminAppModel(_options, appBaseUrl, Request.PathBase);
             return View(model);
         }
     }
@@ -28,11 +29,18 @@ namespace AppText.AdminApp.Controllers
     {
         private readonly AppTextAdminConfigurationOptions _options;
         private readonly string _appBaseUrl;
+        private readonly string _pathBase;
 
-        public AdminAppModel(AppTextAdminConfigurationOptions options, string appBaseUrl)
+        public AdminAppModel(AppTextAdminConfigurationOptions options, string appBaseUrl, string pathBase)
         {
             _options = options;
             _appBaseUrl = appBaseUrl;
+            _pathBase = pathBase.EnsureStartsWith("/").EnsureEndsWith("/");
+        }
+
+        public string ClientBaseRoute
+        {
+            get { return $"{_pathBase}{_options.RoutePrefix}".EnsureEndsWith("/"); }
         }
 
         public string ApiBaseUrl

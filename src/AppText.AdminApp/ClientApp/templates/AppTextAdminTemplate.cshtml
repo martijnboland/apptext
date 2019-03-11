@@ -12,6 +12,10 @@
   <body>
     <script type="text/javascript">
       window.__AppTextConfig__ = {};
+      @if (! String.IsNullOrEmpty(Model.ClientBaseRoute))
+      {
+        <text>window.__AppTextConfig__.clientBaseRoute = '@Model.ClientBaseRoute';</text>
+      }
       @if (! String.IsNullOrEmpty(Model.ApiBaseUrl))
       {
         <text>window.__AppTextConfig__.apiBaseUrl = '@Model.ApiBaseUrl';</text>

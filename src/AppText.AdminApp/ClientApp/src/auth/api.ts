@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { appConfig } from '../config/AppConfig';
-import { getConfig } from '../api';
+import { getConfig } from '../common/api';
 import { Me } from './models';
 
 const baseUrl = `${appConfig.apiBaseUrl}/me`;

@@ -6,7 +6,7 @@ namespace AppText.Features.User
 {
     [Route("me")]
     [ApiController]
-    public class UserControllerController : ControllerBase
+    public class UserController : ControllerBase
     {
         public IActionResult GetCurrentUser()
         {
@@ -18,11 +18,11 @@ namespace AppText.Features.User
             }
             else
             {
-                user.Name = "anonymous";
+                user.Name = "Anonymous";
             }
             user.Name = this.User.Identity.IsAuthenticated
                 ? user.Name = this.User.Identity.Name
-                : "anonymous";
+                : "Anonymous";
             user.Claims = this.User.Claims.ToDictionary(c => c.Type, c => c.Value);
             return Ok(user);
         }

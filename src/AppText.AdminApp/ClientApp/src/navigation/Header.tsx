@@ -11,7 +11,7 @@ const Header: React.FunctionComponent<HeaderProps> = ({ sidebarToggled, toggleSi
   const userContext = useContext(UserContext);
 
   return (
-    <nav className="navbar navbar-dark bg-dark flex-md-nowrap shadow">
+    <nav className="navbar navbar-light bg-light flex-md-nowrap shadow">
       <button className="navbar-toggler btn-link" type="button">
         <span className="navbar-toggler-icon" onClick={toggleSidebar}></span>
       </button>

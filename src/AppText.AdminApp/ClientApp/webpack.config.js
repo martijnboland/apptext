@@ -14,7 +14,7 @@ module.exports = (env = {}, argv = {}) => {
     output: {
       path: path.resolve(__dirname, '../wwwroot/dist'),
       filename: '[name].[hash].js',
-      publicPath: '~/dist/'
+      publicPath: '/dist/'
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],

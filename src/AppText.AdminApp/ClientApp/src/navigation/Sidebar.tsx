@@ -13,7 +13,7 @@ const Sidebar: React.FunctionComponent<SidebarProps> = ({ close }) => {
         </button>
       </div>
       <div>
-        Sidebar
+        
       </div>
     </>
   );
