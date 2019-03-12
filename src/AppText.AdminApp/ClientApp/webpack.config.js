@@ -13,7 +13,7 @@ module.exports = (env = {}, argv = {}) => {
     },
     output: {
       path: path.resolve(__dirname, '../wwwroot/dist'),
-      filename: '[name].[hash].js',
+      filename: isProd ? '[name].[hash].js' : '[name].js',
       publicPath: '/dist/'
     },
     resolve: {
@@ -66,7 +66,7 @@ module.exports = (env = {}, argv = {}) => {
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: '[name].[hash].css'
+        filename: isProd ? '[name].[hash].css': '[name].css'
       }),
       new HtmlWebpackPlugin({
         filename: '../../Views/Admin/AppTextAdmin.cshtml',

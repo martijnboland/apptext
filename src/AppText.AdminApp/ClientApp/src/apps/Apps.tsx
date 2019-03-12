@@ -7,8 +7,8 @@ import SelectApp from './SelectApp';
 const Apps: React.FunctionComponent = () => {
   return (
     <>
-      <ProtectedRoute path="/applications/create" component={CreateApp} />
-      <ProtectedRoute path="/applications/select" component={SelectApp} />
+      <ProtectedRoute path="/apps/create" component={CreateApp} />
+      <ProtectedRoute path="/apps/select" component={SelectApp} />
     </>
   );
 };

@@ -4,6 +4,8 @@ namespace AppText.AdminApp.Configuration
 {
     public class AppTextAdminConfigurationOptions
     {
+        public const string DefaultRoutePrefix = "cmsadmin";
+
         /// <summary>
         /// The admin route prefix. When left empty, the possible route prefix of the API is used.
         /// </summary>
@@ -36,6 +38,7 @@ namespace AppText.AdminApp.Configuration
 
         public AppTextAdminConfigurationOptions()
         {
+            this.RoutePrefix = DefaultRoutePrefix;
             this.OidcSettings = new Dictionary<string, string>();
         }
     }

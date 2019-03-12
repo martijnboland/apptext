@@ -33,7 +33,7 @@ class AppContextProvider extends React.Component<any, AppContextProviderState>
   render() {
     const { apps, currentApp } = this.state;
     const { location } = this.props;
-    const shouldRender = currentApp !== undefined || location.pathname === '/applications/select' || location.pathname === '/applications/create';
+    const shouldRender = currentApp !== undefined || location.pathname === '/apps/select' || location.pathname === '/apps/create';
     return (
       <>
       {shouldRender
@@ -45,9 +45,9 @@ class AppContextProvider extends React.Component<any, AppContextProviderState>
         ?
           apps.length == 0 
             ?
-              <Redirect to="/applications/create" />
+              <Redirect to="/apps/create" />
             :
-              <Redirect to="/applications/select" />
+              <Redirect to="/apps/select" />
         :
           <div>Loading app context...</div>
       }

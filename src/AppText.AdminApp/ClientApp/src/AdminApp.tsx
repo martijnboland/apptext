@@ -40,7 +40,7 @@ export const AdminApp: React.FunctionComponent = () => {
               <div className="container-fluid mt-3">
                 <Switch>
                   <Route exact path="/login-callback" component={LoginCallback} />
-                  <ProtectedRoute path="/applications" component={Apps} />
+                  <ProtectedRoute path="/apps" component={Apps} />
                   <ProtectedRoute path="/" component={Dashboard} />
                 </Switch>
               </div>  
