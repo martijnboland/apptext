@@ -1,5 +1,7 @@
 import React from 'react';
 
+import CurrentApp from './CurrentApp';
+
 interface SidebarProps {
   close: () => void
 };
@@ -12,9 +14,7 @@ const Sidebar: React.FunctionComponent<SidebarProps> = ({ close }) => {
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div>
-        
-      </div>
+      <CurrentApp />
     </>
   );
 };

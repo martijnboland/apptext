@@ -2,7 +2,14 @@ import React from 'react';
 
 import { App } from './models';
 
-const AppContext = React.createContext<Partial<App>>({
+export type AppContextState = {
+  apps?: App[]
+  currentApp?: App,
+  setCurrentApp(app: App): void
+};
+
+
+const AppContext = React.createContext<Partial<AppContextState>>({
   
 });
 
