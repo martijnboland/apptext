@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CurrentApp from './CurrentApp';
+import AppSelector from './AppSelector';
 
 interface SidebarProps {
   close: () => void
@@ -14,7 +14,7 @@ const Sidebar: React.FunctionComponent<SidebarProps> = ({ close }) => {
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <CurrentApp />
+      <AppSelector />
     </>
   );
 };

@@ -1,0 +1,34 @@
+@import '../../styles/variables';
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+.app-selector {
+  
+  .current-app {
+
+    .other-apps {
+      list-style: none;
+      padding: 0;
+      display: none;
+    }
+  
+    &.with-other-apps {
+      &:hover {
+        background-color: lighten($dark, 10%);
+        cursor: pointer;
+        .other-apps {
+          display: block;
+          li:hover {
+            background-color: lighten($dark, 20%);
+          }
+        }
+      }
+    }
+  
+  }
+    
+  .app-id {
+    opacity: 0.5;
+  }
+  
+}
