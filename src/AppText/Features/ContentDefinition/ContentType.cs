@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AppText.Features.Application;
-using AppText.Shared.Model;
+﻿using AppText.Shared.Model;
 
 namespace AppText.Features.ContentDefinition
 {
@@ -11,6 +9,8 @@ namespace AppText.Features.ContentDefinition
         public string AppId { get; set; }
 
         public string Name { get; set; }
+
+        public string Description { get; set; }
 
         public Field[] MetaFields { get; set; }
 

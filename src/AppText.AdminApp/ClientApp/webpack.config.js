@@ -17,7 +17,7 @@ module.exports = (env = {}, argv = {}) => {
       publicPath: '/dist/'
     },
     resolve: {
-      extensions: ['.ts', '.tsx', '.js'],
+      extensions: ['.mjs', '.ts', '.tsx', '.js'], // .mjs for react-icons
     },
     module: {
       rules: [

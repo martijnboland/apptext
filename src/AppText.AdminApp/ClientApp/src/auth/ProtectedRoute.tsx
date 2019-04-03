@@ -5,7 +5,8 @@ import UserContext from './UserContext';
 import Login from './Login';
 import AccessDenied from './AccessDenied';
 
-export default ({ component: Component, ...rest }) => {
+export default (props) => {
+  const { component: Component, ...rest } = props;
   const userContext = useContext(UserContext);
   return (
     <Route {...rest} render={props => {
@@ -31,7 +32,7 @@ export default ({ component: Component, ...rest }) => {
           ? isAllowed
             ? 
             (
-              <Component {...props}/>
+              <Component {...props} {...rest}/>
             )
             : (
               <AccessDenied />

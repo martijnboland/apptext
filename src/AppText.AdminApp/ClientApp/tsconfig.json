@@ -5,6 +5,8 @@
     "noEmitOnError": true,
     "removeComments": true,
     "sourceMap": true,
+    "moduleResolution": "node",
+    "module": "es2015",
     "target": "es5",
     "jsx": "react",
     "lib": [

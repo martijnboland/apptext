@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import classNames from 'classnames';
 
 import AppContext from '../apps/AppContext';
@@ -8,17 +8,22 @@ import { App } from '../apps/models';
 
 const AppSelector: React.FunctionComponent = () => {
   
+  const [expandOtherApps, setExpandOtherApps] = useState(false);
   const { currentApp, apps, setCurrentApp } = useContext(AppContext);
   const otherApps = currentApp 
     ? apps.filter(app => app.id !== currentApp.id)
     : apps;
 
+  const onToggleExpand = () => {
+    setExpandOtherApps(! expandOtherApps);
+  };
+
   return (
     <div className="app-selector">
       {currentApp && 
         <>
-          <div className={classNames('current-app', { 'with-other-apps': otherApps.length > 0 })}>
-            <div className="p-3">
+          <div className={classNames('current-app', { 'with-other-apps': otherApps.length > 0, 'expand': expandOtherApps })} onClick={onToggleExpand}>
+            <div className="current-app-inner">
               <div className="app-id">{currentApp.id}</div>
               <div className="app-name">{currentApp.displayName}</div>
             </div>

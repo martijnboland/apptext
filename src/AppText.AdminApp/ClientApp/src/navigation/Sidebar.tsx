@@ -1,6 +1,7 @@
 import React from 'react';
 
 import AppSelector from './AppSelector';
+import MainMenu from './MainMenu';
 
 interface SidebarProps {
   close: () => void
@@ -15,6 +16,7 @@ const Sidebar: React.FunctionComponent<SidebarProps> = ({ close }) => {
         </button>
       </div>
       <AppSelector />
+      <MainMenu />
     </>
   );
 };

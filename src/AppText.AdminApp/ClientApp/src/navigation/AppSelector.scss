@@ -5,15 +5,33 @@
 .app-selector {
   
   .current-app {
+    position: relative;
+
+    .current-app-inner {
+      padding: $spacer;
+    }
 
     .other-apps {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 1;
       list-style: none;
       padding: 0;
       display: none;
+      background-color: lighten($dark, 10%);
+      li {
+        border-top: 1px solid $dark;
+      }
     }
   
     &.with-other-apps {
       &:hover {
+        background-color: lighten($dark, 10%);
+        cursor: pointer;
+      }
+      &.expand {
         background-color: lighten($dark, 10%);
         cursor: pointer;
         .other-apps {

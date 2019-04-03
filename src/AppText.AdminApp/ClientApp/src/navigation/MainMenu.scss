@@ -1,0 +1,18 @@
+@import '../../styles/variables';
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+.main-menu {
+  list-style: none;
+  padding: 0;
+  a {
+    color: darken($light, 15%);
+    display: block;
+    padding: $spacer/2 $spacer;
+    text-decoration: none;
+    &:hover {
+      color: $light;
+      background-color: lighten($dark, 10%)
+    }
+  }
+}
