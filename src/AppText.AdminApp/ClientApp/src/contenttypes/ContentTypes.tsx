@@ -1,68 +1,36 @@
-import React from 'react';
-import ProtectedRoute from '../auth/ProtectedRoute';
+import React, { useContext } from 'react';
 import { RouteComponentProps } from 'react-router';
+
+import ProtectedRoute from '../auth/ProtectedRoute';
 import List from './List';
 import Create from './Create';
 import Edit from './Edit';
 import { ContentType } from './models';
-import { getContentTypes } from './api';
 import AppContext from '../apps/AppContext'
-import { App } from '../apps/models';
+import { useApiGet } from '../common/api';
+import { appConfig } from '../config/AppConfig';
 
 interface ContentTypesProps extends RouteComponentProps<{}> {
-  currentApp?: App
 }
 
-interface ContentTypesState {
-  contentTypes: ContentType[],
-  isFetching: boolean,
+const ContentTypes: React.FC<ContentTypesProps> = ({ match }) => {
+  const { currentApp } = useContext(AppContext);
+  const url = `${appConfig.apiBaseUrl}/${currentApp.id}/contenttypes`;
+  const { data, isLoading } = useApiGet<ContentType[]>(url, []);
+  return (
+    <>
+      {isLoading 
+        ? 
+        <div>Loading...</div>
+        :
+        <>
+          <ProtectedRoute path={match.url} component={List} contentTypes={data} />
+          <ProtectedRoute path={`${match.url}/create`} component={Create} />
+          <ProtectedRoute path={`${match.url}/edit/:id`} component={Edit} />
+        </>
+      }
+    </>
+  );
 }
 
-class ContentTypes extends React.Component<ContentTypesProps, ContentTypesState>
-{
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      contentTypes: [],
-      isFetching: false
-    }    
-  }
-
-  loadData() {
-    this.setState({ isFetching: true });
-
-    getContentTypes(this.props.currentApp.id)
-      .then(result => {
-        this.setState({ contentTypes: result });
-      })
-      .catch(err => {
-        console.log(err);
-      })
-      .then(() => this.setState({ isFetching: false }));    
-  }
-
-  componentDidMount(): void {
-    if (this.props.currentApp) {
-      this.loadData();
-    }
-  }
-
-  render() {
-    const { match } = this.props;
-    const { contentTypes } = this.state;
-    return (
-      <>
-        <ProtectedRoute path={match.url} component={List} contentTypes={contentTypes} />
-        <ProtectedRoute path={`${match.url}/create`} component={Create} />
-        <ProtectedRoute path={`${match.url}/edit/:id`} component={Edit} />
-      </>
-    );
-  }
-}
-
-export default (props) => (
-  <AppContext.Consumer>
-    {appContext => <ContentTypes {...props} currentApp={appContext.currentApp} />}
-  </AppContext.Consumer>
-);
+export default ContentTypes;
