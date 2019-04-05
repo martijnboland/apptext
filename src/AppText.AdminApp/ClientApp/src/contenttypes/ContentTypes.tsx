@@ -24,7 +24,7 @@ const ContentTypes: React.FC<ContentTypesProps> = ({ match }) => {
         <div>Loading...</div>
         :
         <>
-          <ProtectedRoute path={match.url} component={List} contentTypes={data} />
+          <ProtectedRoute exact path={match.url} component={List} contentTypes={data} />
           <ProtectedRoute path={`${match.url}/create`} component={Create} />
           <ProtectedRoute path={`${match.url}/edit/:id`} component={Edit} />
         </>
