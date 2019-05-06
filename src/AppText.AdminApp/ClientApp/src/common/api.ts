@@ -31,31 +31,25 @@ export const handleApiSuccess = (response: AxiosResponse): IApiResult => {
 }
 
 export const handleApiError = (err: AxiosError): IApiResult => {
-  // when error code is 400 and response body contains properties, return object with errors, else log and rethrow
-  if (err.response && err.response.status === 400 && err.response.data) {
-    console.log('API returned 400 error with data, returning data for error display');
+  // when error code is 422 and response body contains errors property, return errors, else log and rethrow
+  if (err.response && err.response.status === 422 && err.response.data) {
     const data = err.response.data;
     const result: IApiResult = {
       ok: false,
       errors: {}
     };
-    // Convert errors array to string for the result
-    if (typeof data != 'string') {
-      for (let prop in data) {
-        if (data.hasOwnProperty(prop)) {
-          if (prop === '') {
-//            result.errors[FORM_ERROR] = data[prop].toString();
-          } else {
-            result.errors[prop] = data[prop].toString();
-          }
-        }
-      }
+    if (data.errors && Array.isArray(data.errors)) {
+      // Group errors by property name
+      result.errors = data.errors.reduce((reducedValue, currentValue) => {
+        const errorMessage = currentValue['errorMessage'] + '\n'; // TODO: params and localization
+        reducedValue[currentValue['name']] = (reducedValue[currentValue['name']] = reducedValue[currentValue['name']] || '').concat(errorMessage);
+        return reducedValue;
+      }, {});
     } else {
       result.message = String(data);
     }
     return result;
   } else {
-    console.log(err);
     throw err;
   }
 };
@@ -74,22 +68,31 @@ export function useApiGet<T>(initialUrl: string, initialData?: T): ApiGetHookPro
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
+    let didCancel = false;
+
     const getData = async () => {
       setIsError(false);
       setIsLoading(true);
 
       try {
         const result = await axios.get<T>(url, getConfig());
-
-        setData(result.data);
+        if (! didCancel) {
+          setData(result.data);
+        }
       } catch (error) {
-        setIsError(true);
+        if (! didCancel) {
+          setIsError(true);
+        }
       }
 
       setIsLoading(false);
     };
 
     getData();
+
+    return () => {
+      didCancel = true;
+    };
   }, [url]);
 
   const doGet = url => {
@@ -97,4 +100,36 @@ export function useApiGet<T>(initialUrl: string, initialData?: T): ApiGetHookPro
   };
 
   return { data, isLoading, isError, doGet };
+}
+
+interface ApiHookProps<T> {
+  apiResult: IApiResult,
+  isApiExecuting: boolean,
+  callApi: (payload: T) => Promise<IApiResult>
+}
+
+export function useApi<T>(url: string, method: string): ApiHookProps<T> {
+  const [isApiExecuting, setIsApiExecuting] = useState(false);
+  const [apiResult, setApiResult] = useState<IApiResult>(null);
+
+  const callApi = async (payload: T) => {
+    setApiResult(null);
+    setIsApiExecuting(true);
+
+    const config = getConfig();
+    config.method = method;
+    config.headers['Content-Type'] = 'application/json';
+    config.data = payload;
+
+    const result = await axios(url, config)
+      .then(handleApiSuccess)
+      .catch(handleApiError);
+
+    setApiResult(result);  
+    setIsApiExecuting(false);
+
+    return result;
+  };
+
+  return { apiResult, isApiExecuting, callApi };
 }

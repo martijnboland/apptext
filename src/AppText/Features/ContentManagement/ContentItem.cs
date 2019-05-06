@@ -10,13 +10,13 @@ namespace AppText.Features.ContentManagement
     {
         public string Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "AppText:Required")]
         public string AppId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "AppText:Required")]
         public string ContentKey { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "AppText:Required")]
         public string CollectionId { get; set; }
 
         public Dictionary<string, object> Meta { get; set; }

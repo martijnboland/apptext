@@ -39,12 +39,12 @@ export const AdminApp: React.FunctionComponent = () => {
             <main className="page-content">
               <div className="overlay"></div>
               <Header sidebarToggled={sidebarToggled} toggleSidebar={onToggleSidebar} />
-              <div className="container-fluid mt-3">
+              <div className="container ml-0 mt-3">
                 <Switch>
                   <Route exact path="/login-callback" component={LoginCallback} />
                   <ProtectedRoute path="/apps" component={Apps} />
                   <ProtectedRoute path="/contenttypes" component={ContentTypes} currentApp />
-                  <ProtectedRoute path="/" component={Dashboard} />
+                  <ProtectedRoute exact path="/" component={Dashboard} />
                 </Switch>
               </div>  
             </main>

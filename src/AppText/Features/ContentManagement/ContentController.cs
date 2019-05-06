@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace AppText.Features.ContentManagement
 {
     [Route("{appId}/content")]
-    [ApiController]
     public class ContentController : ControllerBase
     {
         private readonly Dispatcher _dispatcher;

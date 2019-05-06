@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 namespace AppText.Features.ContentManagement
 {
     [Route("{appId}/collections")]
-    [ApiController]
     public class CollectionsController : ControllerBase
     {
         private readonly Dispatcher _dispatcher;

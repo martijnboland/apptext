@@ -7,10 +7,13 @@ namespace AppText.Features.ContentManagement
     public class ContentCollection : IVersionable
     {
         public string Id { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "AppText:Required")]
         public string Name { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "AppText:Required")]
         public ContentType ContentType { get; set; }
+
         public int Version { get; set; }
     }
 }

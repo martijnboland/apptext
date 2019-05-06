@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace AppText.Shared.Extensions
 {
@@ -20,6 +21,25 @@ namespace AppText.Shared.Extensions
                 theString += endsWith;
             }
             return theString;
+        }
+
+        public static string ToCamelCase(this string theString, bool invariantCulture = true)
+        {
+            if (String.IsNullOrEmpty(theString))
+            {
+                return theString;
+            }
+
+            var parts = theString.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            var sb = new StringBuilder();
+            sb.Append((invariantCulture ? char.ToLowerInvariant(parts[0][0]) : char.ToLower(parts[0][0])) + parts[0].Substring(1));
+            for (int i = 1; i < parts.Length; i++)
+            {
+                sb.Append(".");
+                sb.Append((invariantCulture ? char.ToLowerInvariant(parts[i][0]) : char.ToLower(parts[i][0])) + parts[i].Substring(1));
+            }
+
+            return sb.ToString();
         }
     }
 }

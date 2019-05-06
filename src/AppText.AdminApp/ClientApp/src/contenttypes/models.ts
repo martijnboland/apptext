@@ -3,7 +3,9 @@ export interface ContentType {
   appId: string,
   name: string,
   description?: string,
-
+  metaFields: Field[],
+  contentFields: Field[],
+  version?: number
 }
 
 export interface Field {

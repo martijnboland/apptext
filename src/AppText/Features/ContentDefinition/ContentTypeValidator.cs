@@ -1,6 +1,7 @@
 ﻿using AppText.Shared.Validation;
 using AppText.Storage;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppText.Features.ContentDefinition
@@ -28,13 +29,14 @@ namespace AppText.Features.ContentDefinition
                 }
             }
             else {
-                AddError(new ValidationError { Name = "App", ErrorMessage = "AppText:AppIdEmpty" } );
+                AddError(new ValidationError { Name = "AppId", ErrorMessage = "AppText:AppIdEmpty" } );
             }
 
             // Duplicate content type name
-            if (objectToValidate.Id == null)
+            if (this.Errors.Count() == 0 && objectToValidate.AppId != null)
             {
-                if ((await _contentDefinitionStore.GetContentTypes(new ContentTypeQuery { AppId = objectToValidate.AppId, Name = objectToValidate.Name })).Length > 0)
+                var contentTypesWithSameName = await _contentDefinitionStore.GetContentTypes(new ContentTypeQuery { AppId = objectToValidate.AppId, Name = objectToValidate.Id });
+                if (contentTypesWithSameName.Any(ct => ct.Id != objectToValidate.Id))
                 {
                     AddError(new ValidationError { Name = "Name", ErrorMessage = "AppText:DuplicateContentTypeName", Parameters = new[] { objectToValidate.Name } });
                 }

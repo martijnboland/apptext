@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -42,13 +44,38 @@ namespace AppText.Shared.Validation
         protected Task ValidateAsync(T objectToValidate)
         {
             // Data annotations validation
-            AddErrors(from prop in TypeDescriptor.GetProperties(objectToValidate).Cast<PropertyDescriptor>()
+            ValidateDataAnnotations(objectToValidate, String.Empty);
+            
+            // Hook for custom validation for inheritors.
+            if (_errors.Count == 0)
+            {
+                return ValidateCustom(objectToValidate);
+            }
+            return Task.CompletedTask;
+        }
+
+        private void ValidateDataAnnotations(object objectToValidate, string prefix)
+        {
+            var props = TypeDescriptor.GetProperties(objectToValidate).Cast<PropertyDescriptor>();
+            AddErrors(from prop in props
                       from attribute in prop.Attributes.OfType<ValidationAttribute>()
                       where !prop.Attributes.OfType<IgnoreValidationAttribute>().Any() && !attribute.IsValid(prop.GetValue(objectToValidate))
-                      select new ValidationError { Name = prop.Name, ErrorMessage = attribute.FormatErrorMessage(prop.Name) });
+                      select new ValidationError { Name = $"{prefix}{prop.Name}", ErrorMessage = attribute.FormatErrorMessage(prop.Name) });
 
-            // Hook for custom validation for inheritors.
-            return ValidateCustom(objectToValidate);
+            // Recurse into collections
+            var enumerableProperties = props.Where(p => typeof(ICollection).IsAssignableFrom(p.PropertyType));
+            foreach (var prop in enumerableProperties)
+            {
+                var nestedPrefix = String.IsNullOrEmpty(prefix) ? prop.Name :  $"{prefix}.{prop.Name}";
+                var enumerable = (IEnumerable)prop.GetValue(objectToValidate);
+                var idx = 0;
+                foreach (var obj in enumerable)
+                {
+                    var objPrefix = $"{nestedPrefix}[{idx}].";
+                    ValidateDataAnnotations(obj, objPrefix);
+                    idx++;
+                }
+            }
         }
 
         protected virtual Task ValidateCustom(T objectToValidate)
@@ -86,5 +113,7 @@ namespace AppText.Shared.Validation
         {
             _errors.AddRange(errors);
         }
+
+        
     }
 }

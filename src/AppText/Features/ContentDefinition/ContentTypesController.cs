@@ -1,5 +1,4 @@
 ﻿using AppText.Shared.Infrastructure.Mvc;
-using AppText.Features.ContentDefinition;
 using AppText.Features.ContentManagement;
 using AppText.Shared.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +8,6 @@ using System.Threading.Tasks;
 namespace AppText.Features.ContentDefinition
 {
     [Route("{appId}/contenttypes")]
-    [ApiController]
     public class ContentTypesController : ControllerBase
     {
         private readonly Dispatcher _dispatcher;

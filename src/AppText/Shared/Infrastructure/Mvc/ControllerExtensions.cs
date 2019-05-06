@@ -1,6 +1,8 @@
 ﻿using AppText.Shared.Commands;
+using AppText.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace AppText.Shared.Infrastructure.Mvc
 {
@@ -13,7 +15,7 @@ namespace AppText.Shared.Infrastructure.Mvc
                 case ResultStatus.Success:
                     return controller.Created(uri, payload);
                 case ResultStatus.ValidationError:
-                    return controller.UnprocessableEntity(commandResult);
+                    return controller.UnprocessableEntity(GetUnprocessableEntityResult(commandResult));
                 default:
                     throw new NotImplementedException();
             }
@@ -26,7 +28,7 @@ namespace AppText.Shared.Infrastructure.Mvc
                 case ResultStatus.Success:
                     return controller.Ok();
                 case ResultStatus.ValidationError:
-                    return controller.UnprocessableEntity(commandResult);
+                    return controller.UnprocessableEntity(GetUnprocessableEntityResult(commandResult));
                 case ResultStatus.VersionError:
                     return controller.Conflict(commandResult);
                 case ResultStatus.NotFound:
@@ -47,6 +49,20 @@ namespace AppText.Shared.Infrastructure.Mvc
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        /// <summary>
+        /// Returns an object that only contains vaildation errors of the CommandResult and converts the property names to camelCase
+        /// for easier usage in client apps.
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        private static object GetUnprocessableEntityResult(CommandResult result)
+        {
+            return new
+            {
+                errors = result.ValidationErrors.Select(ve => new { name = ve.Name.ToCamelCase(), ve.ErrorMessage, ve.Parameters })
+            };
         }
     }
 }

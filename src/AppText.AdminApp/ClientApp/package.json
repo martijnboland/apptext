@@ -16,6 +16,7 @@
     "axios": "^0.18.0",
     "bootstrap": "^4.2.1",
     "classnames": "^2.2.6",
+    "formik": "^1.5.4",
     "oidc-client": "^1.6.1",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",

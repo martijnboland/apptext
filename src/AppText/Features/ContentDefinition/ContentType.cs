@@ -1,4 +1,5 @@
 ﻿using AppText.Shared.Model;
+using System.ComponentModel.DataAnnotations;
 
 namespace AppText.Features.ContentDefinition
 {
@@ -6,8 +7,10 @@ namespace AppText.Features.ContentDefinition
     {
         public string Id { get; set; }
 
+        [Required(ErrorMessage = "AppText:Required")]
         public string AppId { get; set; }
 
+        [Required(ErrorMessage = "AppText:Required")]
         public string Name { get; set; }
 
         public string Description { get; set; }

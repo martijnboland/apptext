@@ -10,6 +10,10 @@ namespace AppText.Features.ContentDefinition.FieldTypes
         public override FieldType ReadJson(JsonReader reader, Type objectType, FieldType existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             var typeName = (string)reader.Value;
+            if (typeName == null)
+            {
+                return null;
+            }
             if (! typeName.Contains("."))
             {
                 typeName = $"{_defaultNamespace}.{typeName}";
