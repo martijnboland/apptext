@@ -1,5 +1,5 @@
 import React from 'react';
-import { FieldProps } from 'formik';
+import { FieldProps, getIn } from 'formik';
 import { ICustomFieldProps } from './ICustomFieldProps';
 import classNames from 'classnames';
 
@@ -22,17 +22,19 @@ export const Select: React.FunctionComponent<FieldProps & SelectProps> = ({
   insertEmpty 
 }) => {
   const cssClass = className || 'form-group';
+  const error = getIn(errors, field.name);
+  const touch = getIn(touched, field.name);
 
   return (
     <div className={cssClass}>
       <label htmlFor={field.name}>{label}</label>
-      <select {...field} className={classNames('form-control', { 'is-invalid': errors[field.name] })}>
+      <select {...field} className={classNames('form-control', { 'is-invalid': error })}>
         {insertEmpty && 
           <option key={null} />
         }
         {options.map(o => <option key={o.value} value={o.value}>{o.description}</option>)}
       </select>
-      {errors[field.name] && touched[field.name] && <div className="invalid-feedback">{errors[field.name]}</div>}
+      {error && touch && <div className="invalid-feedback">{error}</div>}
     </div>
   );
 };

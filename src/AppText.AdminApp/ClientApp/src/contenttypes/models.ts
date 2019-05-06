@@ -1,7 +1,7 @@
 export interface ContentType {
-  id: string,
-  appId: string,
-  name: string,
+  id?: string,
+  appId?: string,
+  name?: string,
   description?: string,
   metaFields: Field[],
   contentFields: Field[],

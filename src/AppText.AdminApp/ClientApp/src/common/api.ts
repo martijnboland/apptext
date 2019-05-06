@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import { setIn } from 'formik';
 
 export interface IApiResult {
   ok: boolean,
@@ -42,8 +43,9 @@ export const handleApiError = (err: AxiosError): IApiResult => {
       // Group errors by property name
       result.errors = data.errors.reduce((reducedValue, currentValue) => {
         const errorMessage = currentValue['errorMessage'] + '\n'; // TODO: params and localization
-        reducedValue[currentValue['name']] = (reducedValue[currentValue['name']] = reducedValue[currentValue['name']] || '').concat(errorMessage);
-        return reducedValue;
+        const val = reducedValue[currentValue['name']] || '';
+        const updatedValue = val.concat(errorMessage);
+        return setIn(reducedValue, currentValue['name'], updatedValue);
       }, {});
     } else {
       result.message = String(data);

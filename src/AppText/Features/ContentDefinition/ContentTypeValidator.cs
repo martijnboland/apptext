@@ -35,7 +35,7 @@ namespace AppText.Features.ContentDefinition
             // Duplicate content type name
             if (this.Errors.Count() == 0 && objectToValidate.AppId != null)
             {
-                var contentTypesWithSameName = await _contentDefinitionStore.GetContentTypes(new ContentTypeQuery { AppId = objectToValidate.AppId, Name = objectToValidate.Id });
+                var contentTypesWithSameName = await _contentDefinitionStore.GetContentTypes(new ContentTypeQuery { AppId = objectToValidate.AppId, Name = objectToValidate.Name });
                 if (contentTypesWithSameName.Any(ct => ct.Id != objectToValidate.Id))
                 {
                     AddError(new ValidationError { Name = "Name", ErrorMessage = "AppText:DuplicateContentTypeName", Parameters = new[] { objectToValidate.Name } });

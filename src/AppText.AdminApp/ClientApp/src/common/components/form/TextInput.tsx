@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { FieldProps } from 'formik';
+import { FieldProps, getIn } from 'formik';
 import { ICustomFieldProps } from './ICustomFieldProps';
 
 interface TextInputProps extends ICustomFieldProps {
@@ -17,11 +17,13 @@ export const TextInput: React.FunctionComponent<FieldProps & TextInputProps> = (
 }) => {
   const inputType = type || 'text';
   const cssClass = className || 'form-group';
+  const error = getIn(errors, field.name);
+  const touch = getIn(touched, field.name);
   return (
     <div className={cssClass}>
       <label>{label}</label>
-      <input type={inputType} {...field} {...rest} className={classNames('form-control', { 'is-invalid': errors[field.name] })} />
-      {errors[field.name] && touched[field.name] && <div className="invalid-feedback">{errors[field.name]}</div>}
+      <input type={inputType} {...field} {...rest} className={classNames('form-control', { 'is-invalid': error })} />
+      {error && touch && <div className="invalid-feedback">{error}</div>}
     </div>
   );
 };
