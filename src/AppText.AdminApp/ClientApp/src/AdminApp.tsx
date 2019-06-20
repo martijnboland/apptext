@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import classNames from 'classnames';
-import { ModalProvider } from "react-modal-hook";
+import { ModalProvider } from 'react-modal-hook';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import UserContextProvider from './auth/UserContextProvider';
 import AppContextProvider from './apps/AppContextProvider';
@@ -28,6 +30,8 @@ export const AdminApp: React.FunctionComponent = () => {
   const onSidebarClose = () => {
     setSidebarToggled(!sidebarToggled);
   };
+
+  toast.configure();
 
   return (
     <BrowserRouter basename={appConfig.clientBaseRoute}>

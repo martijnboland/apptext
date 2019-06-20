@@ -1,6 +1,7 @@
 import { useState, useEffect, SetStateAction } from 'react';
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
-import { setIn } from 'formik';
+import { setIn,  } from 'formik';
+import { globalValidationProperty } from '../config/constants';
 
 export interface IApiResult {
   ok: boolean,
@@ -32,8 +33,8 @@ export const handleApiSuccess = (response: AxiosResponse): IApiResult => {
 }
 
 export const handleApiError = (err: AxiosError): IApiResult => {
-  // when error code is 422 and response body contains errors property, return errors, else log and rethrow
-  if (err.response && err.response.status === 422 && err.response.data) {
+  // when error code is 409 or 422 and response body contains errors property, return errors, otherwise rethrow
+  if (err.response && (err.response.status === 409 || err.response.status === 422) && err.response.data) {
     const data = err.response.data;
     const result: IApiResult = {
       ok: false,
@@ -42,10 +43,11 @@ export const handleApiError = (err: AxiosError): IApiResult => {
     if (data.errors && Array.isArray(data.errors)) {
       // Group errors by property name
       result.errors = data.errors.reduce((reducedValue, currentValue) => {
+        const propertyName = currentValue['name'] || globalValidationProperty;
         const errorMessage = currentValue['errorMessage'] + '\n'; // TODO: params and localization
-        const val = reducedValue[currentValue['name']] || '';
+        const val = reducedValue[propertyName] || '';
         const updatedValue = val.concat(errorMessage);
-        return setIn(reducedValue, currentValue['name'], updatedValue);
+        return setIn(reducedValue, propertyName, updatedValue);
       }, {});
     } else {
       result.message = String(data);

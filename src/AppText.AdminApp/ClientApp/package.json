@@ -24,7 +24,8 @@
     "react-hot-loader": "^4.6.5",
     "react-icons": "^3.5.0",
     "react-modal-hook": "^1.1.1",
-    "react-router-dom": "^4.3.1"
+    "react-router-dom": "^4.3.1",
+    "react-toastify": "^5.3.1"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.7",

@@ -6,6 +6,7 @@ import AppContext from '../apps/AppContext';
 import { appConfig } from '../config/AppConfig';
 import { useApi } from '../common/api';
 import { ContentType } from './models';
+import { toast } from 'react-toastify';
 
 const Create: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
 
@@ -26,6 +27,7 @@ const Create: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
     return createContentType.callApi(contentType)
       .then(res => {
         if (res.ok) {
+          toast.success(`Content type ${contentType.name} created`);
           history.push('/contenttypes');
         }
         return res;

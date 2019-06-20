@@ -19,10 +19,11 @@ export const TextInput: React.FunctionComponent<FieldProps & TextInputProps> = (
   const cssClass = className || 'form-group';
   const error = getIn(errors, field.name);
   const touch = getIn(touched, field.name);
+  const { value, ...restField } = field;
   return (
     <div className={cssClass}>
       <label>{label}</label>
-      <input type={inputType} {...field} {...rest} className={classNames('form-control', { 'is-invalid': error })} />
+      <input type={inputType} {...restField} value={value||''} {...rest} className={classNames('form-control', { 'is-invalid': error })} />
       {error && touch && <div className="invalid-feedback">{error}</div>}
     </div>
   );

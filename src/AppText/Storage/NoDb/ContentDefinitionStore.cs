@@ -44,7 +44,7 @@ namespace AppText.Storage.NoDb
             {
                 contentTypes = contentTypes.Where(ct => ct.Name == query.Name);
             }
-            return contentTypes.ToArray();
+            return contentTypes.OrderBy(ct => ct.Name).ToArray();
         }
 
         public Task UpdateContentType(ContentType contentType)

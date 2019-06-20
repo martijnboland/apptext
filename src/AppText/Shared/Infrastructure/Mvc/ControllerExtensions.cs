@@ -15,7 +15,7 @@ namespace AppText.Shared.Infrastructure.Mvc
                 case ResultStatus.Success:
                     return controller.Created(uri, payload);
                 case ResultStatus.ValidationError:
-                    return controller.UnprocessableEntity(GetUnprocessableEntityResult(commandResult));
+                    return controller.UnprocessableEntity(GetValidationErrorsResult(commandResult));
                 default:
                     throw new NotImplementedException();
             }
@@ -28,7 +28,7 @@ namespace AppText.Shared.Infrastructure.Mvc
                 case ResultStatus.Success:
                     return controller.Ok();
                 case ResultStatus.ValidationError:
-                    return controller.UnprocessableEntity(GetUnprocessableEntityResult(commandResult));
+                    return controller.UnprocessableEntity(GetValidationErrorsResult(commandResult));
                 case ResultStatus.VersionError:
                     return controller.Conflict(commandResult);
                 case ResultStatus.NotFound:
@@ -46,6 +46,8 @@ namespace AppText.Shared.Infrastructure.Mvc
                     return controller.NoContent();
                 case ResultStatus.VersionError:
                     return controller.Conflict(commandResult);
+                case ResultStatus.ValidationError:
+                    return controller.Conflict(GetValidationErrorsResult(commandResult));
                 default:
                     throw new NotImplementedException();
             }
@@ -57,7 +59,7 @@ namespace AppText.Shared.Infrastructure.Mvc
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        private static object GetUnprocessableEntityResult(CommandResult result)
+        private static object GetValidationErrorsResult(CommandResult result)
         {
             return new
             {

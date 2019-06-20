@@ -1,5 +1,6 @@
 ﻿using AppText.Features.ContentDefinition;
 using LiteDB;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppText.Storage.LiteDb
@@ -28,7 +29,8 @@ namespace AppText.Storage.LiteDb
             {
                 q = q.Where(ct => ct.Name == query.Name);
             }
-            return Task.FromResult(q.ToArray());
+            var result = q.ToArray().OrderBy(ct => ct.Name).ToArray();
+            return Task.FromResult(result);
         }
 
         public Task<string> AddContentType(ContentType contentType)
