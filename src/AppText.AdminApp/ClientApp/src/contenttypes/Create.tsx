@@ -37,7 +37,7 @@ const Create: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
       <h2>Create content type</h2>
       <div className="row">
         <div className="col-lg-8">
-          <ContentTypeForm contentType={initialContentType} onSave={handleSave} errors={createContentType.apiResult && createContentType.apiResult.errors} />
+          <ContentTypeForm contentType={initialContentType} onSave={handleSave} />
         </div>
         <div className="col-4">
         </div>        
