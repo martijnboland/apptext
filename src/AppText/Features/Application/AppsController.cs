@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace AppText.Features.Application
 {
     [Route("apps")]
-    [ApiController]
     public class AppsController : ControllerBase
     {
         private readonly Dispatcher _dispatcher;

@@ -19,6 +19,7 @@ class AppContextProvider extends React.Component<AppContextProviderProps, AppCon
     super(props);
 
     this.state = {
+      initApps: this.initApps,
       setCurrentApp: this.setCurrentApp
     };
   }

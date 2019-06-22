@@ -5,7 +5,8 @@ import { App } from './models';
 export type AppContextState = {
   apps?: App[]
   currentApp?: App,
-  setCurrentApp(app: App): void
+  setCurrentApp(app: App): void,
+  initApps(): Promise<any>
 };
 
 

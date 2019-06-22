@@ -4,12 +4,12 @@ namespace AppText.Features.Application
 {
     public class App
     {
-        [Required]
-        [StringLength(20)]
+        [Required(ErrorMessage = "AppText:Required")]
+        [StringLength(20, ErrorMessage = "AppText:StringLength {1}")]
         public string Id { get; set; }
 
-        [Required]
-        [StringLength(100)]
+        [Required(ErrorMessage = "AppText:Required")]
+        [StringLength(100, ErrorMessage = "AppText:StringLength {1}")]
         public string DisplayName { get; set; }
 
         public string[] Languages { get; set; }
