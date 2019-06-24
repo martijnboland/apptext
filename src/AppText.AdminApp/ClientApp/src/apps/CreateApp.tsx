@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { RouteComponentProps } from 'react-router';
 import { Formik, Field, FormikActions } from 'formik';
 import { FaSave } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -7,13 +6,17 @@ import { toast } from 'react-toastify';
 import { appConfig } from '../config/AppConfig';
 import AppContext from './AppContext';
 import { TextInput } from '../common/components/form';
-import { useApi } from '../common/api';
-import { App } from './models';
+import { useApi, useApiGet } from '../common/api';
+import { App, Language } from './models';
+import { CustomSelect } from '../common/components/form/CustomSelect';
 
-const CreateApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
+const CreateApp: React.FunctionComponent = () => {
 
   const url = `${appConfig.apiBaseUrl}/apps`;
   const createApp = useApi<App>(url, 'POST');
+  const languagesUrl = `${appConfig.apiBaseUrl}/languages`;
+  const { data: languages } = useApiGet<Language[]>(languagesUrl);
+
   const { initApps, setCurrentApp } = useContext(AppContext);
 
   const initialApp: App = {
@@ -37,6 +40,10 @@ const CreateApp: React.FunctionComponent<RouteComponentProps> = ({ history }) =>
       });
   };
 
+  const languageOptions = languages 
+    ? languages.map(l => { return { value: l.code, label: `${l.code} (${l.description})` } })
+    : [];
+
   return (
     <>
       <h1>Create app</h1>
@@ -45,13 +52,21 @@ const CreateApp: React.FunctionComponent<RouteComponentProps> = ({ history }) =>
           <Formik
             initialValues={initialApp}
             onSubmit={onSubmit}
-            render={({ handleSubmit, values }) => (
-              <form onSubmit={handleSubmit}>
-                <Field name="id" label="App ID" component={TextInput} />
-                <Field name="displayName" label="App display name" component={TextInput} />
-                <button type="submit" className="btn btn-primary mr-2"><FaSave className="mr-1" />Save</button>
-              </form>
-            )}>
+            render={({ handleSubmit, values }) => {
+              const defaultLanguageOptions = values.languages 
+                ? languageOptions.filter(lo => values.languages.some(l => l === lo.value) )
+                : [];
+          
+              return (
+                <form onSubmit={handleSubmit}>
+                  <Field name="id" label="App ID" component={TextInput} />
+                  <Field name="displayName" label="App display name" component={TextInput} />
+                  <Field name="languages" label="Languages" component={CustomSelect} isMulti={true} options={languageOptions} />
+                  <Field name="defaultLanguage" label="Default language" component={CustomSelect} isMulti={false} options={defaultLanguageOptions} />
+                  <button type="submit" className="btn btn-primary mr-2"><FaSave className="mr-1" />Save</button>
+                </form>
+              )
+            }}>
           </Formik>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ContentType } from './models';
 import { Link } from 'react-router-dom';
-import { Formik, Field, FieldArray, FormikActions } from "formik";
+import { Formik, Field, FormikActions } from 'formik';
 import { FaSave, FaTrash } from 'react-icons/fa';
 
 import { TextInput } from '../common/components/form';

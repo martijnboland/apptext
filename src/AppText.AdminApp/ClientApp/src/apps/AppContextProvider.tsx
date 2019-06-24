@@ -34,7 +34,9 @@ class AppContextProvider extends React.Component<AppContextProviderProps, AppCon
         let currentApp: App;
         const currentAppFromStorage = JSON.parse(sessionStorage.getItem(CURRENT_APP_KEY));
         if (currentAppFromStorage && apps.some(a => a.id === currentAppFromStorage.id)) {
-          currentApp = currentAppFromStorage;
+          currentApp = apps.find(a => a.id ===currentAppFromStorage.id);
+          // Always ensure that the storage is up to date
+          sessionStorage.setItem(CURRENT_APP_KEY, JSON.stringify(currentApp));
         } else if (apps.length === 1) {
           currentApp = apps[0];
         }

@@ -31,9 +31,9 @@ namespace AppText.Features.Application
     public class CreateAppCommandHandler : ICommandHandler<CreateAppCommand>
     {
         private readonly IApplicationStore _store;
-        private readonly IValidator<App> _validator;
+        private readonly AppValidator _validator;
 
-        public CreateAppCommandHandler(IApplicationStore store, IValidator<App> validator)
+        public CreateAppCommandHandler(IApplicationStore store, AppValidator validator)
         {
             _store = store;
             _validator = validator;

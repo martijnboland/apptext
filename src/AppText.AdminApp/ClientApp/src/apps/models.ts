@@ -4,3 +4,8 @@ export interface App {
   languages: string[],
   defaultLanguage?: string
 }
+
+export interface Language {
+  code: string,
+  description: string
+}

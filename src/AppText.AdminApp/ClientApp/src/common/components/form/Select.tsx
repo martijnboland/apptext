@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 export interface SelectOption {
   value: string,
-  description: string
+  label: string
 }
 
 interface SelectProps extends ICustomFieldProps {
@@ -32,7 +32,7 @@ export const Select: React.FunctionComponent<FieldProps & SelectProps> = ({
         {insertEmpty && 
           <option key={null} />
         }
-        {options.map(o => <option key={o.value} value={o.value}>{o.description}</option>)}
+        {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
       {error && touch && <div className="invalid-feedback">{error}</div>}
     </div>

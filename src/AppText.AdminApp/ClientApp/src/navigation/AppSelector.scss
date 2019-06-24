@@ -9,6 +9,9 @@
 
     .current-app-inner {
       padding: $spacer;
+      a {
+        color: $white
+      }
     }
 
     .other-apps {
@@ -27,8 +30,7 @@
     }
   
     &.with-other-apps {
-      &:hover {
-        background-color: lighten($dark, 10%);
+      .expander:hover {
         cursor: pointer;
       }
       &.expand {

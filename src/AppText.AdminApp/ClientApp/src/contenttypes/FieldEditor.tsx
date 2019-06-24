@@ -11,10 +11,10 @@ interface FieldEditorProps {
 const FieldEditor: React.FunctionComponent<FieldProps & FieldEditorProps> = ({ field, form, isNew, onClose, onRemove, ...rest }) => {
   const initialValue = field.value || {};
   const options: SelectOption[] = [
-    { value: 'ShortText', description: 'Short text' },
-    { value: 'LongText', description: 'Long text' },
-    { value: 'DateTime', description: 'Date and time' },
-    { value: 'Number', description: 'Number' }
+    { value: 'ShortText', label: 'Short text' },
+    { value: 'LongText', label: 'Long text' },
+    { value: 'DateTime', label: 'Date and time' },
+    { value: 'Number', label: 'Number' }
   ]
   return (
     <div className="card">
