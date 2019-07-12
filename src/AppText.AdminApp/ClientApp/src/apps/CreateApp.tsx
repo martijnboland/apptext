@@ -9,6 +9,7 @@ import { TextInput } from '../common/components/form';
 import { useApi, useApiGet } from '../common/api';
 import { App, Language } from './models';
 import { CustomSelect } from '../common/components/form/CustomSelect';
+import { Link } from 'react-router-dom';
 
 const CreateApp: React.FunctionComponent = () => {
 
@@ -17,7 +18,7 @@ const CreateApp: React.FunctionComponent = () => {
   const languagesUrl = `${appConfig.apiBaseUrl}/languages`;
   const { data: languages } = useApiGet<Language[]>(languagesUrl);
 
-  const { initApps, setCurrentApp } = useContext(AppContext);
+  const { initApps, currentApp, setCurrentApp } = useContext(AppContext);
 
   const initialApp: App = {
     id: undefined,
@@ -64,6 +65,9 @@ const CreateApp: React.FunctionComponent = () => {
                   <Field name="languages" label="Languages" component={CustomSelect} isMulti={true} options={languageOptions} />
                   <Field name="defaultLanguage" label="Default language" component={CustomSelect} isMulti={false} options={defaultLanguageOptions} />
                   <button type="submit" className="btn btn-primary mr-2"><FaSave className="mr-1" />Save</button>
+                  {currentApp && 
+                    <Link to={{ pathname: '/' }} className="btn btn-link">Cancel</Link>
+                  }
                 </form>
               )
             }}>

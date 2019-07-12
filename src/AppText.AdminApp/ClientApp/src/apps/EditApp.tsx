@@ -8,6 +8,7 @@ import { appConfig } from '../config/AppConfig';
 import { useApiGet, useApi } from '../common/api';
 import { Language, App } from './models';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
 
@@ -54,6 +55,7 @@ const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
                   <Field name="languages" label="Languages" component={CustomSelect} isMulti={true} options={languageOptions} />
                   <Field name="defaultLanguage" label="Default language" component={CustomSelect} options={defaultLanguageOptions} />
                   <button type="submit" className="btn btn-primary mr-2"><FaSave className="mr-1" />Save</button>
+                  <Link to={{ pathname: '/' }} className="btn btn-link">Cancel</Link>
                 </form>
               )
             }}>

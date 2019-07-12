@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import classNames from 'classnames';
-import { FaEdit, FaCaretDown } from 'react-icons/fa';
+import { FaEdit, FaCaretDown, FaPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 import AppContext from '../apps/AppContext';
@@ -40,6 +40,9 @@ const AppSelector: React.FunctionComponent = () => {
                 <div className="ml-auto">
                   <Link to="/apps/editcurrent">
                     <FaEdit />
+                  </Link>
+                  <Link to="/apps/create">
+                    <FaPlus className="ml-1" />
                   </Link>
                   {otherApps.length > 0 &&
                     <FaCaretDown className="expander ml-1"  onClick={onToggleExpand} />
