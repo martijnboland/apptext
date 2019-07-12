@@ -10,7 +10,6 @@ import { ContentType } from './models';
 import { IdParams } from '../common/routeParams';
 import ContentTypeForm from './ContentTypeForm';
 import Confirm from '../common/components/dialogs/Confirm';
-import { globalValidationProperty } from '../config/constants';
 
 interface EditProps extends RouteComponentProps<IdParams> {
 }

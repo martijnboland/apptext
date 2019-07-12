@@ -19,7 +19,7 @@ const MainMenu: React.FunctionComponent<MainMenuProps> = (props) => {
             <a href="#"><FaRegEdit /> Content</a>
           </li>
           <li>
-            <a href="#"><FaList /> Collections</a>
+            <Link to="/collections"><FaList /> Collections</Link>
           </li>
           <li>
             <Link to="/contenttypes"><FaLayerGroup /> Content types</Link>
