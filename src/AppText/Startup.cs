@@ -31,6 +31,7 @@ namespace AppText
             var dataPath = Path.Combine(Env.ContentRootPath, "App_Data");
             services.AddAppText()
                 .AddNoDbStorage(dataPath);
+            services.TryAddTransient(sp => sp.GetService<IHttpContextAccessor>().HttpContext.User);
 
             // Cors
             services.AddCors(options =>

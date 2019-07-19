@@ -34,14 +34,20 @@ namespace AppText.Features.ContentManagement
                 // Sync content type with collection when valid
                 objectToValidate.ContentType = contentType;
 
-                if (objectToValidate.Id == null)
+                // Check uniqueness of name
+                var otherCollection = (await _contentStore.GetContentCollections(new ContentCollectionQuery { Name = objectToValidate.Name, AppId = appId })).FirstOrDefault();
+                if (otherCollection != null)
                 {
-                    // Check uniqueness of name
-                    var otherCollection = (await _contentStore.GetContentCollections(new ContentCollectionQuery { Name = objectToValidate.Name, AppId = appId })).FirstOrDefault();
-                    if (otherCollection != null)
+                    if (objectToValidate.Id == null || objectToValidate.Id != otherCollection.Id)
                     {
                         AddError("Name", "AppText:DuplicateContentCollectionName", objectToValidate.Name);
                     }
+                }
+
+                // Check if ListDisplayField is actually in the content type
+                if (! string.IsNullOrEmpty(objectToValidate.ListDisplayField) && ! contentType.ContentFields.Any(cf => cf.Name == objectToValidate.ListDisplayField))
+                {
+                    AddError("ListDisplayField", "AppText:ListDisplayFieldIsNotInContentFields", objectToValidate.ListDisplayField);
                 }
             }
         }

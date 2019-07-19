@@ -14,6 +14,8 @@ namespace AppText.Features.ContentManagement
         [Required(ErrorMessage = "AppText:Required")]
         public ContentType ContentType { get; set; }
 
+        public string ListDisplayField { get; set; }
+
         public int Version { get; set; }
     }
 }
