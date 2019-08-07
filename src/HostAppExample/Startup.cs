@@ -80,7 +80,10 @@ namespace HostAppExample
                             .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en");
                         options.EnableGraphiql = true;
                     })
-                    .AddAppTextAdmin();
+                    .AddAppTextAdmin(options =>
+                    {
+                        options.RoutePrefix = "apptext";
+                    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

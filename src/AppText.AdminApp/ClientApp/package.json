@@ -36,7 +36,6 @@
     "@types/react-router-dom": "^4.3.4",
     "@types/react-select": "^2.0.19",
     "@types/webpack-env": "^1.14.0",
-    "aspnet-webpack": "^3.0.0",
     "autoprefixer": "^9.6.1",
     "css-loader": "^2.1.1",
     "file-loader": "^3.0.1",
