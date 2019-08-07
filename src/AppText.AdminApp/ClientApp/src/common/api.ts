@@ -65,7 +65,7 @@ interface ApiGetHookProps<T> {
   doGet: (url: string) => void
 }
 
-export function useApiGet<T>(initialUrl: string, initialData?: T): ApiGetHookProps<T> {
+export function useApiGet<T>(initialUrl?: string, initialData?: T): ApiGetHookProps<T> {
   const [data, setData] = useState(initialData);
   const [url, setUrl] = useState(initialUrl);
   const [isLoading, setIsLoading] = useState(false);
@@ -75,21 +75,23 @@ export function useApiGet<T>(initialUrl: string, initialData?: T): ApiGetHookPro
     let didCancel = false;
 
     const getData = async () => {
-      setIsError(false);
-      setIsLoading(true);
-
-      try {
-        const result = await axios.get<T>(url, getConfig());
-        if (! didCancel) {
-          setData(result.data);
+      if (url) {
+        setIsError(false);
+        setIsLoading(true);
+  
+        try {
+          const result = await axios.get<T>(url, getConfig());
+          if (! didCancel) {
+            setData(result.data);
+          }
+        } catch (error) {
+          if (! didCancel) {
+            setIsError(true);
+          }
         }
-      } catch (error) {
-        if (! didCancel) {
-          setIsError(true);
-        }
+  
+        setIsLoading(false);          
       }
-
-      setIsLoading(false);
     };
 
     getData();

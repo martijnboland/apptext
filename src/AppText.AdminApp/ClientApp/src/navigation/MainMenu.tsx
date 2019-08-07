@@ -16,7 +16,7 @@ const MainMenu: React.FunctionComponent<MainMenuProps> = (props) => {
       {currentApp &&
         <ul className="main-menu">
           <li>
-            <a href="#"><FaRegEdit /> Content</a>
+            <Link to="/content"><FaRegEdit /> Content</Link>
           </li>
           <li>
             <Link to="/collections"><FaList /> Collections</Link>

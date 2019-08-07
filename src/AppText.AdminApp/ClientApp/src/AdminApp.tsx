@@ -15,6 +15,7 @@ import Dashboard from './dashboard/Dashboard';
 import Apps from './apps/Apps';
 import ContentTypes from './contenttypes/ContentTypes';
 import Collections from './collections/Collections';
+import Content from './content/Content';
 
 import { appConfig } from './config/AppConfig'; 
 
@@ -50,6 +51,7 @@ export const AdminApp: React.FunctionComponent = () => {
                   <Switch>
                     <Route exact path="/login-callback" component={LoginCallback} />
                     <ProtectedRoute path="/apps" component={Apps} />
+                    <ProtectedRoute path="/content" component={Content} currentApp />
                     <ProtectedRoute path="/collections" component={Collections} currentApp />
                     <ProtectedRoute path="/contenttypes" component={ContentTypes} currentApp />
                     <ProtectedRoute exact path="/" component={Dashboard} />
