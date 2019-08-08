@@ -38,7 +38,7 @@ namespace AppText
             {
                 options.AddPolicy("AllowLocalhost",
                     builder => builder
-                        .WithOrigins("https://localhost:5101")
+                        .WithOrigins("https://localhost:5101", "http://localhost:8080")
                         .AllowAnyHeader()
                         .AllowAnyMethod());
             });

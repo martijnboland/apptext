@@ -6,7 +6,8 @@
     "url": "https://github.com/martijnboland/apptext"
   },
   "scripts": {
-    "start": "rimraf ../wwwroot/dist && webpack --mode development --watch --progress",
+    "start": "webpack-dev-server",
+    "dev": "rimraf ../wwwroot/dist && webpack --mode development --progress --watch",
     "build": "rimraf ../wwwroot/dist && webpack --mode development --progress --profile",
     "prod": "rimraf ../wwwroot/dist && webpack --mode production --progress"
   },
@@ -20,7 +21,6 @@
     "oidc-client": "^1.8.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-hot-loader": "^4.12.6",
     "react-icons": "^3.5.0",
     "react-modal-hook": "^1.1.1",
     "react-router-dom": "^4.3.1",
@@ -50,9 +50,8 @@
     "ts-loader": "^5.4.5",
     "typescript": "^3.5.3",
     "url-loader": "^1.1.2",
-    "webpack": "^4.35.3",
-    "webpack-cli": "^3.3.5",
-    "webpack-dev-middleware": "^3.7.0",
-    "webpack-hot-middleware": "^2.25.0"
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2"
   }
 }

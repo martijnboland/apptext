@@ -66,7 +66,10 @@ module.exports = (env = {}, argv = {}) => {
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: isProd ? '[name].[hash].css': '[name].css'
+        filename: isProd ? '[name].[hash].css': '[name].css',
+        options: {
+          hmr: ! isProd
+        }
       }),
       new HtmlWebpackPlugin({
         filename: '../../Views/Admin/AppTextAdmin.cshtml',
@@ -81,6 +84,16 @@ module.exports = (env = {}, argv = {}) => {
     config.devtool = 'source-map';
   } else { // development
     config.devtool = 'eval-source-map';
+    config.devServer = {
+      index: '', // specify to enable root proxying
+      contentBase: path.resolve(__dirname, '../wwwroot/dist'),
+      proxy: {
+        context: () => true,
+        target: 'https://localhost:5101',
+        secure: false
+      },
+      hot: true
+    }
   }
 
   return config;
