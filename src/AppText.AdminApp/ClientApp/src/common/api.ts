@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse, AxiosError, Method } from 'axios';
 import { setIn,  } from 'formik';
 import { globalValidationProperty } from '../config/constants';
 
@@ -114,7 +114,7 @@ interface ApiHookProps<T> {
   callApi: (payload: T) => Promise<IApiResult>
 }
 
-export function useApi<T>(url: string, method: string): ApiHookProps<T> {
+export function useApi<T>(url: string, method: Method): ApiHookProps<T> {
   const [isApiExecuting, setIsApiExecuting] = useState(false);
   const [apiResult, setApiResult] = useState<IApiResult>(null);
 
@@ -123,7 +123,7 @@ export function useApi<T>(url: string, method: string): ApiHookProps<T> {
     setIsApiExecuting(true);
 
     const config = getConfig();
-    config.method = 'get';
+    config.method = method;
     config.headers['Content-Type'] = 'application/json';
     config.data = payload;
 
