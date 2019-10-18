@@ -1,8 +1,8 @@
 ﻿using AppText.AdminApp.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppText.AdminApp
@@ -23,11 +23,11 @@ namespace AppText.AdminApp
             {
                 ApiBaseUrl = "https://localhost:5001"
             });
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -38,8 +38,13 @@ namespace AppText.AdminApp
                 app.UseHsts();
             }
             app.UseStaticFiles();
+
+            app.UseRouting();
+
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+            });
         }
     }
 }

@@ -1,7 +1,7 @@
 import { FieldProps, getIn } from 'formik';
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import { OptionsType, ValueType } from 'react-select/lib/types';
+import { OptionsType, ValueType } from 'react-select/src/types';
 import { ICustomFieldProps } from './ICustomFieldProps';
 
 interface Option {

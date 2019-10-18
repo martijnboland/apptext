@@ -1,4 +1,4 @@
-import { useState, useEffect, SetStateAction } from 'react';
+import { useState, useEffect } from 'react';
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import { setIn,  } from 'formik';
 import { globalValidationProperty } from '../config/constants';
@@ -123,7 +123,7 @@ export function useApi<T>(url: string, method: string): ApiHookProps<T> {
     setIsApiExecuting(true);
 
     const config = getConfig();
-    config.method = method;
+    config.method = 'get';
     config.headers['Content-Type'] = 'application/json';
     config.data = payload;
 
