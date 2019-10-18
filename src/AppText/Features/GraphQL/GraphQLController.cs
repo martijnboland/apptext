@@ -55,7 +55,7 @@ namespace AppText.Features.Controllers
             switch (mediaTypeHeader.MediaType)
             {
                 case JsonContentType:
-                    gqlRequest = Deserialize<GraphQLRequest>(Request.Body);
+                    gqlRequest = await Deserialize<GraphQLRequest>(Request.Body);
                     break;
                 case GraphQLContentType:
                     gqlRequest.Query = await ReadAsStringAsync(Request.Body);
@@ -72,9 +72,9 @@ namespace AppText.Features.Controllers
         }
 
         [HttpGet("graphiql")]
-        public IActionResult GetGraphiql()
+        public IActionResult GetGraphiql(string appId)
         {
-            var graphQLUrl = Url.Action("ExecutePost");
+            var graphQLUrl = Url.Action(nameof(this.ExecutePost), new { appId });
 
             var pageModel = new GraphiQLPageModel(graphQLUrl);
 
@@ -117,12 +117,13 @@ namespace AppText.Features.Controllers
             return actionResult;
         }
 
-        private static T Deserialize<T>(Stream s)
+        private async static Task<T> Deserialize<T>(Stream s)
         {
             using (var reader = new StreamReader(s))
             using (var jsonReader = new JsonTextReader(reader))
             {
-                return new JsonSerializer().Deserialize<T>(jsonReader);
+                var jObject = await JObject.LoadAsync(jsonReader);
+                return jObject.ToObject<T>();
             }
         }
 

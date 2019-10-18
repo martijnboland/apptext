@@ -2,7 +2,6 @@ import React, { ChangeEvent } from 'react';
 import { FieldProps, getIn } from 'formik';
 import { ICustomFieldProps } from './ICustomFieldProps';
 import classNames from 'classnames';
-import { defaultProps } from 'react-select/lib/Creatable';
 
 export interface SelectOption {
   value: string,
