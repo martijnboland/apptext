@@ -21,7 +21,8 @@ namespace AppText.AdminApp
         {
             services.AddSingleton(new AppTextAdminConfigurationOptions
             {
-                ApiBaseUrl = "https://localhost:5001"
+                ApiBaseUrl = "https://localhost:5001",
+                RoutePrefix = ""
             });
             services.AddControllersWithViews();
         }
