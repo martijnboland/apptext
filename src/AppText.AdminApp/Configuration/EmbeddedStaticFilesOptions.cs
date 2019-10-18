@@ -9,9 +9,9 @@ namespace AppText.AdminApp.Configuration
 {
     internal class EmbeddedStaticFilesOptions : IPostConfigureOptions<StaticFileOptions>
     {
-        private readonly IHostingEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
 
-        public EmbeddedStaticFilesOptions(IHostingEnvironment environment)
+        public EmbeddedStaticFilesOptions(IWebHostEnvironment environment)
         {
             _environment = environment;
         }

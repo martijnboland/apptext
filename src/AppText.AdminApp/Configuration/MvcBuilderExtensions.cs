@@ -1,6 +1,7 @@
 ﻿using AppText.Configuration;
 using AppText.Shared.Infrastructure.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using System;
@@ -88,7 +89,7 @@ namespace AppText.AdminApp.Configuration
         private static void ConfigureServices(IServiceCollection services, Assembly assembly, AppTextAdminConfigurationOptions options)
         {
             // Register EmbeddedFileProvider for views
-            services.Configure<RazorViewEngineOptions>(razorOptions =>
+            services.Configure<MvcRazorRuntimeCompilationOptions>(razorOptions =>
             {
                 razorOptions.FileProviders.Add(new EmbeddedFileProvider(assembly));
             });

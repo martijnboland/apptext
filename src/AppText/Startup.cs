@@ -4,7 +4,7 @@ using AppText.Storage.NoDb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -15,14 +15,14 @@ namespace AppText
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             Env = env;
         }
 
         public IConfiguration Configuration { get; }
-        public IHostingEnvironment Env { get; }
+        public IWebHostEnvironment Env { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -44,17 +44,16 @@ namespace AppText
             });
 
             // Mvc
-            services.AddMvc()
-                .AddJsonOptions(options =>
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     options.SerializerSettings.Converters.Add(new StringEnumConverter());
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -65,10 +64,14 @@ namespace AppText
                 app.UseHsts();
             }
 
+            app.UseRouting();
+
             app.UseCors("AllowLocalhost");
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+            });
         }
     }
 }
