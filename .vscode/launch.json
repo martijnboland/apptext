@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/HostAppExample/bin/Debug/netcoreapp2.1/HostAppExample.dll",
+            "program": "${workspaceFolder}/src/HostAppExample/bin/Debug/netcoreapp3.0/HostAppExample.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/HostAppExample",
             "stopAtEntry": false,
