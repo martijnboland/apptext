@@ -81,7 +81,7 @@ namespace HostAppExample
                     })
                     .AddAppTextAdmin(options =>
                     {
-                        //options.RoutePrefix = "apptext";
+                        options.RoutePrefix = "admin";
                         options.ApiBaseUrl = "/apptext";
                     });
             services.AddRazorPages();
@@ -104,10 +104,10 @@ namespace HostAppExample
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseAuthorization();
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
