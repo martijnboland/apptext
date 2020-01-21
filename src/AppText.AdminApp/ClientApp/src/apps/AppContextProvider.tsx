@@ -24,7 +24,7 @@ class AppContextProvider extends React.Component<AppContextProviderProps, AppCon
     };
   }
   
-  componentWillMount() {
+  componentDidMount() {
     this.initApps();
   }
 

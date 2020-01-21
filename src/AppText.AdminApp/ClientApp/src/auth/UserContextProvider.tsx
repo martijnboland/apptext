@@ -20,7 +20,7 @@ class UserContextProvider extends React.Component<any, UserContextState>
     }    
   }
   
-  componentWillMount() {
+  componentDidMount() {
     this.initUserContext();
   }
 
