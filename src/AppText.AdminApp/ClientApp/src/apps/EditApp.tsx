@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { RouteComponentProps } from 'react-router';
 import AppContext from './AppContext';
-import { Formik, Field, FormikActions } from 'formik';
+import { Formik, Field, FormikHelpers } from 'formik';
 import { TextInput, CustomSelect, Select } from '../common/components/form';
 import { FaSave } from 'react-icons/fa';
 import { appConfig } from '../config/AppConfig';
@@ -20,7 +20,7 @@ const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
   const languagesUrl = `${appConfig.apiBaseUrl}/languages`;
   const { data: languages } = useApiGet<Language[]>(languagesUrl);
 
-  const onSubmit = (values: any, actions: FormikActions<any>) => {
+  const onSubmit = (values: any, actions: FormikHelpers<any>) => {
     updateApp.callApi(values)
       .then(res => {
         if (res.ok) {

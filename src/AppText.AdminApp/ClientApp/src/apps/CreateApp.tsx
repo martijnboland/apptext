@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Formik, Field, FormikActions } from 'formik';
+import { Formik, Field, FormikHelpers } from 'formik';
 import { FaSave } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
@@ -27,7 +27,7 @@ const CreateApp: React.FunctionComponent = () => {
     defaultLanguage: undefined
   }
 
-  const onSubmit = (values: any, actions: FormikActions<any>) => {
+  const onSubmit = (values: any, actions: FormikHelpers<any>) => {
     createApp.callApi(values)
       .then(res => {
         if (! res.ok) {

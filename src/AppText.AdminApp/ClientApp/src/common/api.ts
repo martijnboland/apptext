@@ -102,6 +102,7 @@ export function useApiGet<T>(initialUrl?: string, initialData?: T): ApiGetHookPr
   }, [url]);
 
   const doGet = url => {
+    setData(initialData);
     setUrl(url);
   };
 

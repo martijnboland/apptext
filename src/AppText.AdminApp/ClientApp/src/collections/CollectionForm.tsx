@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Collection } from './models';
 import { Link } from 'react-router-dom';
-import { Formik, Field, FormikActions } from 'formik';
+import { Formik, Field, FormikHelpers } from 'formik';
 import { FaSave, FaTrash } from 'react-icons/fa';
 
 import { TextInput, Select, SelectOption } from '../common/components/form';
@@ -31,7 +31,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ collection, contentType
     listDisplayField: collection.listDisplayField || undefined
   };
 
-  const onSubmit = (values: any, actions: FormikActions<any>) => {
+  const onSubmit = (values: any, actions: FormikHelpers<any>) => {
     // Set the full content type before storing
     const collection = { ...values };
     collection.contentType = contentTypes.find(ct => ct.id === values.contentType );

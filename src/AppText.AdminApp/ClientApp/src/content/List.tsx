@@ -55,7 +55,7 @@ const List: React.FC<ListProps> = ({ match }) => {
           <ContentLocator collections={collections} collectionId={collectionId} onCollectionChanged={collectionChanged} onSearch={search} />
         }
       </div>
-      {contentItems.length > 0 && currentCollection &&
+      {currentCollection &&
         <div>
           <div className="row">
             <div className="col-3">key</div>
@@ -67,7 +67,7 @@ const List: React.FC<ListProps> = ({ match }) => {
               : null;
             const title = currentCollection.listDisplayField && ci.content[currentCollection.listDisplayField]
               ? ci.content[currentCollection.listDisplayField][currentApp.defaultLanguage]
-              : firstContentField
+              : firstContentField && ci.content[firstContentField]
                 ? ci.content[firstContentField][currentApp.defaultLanguage]
                 : ci.contentKey
             return (
