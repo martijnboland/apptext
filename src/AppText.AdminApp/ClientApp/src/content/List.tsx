@@ -5,6 +5,7 @@ import { appConfig } from '../config/AppConfig';
 import { useApiGet } from '../common/api';
 import { Collection } from '../collections/models';
 import ContentLocator from './ContentLocator';
+import ListHeader from './ListHeader';
 import { ContentItem } from './models';
 
 interface ContentRouteProps {
@@ -23,6 +24,7 @@ const List: React.FC<ListProps> = ({ match }) => {
 
   const [ collectionId, setCollectionId ] = useState(match.params.collectionId);
   const [ searchTerm, setSearchTerm ] = useState('');
+  const [ activeLanguages, setActiveLanguages ] = useState([ currentApp.defaultLanguage ]);
   
   const currentCollection = collections.find(c => c.id === collectionId);
   
@@ -38,6 +40,14 @@ const List: React.FC<ListProps> = ({ match }) => {
 
   const search = (searchTerm: string) => {
     setSearchTerm(searchTerm);
+  }
+
+  const languageAdded = (language: string) => {
+    setActiveLanguages([ ...activeLanguages, language ]);
+  }
+
+  const languageRemoved = (language: string) => {
+    setActiveLanguages(activeLanguages.filter(l => l !== language));
   }
 
   useEffect(() => {
@@ -57,10 +67,7 @@ const List: React.FC<ListProps> = ({ match }) => {
       </div>
       {currentCollection &&
         <div>
-          <div className="row">
-            <div className="col-3">key</div>
-            <div className="col">{currentApp.defaultLanguage}</div>
-          </div>
+          <ListHeader allLanguages={currentApp.languages} activeLanguages={activeLanguages} onLanguageAdded={languageAdded} onLanguageRemoved={languageRemoved} />
           {contentItems.map(ci => {
             const firstContentField = currentCollection.contentType && currentCollection.contentType.contentFields.length > 0
               ? currentCollection.contentType.contentFields[0].name
