@@ -45,7 +45,8 @@ const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
           <Formik
             initialValues={currentApp}
             onSubmit={onSubmit}
-            render={({ handleSubmit, values }) => {
+          >
+            {({ handleSubmit, values }) => {
               const defaultLanguageOptions = values.languages 
                 ? languageOptions.filter(lo => values.languages.some((l: string) => l === lo.value) )
                 : [];
@@ -58,7 +59,7 @@ const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
                   <Link to={{ pathname: '/' }} className="btn btn-link">Cancel</Link>
                 </form>
               )
-            }}>
+            }}
           </Formik>
         </div>
       </div>

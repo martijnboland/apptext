@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { FaTimes } from 'react-icons/fa';
 
 interface IListHeaderProps {
@@ -19,16 +19,15 @@ const ListHeader: React.FunctionComponent<IListHeaderProps> = ({ allLanguages, a
   }
 
   return (
-    <div className="row">
-      <div className="col-3 align-self-center">key</div>
+    <div className="row align-items-center border-bottom">
+      <div className="col-3"></div>
 
       {activeLanguages.map(lang => 
         <div key={lang} className="col"><button type="button" className="btn btn-light" onClick={() => onLanguageRemoved(lang)}>{lang}<FaTimes className="ml-1" /></button></div>
       )}
-
       {availableLanguages.length > 0 &&
         <div className="col">
-          <select className="form-control" onChange={languageSelected}>
+          <select className="form-control w-auto" onChange={languageSelected}>
             <option></option>
             {availableLanguages.map(lang =>
               <option key={lang} value={lang}>{lang}</option>
@@ -36,6 +35,7 @@ const ListHeader: React.FunctionComponent<IListHeaderProps> = ({ allLanguages, a
           </select>
         </div>
       }
+      <div className="col-1"></div>
     </div>
   );
 };

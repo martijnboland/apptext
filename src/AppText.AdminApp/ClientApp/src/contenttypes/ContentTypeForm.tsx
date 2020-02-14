@@ -30,9 +30,11 @@ const EditForm: React.FunctionComponent<EditFormProps> = ({ contentType, onSave,
   }
   
   return (
-    <Formik initialValues={contentType}
+    <Formik 
+      initialValues={contentType} 
       onSubmit={onSubmit}
-      render={({ handleSubmit, values }) => (
+    > 
+      {({ handleSubmit, values }) => (
         <form onSubmit={handleSubmit}>
           <Field name="name" label="Name" component={TextInput} />
           <Field name="description" label="Description" component={TextInput} />
@@ -46,7 +48,7 @@ const EditForm: React.FunctionComponent<EditFormProps> = ({ contentType, onSave,
             }
           </div>
         </form>
-      )}>
+      )}
     </Formik>
   );
 };

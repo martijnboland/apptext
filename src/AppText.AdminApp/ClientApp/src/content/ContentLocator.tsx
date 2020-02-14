@@ -31,14 +31,15 @@ const ContentLocator: React.FC<ContentLocatorProps> = ({ collections, collection
     <Formik 
       initialValues={initialValues}
       onSubmit={onSubmit}
-      render={({handleSubmit}) => (
+    >
+      {({handleSubmit}) => (
         <form onSubmit={handleSubmit}>
           <div className="form-row">
             <Field name="collectionId" label="Collection" className="form-group col-md-6" component={Select} options={collectionOptions} onChange={onCollectionChanged} />
             <Field name="searchTerm" label="Key starts with" className="form-group col-md-6" component={TextInput} />
           </div>
         </form>
-      )}>
+      )}
     </Formik>
   );
 };

@@ -53,7 +53,8 @@ const CreateApp: React.FunctionComponent = () => {
           <Formik
             initialValues={initialApp}
             onSubmit={onSubmit}
-            render={({ handleSubmit, values }) => {
+          >
+            {({ handleSubmit, values }) => {
               const defaultLanguageOptions = values.languages 
                 ? languageOptions.filter(lo => values.languages.some(l => l === lo.value) )
                 : [];
@@ -70,7 +71,7 @@ const CreateApp: React.FunctionComponent = () => {
                   }
                 </form>
               )
-            }}>
+            }}
           </Formik>
         </div>
       </div>

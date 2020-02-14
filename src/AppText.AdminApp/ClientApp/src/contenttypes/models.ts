@@ -12,5 +12,6 @@ export interface Field {
   name: string,
   description?: string,
   fieldType: string,
-  isRequired: boolean
+  isRequired: boolean,
+  isLocalizable?: boolean
 }

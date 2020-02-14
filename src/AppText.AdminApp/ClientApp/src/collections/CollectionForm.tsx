@@ -56,7 +56,8 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ collection, contentType
       enableReinitialize 
       initialValues={initialValues}
       onSubmit={onSubmit}
-      render={({ handleSubmit, values }) => (
+    >
+      {({ handleSubmit, values }) => (
         <form onSubmit={handleSubmit}>
           <Field name="name" label="Name" component={TextInput} />
           <Field name="contentType" label="Content type" component={Select} options={contentTypeOptions} onChange={onContentTypeChanged} />
@@ -69,7 +70,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ collection, contentType
             }
           </div>
         </form>
-      )}>
+      )}
     </Formik>
   );
 };
