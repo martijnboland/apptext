@@ -8,7 +8,7 @@ namespace AppText.Features.ContentDefinition.FieldTypes
     {
         public abstract bool IsLocalizable { get; }
 
-        public abstract bool CanContainContent(object contentValue, bool contentMightBeLocalizable = false);
+        public abstract bool CanContainContent(object contentValue);
 
         public override string ToString()
         {

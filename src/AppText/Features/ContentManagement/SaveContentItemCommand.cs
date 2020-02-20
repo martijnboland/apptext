@@ -27,6 +27,13 @@ namespace AppText.Features.ContentManagement
 
         public int Version { get; set; }
 
+        public string[] LanguagesToValidate { get; set; }
+
+        public SaveContentItemCommand()
+        {
+            LanguagesToValidate = new string[0];
+        }
+
         public ContentItem CreateContentItem(IPrincipal currentUser)
         {
             var contentItem = new ContentItem
@@ -72,15 +79,13 @@ namespace AppText.Features.ContentManagement
         private readonly IVersioner _versioner;
         private readonly ContentItemValidator _validator;
         private readonly ClaimsPrincipal _currentUser;
-        private readonly IApplicationStore _applicationStore;
 
-        public SaveContentItemCommandHandler(IContentStore store, IApplicationStore applicationStore, IVersioner versioner, ContentItemValidator validator, ClaimsPrincipal currentUser)
+        public SaveContentItemCommandHandler(IContentStore store, IVersioner versioner, ContentItemValidator validator, ClaimsPrincipal currentUser)
         {
             _store = store;
             _versioner = versioner;
             _validator = validator;
             _currentUser = currentUser;
-            _applicationStore = applicationStore;
         }
 
         public async Task<CommandResult> Handle(SaveContentItemCommand command)
@@ -103,7 +108,7 @@ namespace AppText.Features.ContentManagement
                 command.UpdateContentItem(contentItem, _currentUser);
             }
 
-            if (! await _validator.IsValid(contentItem))
+            if (! await _validator.IsValidForLanguages(contentItem, command.LanguagesToValidate))
             {
                 result.AddValidationErrors(_validator.Errors);
             }

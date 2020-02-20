@@ -11,3 +11,7 @@ export interface ContentItem {
   lastModifiedAt?: string,
   lastModifiedBy?: string
 }
+
+export interface ContentItemCommand extends ContentItem {
+  languagesToValidate: string[]
+}

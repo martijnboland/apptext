@@ -1,5 +1,6 @@
 ﻿using AppText.Shared.Validation;
 using AppText.Storage;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,10 +18,18 @@ namespace AppText.Features.ContentManagement
             _applicationStore = applicationStore;
         }
 
-        protected override async Task ValidateCustom(ContentItem objectToValidate)
+        public async Task<bool> IsValidForLanguages(ContentItem objectToValidate, string[] languagesToValidate)
+        {
+            await ValidateAsync(objectToValidate);
+            await ValidateForLanguages(objectToValidate, languagesToValidate);
+
+            return Errors.Count() == 0;
+        }
+
+        public async Task ValidateForLanguages(ContentItem objectToValidate, string[] languagesToValidate)
         {
             // Verify app reference
-            if (! String.IsNullOrEmpty(objectToValidate.AppId))
+            if (!String.IsNullOrEmpty(objectToValidate.AppId))
             {
                 var app = await _applicationStore.GetApp(objectToValidate.AppId);
                 if (app == null)
@@ -65,11 +74,42 @@ namespace AppText.Features.ContentManagement
                 {
                     AddError(new ValidationError { Name = "Content", ErrorMessage = "AppText:UnknownContentField", Parameters = new[] { contentPart.Key } });
                 }
+            }
+
+            // Check if content values are compatible with the fields in the content type
+            foreach(var contentField in contentType.ContentFields)
+            {
+                var contentObj = objectToValidate.Content.ContainsKey(contentField.Name) ? objectToValidate.Content[contentField.Name] : null;
+                if (contentField.IsLocalizable)
+                {
+                    // Localizable object. This must be a JObject. If so, validate the properties by language.
+                    var contentJObject = contentObj as JObject;
+                    // Validate content values for each language
+                    foreach (var language in languagesToValidate)
+                    {
+                        if (contentField.IsRequired && (contentJObject == null || ! contentJObject.ContainsKey(language) || contentJObject[language] == null))
+                        {
+                            AddError(new ValidationError { Name = $"Content.{contentField.Name}.{language}", ErrorMessage = "AppText:MissingContentFieldValue", Parameters = new[] { contentField.Name, language } });
+                        }
+                        else if (contentJObject != null && contentJObject.ContainsKey(language))
+                        {
+                            var localizedValue = contentJObject[language].ToObject<object>();
+                            if (!contentField.FieldType.CanContainContent(localizedValue))
+                            {
+                                AddError(new ValidationError { Name = $"Content.{contentField.Name}.{language}", ErrorMessage = "AppText:InvalidContentFieldValue", Parameters = new[] { localizedValue, contentField.FieldType.ToString(), language } });
+                            }
+                        }
+                    }
+                }
                 else
                 {
-                    if (! field.FieldType.CanContainContent(contentPart.Value, contentMightBeLocalizable: true))
+                    if (contentObj == null && contentField.IsRequired)
                     {
-                        AddError(new ValidationError { Name = $"Content.{contentPart.Key}", ErrorMessage = "AppText:InvalidContentFieldValue", Parameters = new[] { contentPart.Value, field.FieldType.ToString() } });
+                        AddError(new ValidationError { Name = $"Content.{contentField.Name}", ErrorMessage = "AppText:MissingContentFieldValue", Parameters = new[] { contentField.Name } });
+                    }
+                    else if (!contentField.FieldType.CanContainContent(contentObj))
+                    {
+                        AddError(new ValidationError { Name = $"Content.{contentField.Name}", ErrorMessage = "AppText:InvalidContentFieldValue", Parameters = new[] { contentObj, contentField.FieldType.ToString() } });
                     }
                 }
             }
@@ -91,14 +131,10 @@ namespace AppText.Features.ContentManagement
                 }
             }
 
-            // Check if there are no missing required fields in the content item
+            // Check if there are no missing required meta fields in the content item
             var metaFields = objectToValidate.Meta.Keys.ToArray();
             var missingMetaFields = contentType.MetaFields.Where(mf => mf.IsRequired && !metaFields.Contains(mf.Name, StringComparer.OrdinalIgnoreCase));
-            AddErrors(missingMetaFields.Select(f => new ValidationError { Name = $"Meta", ErrorMessage = "AppText:MissingMetaFieldValue", Parameters = new[] { f.Name } } ) );
-
-            var contentFields = objectToValidate.Content.Keys.ToArray();
-            var missingContentFields = contentType.ContentFields.Where(cf => cf.IsRequired && !contentFields.Contains(cf.Name, StringComparer.OrdinalIgnoreCase));
-            AddErrors(missingContentFields.Select(f => new ValidationError { Name = $"Content", ErrorMessage = "AppText:MissingContentFieldValue", Parameters = new[] { f.Name } } ) );
+            AddErrors(missingMetaFields.Select(f => new ValidationError { Name = $"Meta.{f.Name}", ErrorMessage = "AppText:MissingMetaFieldValue", Parameters = new[] { f.Name } }));
         }
     }
 }

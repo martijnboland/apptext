@@ -7,11 +7,10 @@ interface IListItemProps {
   collection: Collection,
   contentItem: ContentItem,
   activeLanguages: string[],
-  hasMoreLanguages: boolean, 
   onEdit: () => void
 }
 
-const ListItem: React.FunctionComponent<IListItemProps> = ({ collection, contentItem, activeLanguages, hasMoreLanguages, onEdit }) => {
+const ListItem: React.FunctionComponent<IListItemProps> = ({ collection, contentItem, activeLanguages, onEdit }) => {
 
   const firstContentField = collection.contentType && collection.contentType.contentFields.length > 0
     ? collection.contentType.contentFields[0].name

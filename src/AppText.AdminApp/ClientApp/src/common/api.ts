@@ -62,7 +62,7 @@ interface ApiGetHookProps<T> {
   data: T,
   isLoading: boolean,
   isError: boolean,
-  doGet: (url: string) => void
+  doGet: (url: string, forceRefresh?: boolean) => void
 }
 
 export function useApiGet<T>(initialUrl?: string, initialData?: T): ApiGetHookProps<T> {
@@ -101,8 +101,12 @@ export function useApiGet<T>(initialUrl?: string, initialData?: T): ApiGetHookPr
     };
   }, [url]);
 
-  const doGet = url => {
+  const doGet = (url, forceRefresh) => {
     setData(initialData);
+    if (forceRefresh) {
+      // Add timestamp to the url to force reload
+      url += `&ts=${new Date().getMilliseconds()}`;
+    }
     setUrl(url);
   };
 

@@ -9,7 +9,7 @@ namespace AppText.Features.ContentDefinition.FieldTypes
 
         public override ScalarGraphType GraphQLType => new DateTimeGraphType();
 
-        public override bool CanContainContent(object contentValue, bool contentMightBeLocalizable)
+        public override bool CanContainContent(object contentValue)
         {
             return contentValue is System.DateTime;
         }

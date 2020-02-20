@@ -33,16 +33,40 @@ const List: React.FC<ListProps> = ({ match }) => {
   
   const currentCollection = collections.find(c => c.id === collectionId);
   const { data: contentItems, isLoading: isContentItemsLoading, doGet: getContentItems } = useApiGet<ContentItem[]>(null, []);
+  
+  let initialContentItem: ContentItem = undefined;
+  let emptyLocalizableContent = {};
+  activeLanguages.forEach(l => emptyLocalizableContent[l] = undefined);
+
+  if (currentCollection) {
+    let initialContent = {}
+    currentCollection.contentType.contentFields.forEach(f => {
+      initialContent[f.name] = f.isLocalizable 
+        ? emptyLocalizableContent
+        : undefined;
+    });
+
+    initialContentItem = {
+      id: undefined,
+      collectionId: currentCollection.id,
+      appId: currentCollection.contentType.appId,
+      contentKey: undefined,
+      content: initialContent,
+      meta: undefined
+    }
+  }
 
   if (collections.length > 0 && ! collectionId) {
     setCollectionId(collections[0].id);
   }
 
   const collectionChanged = (collectionId: string) => {
+    setAddNew(false);
     setCollectionId(collectionId);
   }
 
   const search = (searchTerm: string) => {
+    setAddNew(false);
     setSearchTerm(searchTerm);
   }
 
@@ -67,6 +91,15 @@ const List: React.FC<ListProps> = ({ match }) => {
   const closeEditor = () => {
     setAddNew(false);
     setEditItemId(null);
+  }
+
+  const refreshList = () => {
+    setAddNew(false);
+    setEditItemId(null);
+    if (collectionId) {
+      const contentUrl = `${baseUrl}/content?collectionid=${collectionId}&contentkeystartswith=${searchTerm}`;
+      getContentItems(contentUrl, true);
+    }    
   }
 
   useEffect(() => {
@@ -99,10 +132,10 @@ const List: React.FC<ListProps> = ({ match }) => {
             <EditableListItem 
               isNew={true}
               collection={currentCollection} 
-              contentItem={{collectionId: currentCollection.id}}
+              contentItem={initialContentItem}
               activeLanguages={activeLanguages} 
-              hasMoreLanguages={hasMoreLanguages} 
-              onClose={closeEditor} 
+              onClose={closeEditor}
+              onItemSaved={refreshList}
             />
           }
           {contentItems.map(ci => 
@@ -114,8 +147,8 @@ const List: React.FC<ListProps> = ({ match }) => {
                 collection={currentCollection} 
                 contentItem={ci} 
                 activeLanguages={activeLanguages} 
-                hasMoreLanguages={hasMoreLanguages} 
-                onClose={closeEditor} 
+                onClose={closeEditor}
+                onItemSaved={refreshList}
               />
             :
               <ListItem 
@@ -123,7 +156,6 @@ const List: React.FC<ListProps> = ({ match }) => {
                 collection={currentCollection} 
                 contentItem={ci} 
                 activeLanguages={activeLanguages} 
-                hasMoreLanguages={hasMoreLanguages} 
                 onEdit={() => editItem(ci.id)} 
               />
           )}

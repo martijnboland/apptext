@@ -1,9 +1,6 @@
 ﻿using GraphQL.Types;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AppText.Features.ContentDefinition.FieldTypes
 {
@@ -13,7 +10,7 @@ namespace AppText.Features.ContentDefinition.FieldTypes
 
         public override ScalarGraphType GraphQLType => new DecimalGraphType();
 
-        public override bool CanContainContent(object contentValue, bool contentMightBeLocalizable)
+        public override bool CanContainContent(object contentValue)
         {
             if (contentValue == null)
             {

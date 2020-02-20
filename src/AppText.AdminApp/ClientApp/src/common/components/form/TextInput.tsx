@@ -24,7 +24,7 @@ export const TextInput: React.FunctionComponent<FieldProps & TextInputProps> = (
     <div className={cssClass}>
       <label>{label}</label>
       <input type={inputType} {...restField} value={value||''} {...rest} className={classNames('form-control', { 'is-invalid': error })} />
-      {error && touch && <div className="invalid-feedback">{error}</div>}
+      {error && <div className="invalid-feedback">{error}</div>}
     </div>
   );
 };

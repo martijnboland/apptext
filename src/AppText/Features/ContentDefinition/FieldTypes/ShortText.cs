@@ -1,6 +1,4 @@
 ﻿using GraphQL.Types;
-using Newtonsoft.Json.Linq;
-using System.Linq;
 
 namespace AppText.Features.ContentDefinition.FieldTypes
 {
@@ -12,16 +10,9 @@ namespace AppText.Features.ContentDefinition.FieldTypes
 
         public override ScalarGraphType GraphQLType => new StringGraphType();
 
-        public override bool CanContainContent(object contentValue, bool contentMightBeLocalizable)
+        public override bool CanContainContent(object contentValue)
         {
-            // Content can be a single string value or a dictionary with the language as key
-            if (contentMightBeLocalizable && contentValue is JObject) // dictionary
-            {
-                var jObject = (JObject)contentValue;
-                var values = jObject.Values();
-                return values.All(v => v.Type == JTokenType.String && CheckLength((string)v));
-            }
-            else if (contentValue is string)
+            if (contentValue is string)
             {
                 var stringValue = (string)contentValue;
                 return CheckLength(stringValue);

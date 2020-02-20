@@ -1,23 +1,47 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Collection } from '../collections/models';
-import { ContentItem } from './models';
-import { Formik, Field } from 'formik';
+import { ContentItem, ContentItemCommand } from './models';
+import { Formik, Field, FormikHelpers } from 'formik';
 import { TextInput } from '../common/components/form';
+import AppContext from '../apps/AppContext';
+import { appConfig } from '../config/AppConfig';
+import { useApi } from '../common/api';
+import { toast } from 'react-toastify';
 
 interface IEditableListItemProps {
   isNew: boolean,
   collection: Collection,
   contentItem?: ContentItem,
   activeLanguages: string[],
-  hasMoreLanguages: boolean,
-  onClose: () => void
+  onClose: () => void,
+  onItemSaved: () => void
 }
 
-const EditableListItem: React.FunctionComponent<IEditableListItemProps> = ({ collection, contentItem, activeLanguages, hasMoreLanguages, onClose }) => {
+const EditableListItem: React.FunctionComponent<IEditableListItemProps> = ({ isNew, collection, contentItem, activeLanguages, onClose, onItemSaved }) => {
 
-  const onSubmit = (values: ContentItem) => {
-    console.log('ContentItem => ', values);
-  }
+  const { currentApp } = useContext(AppContext);
+  const url = `${appConfig.apiBaseUrl}/${currentApp.id}/content`;
+  const contentItemApiAction = isNew 
+    ? useApi<ContentItemCommand>(url, 'POST')
+    : useApi<ContentItemCommand>(url + `/${contentItem.id}`, 'PUT');
+
+  const onSubmit = (contentItem: ContentItem, actions: FormikHelpers<ContentItem>): Promise<any> => {
+    const contentItemCommand: ContentItemCommand = { ...contentItem, languagesToValidate: activeLanguages };
+    return contentItemApiAction.callApi(contentItemCommand)
+      .then(res => {
+        if (res.ok) {
+          if (isNew) {
+            toast.success(`Content item ${contentItem.contentKey} created`);
+          } else {
+            toast.success(`Content item ${contentItem.contentKey} updated`);
+          }
+          onItemSaved();
+        } else {
+          actions.setErrors(res.errors);
+        }
+        return res;
+      });
+  };
 
   return (
     <div className="card mb-3">
