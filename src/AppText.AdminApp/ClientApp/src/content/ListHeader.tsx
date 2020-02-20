@@ -19,23 +19,24 @@ const ListHeader: React.FunctionComponent<IListHeaderProps> = ({ allLanguages, a
   }
 
   return (
-    <div className="row align-items-center border-bottom">
-      <div className="col-3"></div>
+    <div className="card-body">
+      <div className="row align-items-center">
+        <div className="col-3"></div>
 
-      {activeLanguages.map(lang => 
-        <div key={lang} className="col"><button type="button" className="btn btn-light" onClick={() => onLanguageRemoved(lang)}>{lang}<FaTimes className="ml-1" /></button></div>
-      )}
-      {availableLanguages.length > 0 &&
-        <div className="col">
-          <select className="form-control w-auto" onChange={languageSelected}>
-            <option></option>
-            {availableLanguages.map(lang =>
-              <option key={lang} value={lang}>{lang}</option>
-            )}
-          </select>
+        {activeLanguages.map(lang => 
+          <div key={lang} className="col"><button type="button" className="btn btn-light" onClick={() => onLanguageRemoved(lang)}>{lang}<FaTimes className="ml-1" /></button></div>
+        )}
+        <div className="col-2">
+          {availableLanguages.length > 0 &&
+            <select className="form-control" onChange={languageSelected}>
+              <option>Language...</option>
+              {availableLanguages.map(lang =>
+                <option key={lang} value={lang}>{lang}</option>
+              )}
+            </select>
+          }
         </div>
-      }
-      <div className="col-1"></div>
+      </div>
     </div>
   );
 };

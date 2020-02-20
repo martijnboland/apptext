@@ -28,19 +28,20 @@ const ListItem: React.FunctionComponent<IListItemProps> = ({ collection, content
   
 
   return (
-    <div className="row align-items-center border-bottom" key={contentItem.id}>
-      <div className="col-3">{contentItem.contentKey}</div>
-      {titleItems.map(item =>
-        <h5 className="col" key={item.lang}>{item.title}</h5>
-      )}
-      {hasMoreLanguages && 
-        <div className="col"></div>
-      }
-      <div className="col-1">
-        <button className="btn btn-link" onClick={onEdit}>
-          <FaPen />
-        </button>
-    </div>
+    <div className="card mb-3">
+      <div className="card-body">
+        <div className="row align-items-center" key={contentItem.id}>
+          <div className="col-3">{contentItem.contentKey}</div>
+          {titleItems.map(item =>
+            <h5 className="col" key={item.lang}>{item.title}</h5>
+          )}
+          <div className="col-2">
+            <button className="btn btn-link" onClick={onEdit}>
+              <FaPen />
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
