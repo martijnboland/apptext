@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Text;
@@ -70,6 +72,11 @@ namespace HostAppExample
 
             services
                 .AddControllersWithViews()
+                    .AddNewtonsoftJson(options =>
+                    {
+                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                        options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                    })
                     .AddAppText(options =>
                     {
                         options.RoutePrefix = "apptext";
