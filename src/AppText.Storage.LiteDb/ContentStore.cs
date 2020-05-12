@@ -37,7 +37,8 @@ namespace AppText.Storage.LiteDb
         public Task<string> AddContentCollection(ContentCollection contentCollection)
         {
             contentCollection.Id = ObjectId.NewObjectId().ToString();
-            return Task.FromResult(_liteRepository.Insert(contentCollection).ToString());
+            _liteRepository.Insert(contentCollection);
+            return Task.FromResult(contentCollection.Id);
         }
 
         public Task UpdateContentCollection(ContentCollection contentCollection)
@@ -71,16 +72,18 @@ namespace AppText.Storage.LiteDb
             {
                 q = q.Where(ci => ci.ContentKey.StartsWith(query.ContentKeyStartsWith));
             }
+
+            ILiteQueryableResult<ContentItem> result = q;
             if (query.Offset.HasValue)
             {
-                q = q.Skip(query.Offset.Value);
+                result = result.Skip(query.Offset.Value);
             }
             if (query.First.HasValue)
             {
-                q = q.Limit(query.First.Value);
+                result = result.Limit(query.First.Value);
             }
 
-            return Task.FromResult(q.ToArray());
+            return Task.FromResult(result.ToArray());
         }
 
         public Task<ContentItem> GetContentItem(string id, string appId)
@@ -99,7 +102,8 @@ namespace AppText.Storage.LiteDb
         {
             contentItem.Id = ObjectId.NewObjectId().ToString();
             ConvertJObjectsToDictionaries(contentItem);
-            return Task.FromResult(_liteRepository.Insert(contentItem).ToString());
+            _liteRepository.Insert(contentItem);
+            return Task.FromResult(contentItem.Id);
         }
 
         public Task UpdateContentItem(ContentItem contentItem)

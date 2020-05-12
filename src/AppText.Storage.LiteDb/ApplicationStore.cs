@@ -37,7 +37,8 @@ namespace AppText.Storage.LiteDb
 
         public Task<string> AddApp(App app)
         {
-            return Task.FromResult(_liteRepository.Insert(app).ToString());
+            _liteRepository.Insert(app);
+            return Task.FromResult(app.Id);
         }
 
         public Task UpdateApp(App app)

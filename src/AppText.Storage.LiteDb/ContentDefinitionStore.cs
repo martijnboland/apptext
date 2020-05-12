@@ -36,7 +36,8 @@ namespace AppText.Storage.LiteDb
         public Task<string> AddContentType(ContentType contentType)
         {
             contentType.Id = ObjectId.NewObjectId().ToString();
-            return Task.FromResult(_liteRepository.Insert(contentType).ToString());
+            _liteRepository.Insert(contentType);
+            return Task.FromResult(contentType.Id);
         }
 
         public Task UpdateContentType(ContentType contentType)
