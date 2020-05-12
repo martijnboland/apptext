@@ -74,7 +74,8 @@ module.exports = (env = {}, argv = {}) => {
       new HtmlWebpackPlugin({
         filename: '../../Views/Admin/AppTextAdmin.cshtml',
         inject: 'body',
-        template: './templates/AppTextAdminTemplate.cshtml'
+        template: './templates/AppTextAdminTemplate.cshtml',
+        minify: false // To prevent breaking the ASP.NET core view
       }),
     ]
   };
