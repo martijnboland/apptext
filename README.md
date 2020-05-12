@@ -12,11 +12,11 @@ The primary goal of AppText is to enable content updates in applications without
 AppText is intended for application developers who want an easy way of managing content for their applications and being able to delegate content management to non-developers.
 
 ### Getting started
-This project is in early stages. To try it out, you have to clone this repository and build a version yourself. 
+This project is still in the early stages. To try it out, you have to clone this repository and build a version yourself. 
 
 #### Prerequisites
 
-AppText is a .NET Core app and uses React with webpack for the Admin app. You should be able to run it on any platform that supports .NET Core (Windows, MacOS, Linux). To build it, you'll need the [.NET Core 3.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1) and a reasonably recent version of [node.js](https://nodejs.org), for example, the latest LTS version. 
+AppText is a .NET Core app and uses React for the Admin app. You should be able to run it on any platform that supports .NET Core (Windows, MacOS, Linux). To build it, you'll need the [.NET Core 3.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1) and a reasonably recent version of [node.js](https://nodejs.org), for example, the latest LTS version. 
 
 #### Get the source code
 
