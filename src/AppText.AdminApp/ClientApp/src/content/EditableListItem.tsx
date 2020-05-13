@@ -7,6 +7,9 @@ import AppContext from '../apps/AppContext';
 import { appConfig } from '../config/AppConfig';
 import { useApi } from '../common/api';
 import { toast } from 'react-toastify';
+import { FaSave, FaCheck, FaTimes, FaTrash } from 'react-icons/fa';
+import { useModal } from 'react-modal-hook';
+import Confirm from '../common/components/dialogs/Confirm';
 
 interface IEditableListItemProps {
   isNew: boolean,
@@ -14,16 +17,18 @@ interface IEditableListItemProps {
   contentItem?: ContentItem,
   activeLanguages: string[],
   onClose: () => void,
-  onItemSaved: () => void
+  onItemSaved: () => void,
+  onItemDeleted?: () => void
 }
 
-const EditableListItem: React.FunctionComponent<IEditableListItemProps> = ({ isNew, collection, contentItem, activeLanguages, onClose, onItemSaved }) => {
+const EditableListItem: React.FunctionComponent<IEditableListItemProps> = ({ isNew, collection, contentItem, activeLanguages, onClose, onItemSaved, onItemDeleted }) => {
 
   const { currentApp } = useContext(AppContext);
   const url = `${appConfig.apiBaseUrl}/${currentApp.id}/content`;
   const contentItemApiAction = isNew 
     ? useApi<ContentItemCommand>(url, 'POST')
     : useApi<ContentItemCommand>(url + `/${contentItem.id}`, 'PUT');
+  const deleteContentItem = useApi<{}>(url + `/${contentItem.id}`, 'DELETE')
 
   const onSubmit = (contentItem: ContentItem, actions: FormikHelpers<ContentItem>): Promise<any> => {
     const contentItemCommand: ContentItemCommand = { ...contentItem, languagesToValidate: activeLanguages };
@@ -42,6 +47,34 @@ const EditableListItem: React.FunctionComponent<IEditableListItemProps> = ({ isN
         return res;
       });
   };
+
+  const handleDelete = (contentItem: ContentItem, hideDeleteConfirmation): Promise<any> => {
+    return deleteContentItem.callApi(null)
+      .then(res => {
+        if (res.ok) {
+          toast.success(`Item ${contentItem.contentKey} deleted`);
+          onItemDeleted();
+        }
+        else {
+          toast.error(Object.values(res.errors).join(','));
+        }
+        return res;
+      })
+      .catch(err => {
+        hideDeleteConfirmation();
+      })
+  }
+
+  const [showDeleteConfirmation, hideDeleteConfirmation] = useModal(() => (
+    <Confirm
+      visible={true}
+      title="Delete item"
+      onOk={() => handleDelete(contentItem, hideDeleteConfirmation)}
+      onCancel={hideDeleteConfirmation}
+    >
+      Do you really want to delete the item?
+    </Confirm>
+  ), [contentItem]);
 
   return (
     <div className="card mb-3">
@@ -73,9 +106,12 @@ const EditableListItem: React.FunctionComponent<IEditableListItemProps> = ({ isN
                       )}                
                     </div>
                   )}
-                  <div className="col-2">
-                    <button type="submit" className="btn btn-primary btn-block">Save</button>
-                    <button type="button" className="btn btn-secondary btn-block" onClick={onClose}>Cancel</button>
+                  <div className="col-2 d-flex flex-column">
+                    <button type="submit" className="btn btn-primary btn-block"><FaSave className="mr-1" />Save</button>
+                    <button type="button" className="btn btn-secondary btn-block" onClick={onClose}><FaTimes className="mr-1" />Cancel</button>
+                    { ! isNew &&
+                      <button type="button" className="btn btn-danger btn-block" onClick={showDeleteConfirmation}><FaTrash className="mr-1" />Delete</button>                  
+                    }
                   </div>
                 </div>
               </form>

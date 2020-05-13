@@ -149,6 +149,7 @@ const List: React.FC<ListProps> = ({ match }) => {
                 activeLanguages={activeLanguages} 
                 onClose={closeEditor}
                 onItemSaved={refreshList}
+                onItemDeleted={refreshList}
               />
             :
               <ListItem 
