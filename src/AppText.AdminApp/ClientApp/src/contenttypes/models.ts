@@ -15,3 +15,10 @@ export interface Field {
   isRequired: boolean,
   isLocalizable?: boolean
 }
+
+export const FieldTypes = {
+  ShortText: 'ShortText',
+  LongText: 'LongText',
+  Number: 'Number',
+  DateTime: 'DateTime'
+}

@@ -22,10 +22,12 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-icons": "^3.10.0",
+    "react-mde": "^10.0.3",
     "react-modal-hook": "^3.0.0",
     "react-router-dom": "^5.2.0",
     "react-select": "^3.1.0",
-    "react-toastify": "^6.0.2"
+    "react-toastify": "^6.0.2",
+    "showdown": "^1.9.1"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.10",

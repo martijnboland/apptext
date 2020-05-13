@@ -7,9 +7,10 @@ import AppContext from '../apps/AppContext';
 import { appConfig } from '../config/AppConfig';
 import { useApi } from '../common/api';
 import { toast } from 'react-toastify';
-import { FaSave, FaCheck, FaTimes, FaTrash } from 'react-icons/fa';
+import { FaSave, FaTimes, FaTrash } from 'react-icons/fa';
 import { useModal } from 'react-modal-hook';
 import Confirm from '../common/components/dialogs/Confirm';
+import { editorMap } from './contentEditors';
 
 interface IEditableListItemProps {
   isNew: boolean,
@@ -92,18 +93,21 @@ const EditableListItem: React.FunctionComponent<IEditableListItemProps> = ({ isN
                 <div className="row">
                   <div className="col-3">
                     <Field name="contentKey" label="Key" component={TextInput} />
-                    {nonLocalizableFields.map(field =>
-                      <Field key={field.name} name={`content.${field.name}`} label={field.description} component={TextInput} />
-                    )}
-                    {metaFields.map(field =>
-                      <Field key={field.name} name={`meta.${field.name}`} label={field.description} component={TextInput} />
-                    )}
+                    {nonLocalizableFields.map(field => {
+                      const Editor = editorMap[field.fieldType];
+                      return <Field key={field.name} name={`content.${field.name}`} label={field.description} component={Editor} />
+                    })}
+                    {metaFields.map(field => {
+                      const Editor = editorMap[field.fieldType];
+                      return <Field key={field.name} name={`meta.${field.name}`} label={field.description} component={Editor} />
+                    })}
                   </div>
                   {activeLanguages.map(lang => 
                     <div className="col" key={lang}>
-                      {localizableFields.map(field =>
-                        <Field key={field.name} name={`content.${field.name}.${lang}`} label={field.description} component={TextInput} />
-                      )}                
+                      {localizableFields.map(field => {
+                        const Editor = editorMap[field.fieldType];
+                        return <Field key={field.name} name={`content.${field.name}.${lang}`} label={field.description} component={Editor} />
+                      })}                
                     </div>
                   )}
                   <div className="col-2 d-flex flex-column">
