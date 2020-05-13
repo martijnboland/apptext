@@ -1,6 +1,9 @@
 ﻿using AppText.Shared.Commands;
 using AppText.Shared.Queries;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppText.Shared.Infrastructure
@@ -40,6 +43,16 @@ namespace AppText.Shared.Infrastructure
                 return handler.Handle((dynamic)query);
             }
             throw new Exception("No handler found for command {0} " + query.ToString());
+        }
+
+        public Task PublishEvent<T>(T eventToPublish) where T: IEvent
+        {
+            var handlerType = typeof(IEventHandler<>).MakeGenericType(eventToPublish.GetType());
+            var handlers = _serviceProvider.GetServices(handlerType) as IEnumerable<IEventHandler<T>>;
+
+            var handleTasks = handlers.Select(h => h.Handle(eventToPublish));
+
+            return Task.WhenAll(handleTasks);
         }
     }
 }

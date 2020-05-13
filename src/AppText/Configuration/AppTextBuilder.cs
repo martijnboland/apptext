@@ -43,6 +43,12 @@ namespace AppText.Configuration
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
 
+            Services.Scan(s => s
+                .FromAssemblies(coreAssembly)
+                    .AddClasses(c => c.AssignableTo(typeof(IEventHandler<>)))
+                    .AsImplementedInterfaces()
+                    .WithTransientLifetime());
+
             // Validators
             Services.AddTransient(typeof(IValidator<>), typeof(Validator<>));
             Services.Scan(s => s
