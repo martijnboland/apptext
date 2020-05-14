@@ -2,6 +2,7 @@ import React from 'react';
 import { Collection } from '../collections/models';
 import { ContentItem } from './models';
 import { FaPen } from 'react-icons/fa';
+import ContentItemProperties from './ContentItemProperties';
 
 interface IListItemProps {
   collection: Collection,
@@ -30,7 +31,9 @@ const ListItem: React.FunctionComponent<IListItemProps> = ({ collection, content
     <div className="card mb-3">
       <div className="card-body">
         <div className="row align-items-center" key={contentItem.id}>
-          <div className="col-3">{contentItem.contentKey}</div>
+          <div className="col-3">
+            {contentItem.contentKey}
+          </div>
           {titleItems.map(item =>
             <h5 className="col" key={item.lang}>{item.title}</h5>
           )}
@@ -38,6 +41,11 @@ const ListItem: React.FunctionComponent<IListItemProps> = ({ collection, content
             <button className="btn btn-link" onClick={onEdit}>
               <FaPen />
             </button>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <ContentItemProperties contentItem={contentItem} />
           </div>
         </div>
       </div>
