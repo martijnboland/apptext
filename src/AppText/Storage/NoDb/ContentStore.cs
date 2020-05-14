@@ -117,5 +117,11 @@ namespace AppText.Storage.NoDb
         {
             return _contentItemCommands.DeleteAsync(appId, id);
         }
+
+        public async Task<bool> CollectionContainsContent(string collectionId, string appId)
+        {
+            var contentItems = await _contentItemQueries.GetAllAsync(appId);
+            return contentItems.Any(ci => ci.CollectionId == collectionId);
+        }
     }
 }

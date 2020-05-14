@@ -16,5 +16,6 @@ namespace AppText.Storage
         Task<string> AddContentItem(ContentItem contentItem);
         Task UpdateContentItem(ContentItem contentItem);
         Task DeleteContentItem(string id, string appId);
+        Task<bool> CollectionContainsContent(string collectionId, string appId);
     }
 }

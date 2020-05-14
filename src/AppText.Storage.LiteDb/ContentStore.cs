@@ -130,5 +130,13 @@ namespace AppText.Storage.LiteDb
                 }
             }
         }
+
+        public Task<bool> CollectionContainsContent(string collectionId, string appId)
+        {
+            var containsContent = _liteRepository.Query<ContentItem>()
+                .Where(ci => ci.CollectionId == collectionId)
+                .Exists();
+            return Task.FromResult(containsContent);
+        }
     }
 }
