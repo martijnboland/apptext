@@ -5,3 +5,5 @@ export * from './TextArea';
 export * from './TextEditor';
 export * from './Select';
 export * from './CustomSelect';
+export * from './DateTimeInput';
+export * from './NumberInput';
