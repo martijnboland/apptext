@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2046
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppText", "src\AppText\AppText.csproj", "{BB15B9A7-9740-4A9E-B6BB-B49627F2EF93}"
 EndProject
@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostAppExample", "src\HostA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppText.Storage.LiteDb", "src\AppText.Storage.LiteDb\AppText.Storage.LiteDb.csproj", "{502B7201-0E5D-496F-B85E-79A3198B294E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppText.AdminApp", "src\AppText.AdminApp\AppText.AdminApp.csproj", "{F0D67EF9-548A-49F9-BC2D-62102667587D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppText.AdminApp", "src\AppText.AdminApp\AppText.AdminApp.csproj", "{F0D67EF9-548A-49F9-BC2D-62102667587D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppText.Translations", "src\AppText.Translations\AppText.Translations.csproj", "{76EAE2C5-F69E-4E2D-A812-D4A0A4D0DCCE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{F0D67EF9-548A-49F9-BC2D-62102667587D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0D67EF9-548A-49F9-BC2D-62102667587D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0D67EF9-548A-49F9-BC2D-62102667587D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76EAE2C5-F69E-4E2D-A812-D4A0A4D0DCCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76EAE2C5-F69E-4E2D-A812-D4A0A4D0DCCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76EAE2C5-F69E-4E2D-A812-D4A0A4D0DCCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76EAE2C5-F69E-4E2D-A812-D4A0A4D0DCCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
