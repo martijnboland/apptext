@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AppText.Features.ContentManagement;
 using NoDb;
@@ -46,7 +47,8 @@ namespace AppText.Storage.NoDb
         public async Task<string> AddContentCollection(ContentCollection contentCollection)
         {
             contentCollection.Id = Guid.NewGuid().ToString();
-            await _contentCollectionCommands.CreateAsync(contentCollection.ContentType.AppId, contentCollection.Id, contentCollection);
+            var projectId = contentCollection.ContentType.AppId;
+            await _contentCollectionCommands.CreateAsync(projectId, contentCollection.Id, contentCollection);
             return contentCollection.Id;
         }
 

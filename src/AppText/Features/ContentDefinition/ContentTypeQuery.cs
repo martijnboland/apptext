@@ -11,6 +11,8 @@ namespace AppText.Features.ContentDefinition
         public string Id { get; set; }
 
         public string Name { get; set; }
+
+        public bool IncludeGlobalContentTypes { get; set; }
     }
 
     public class ContentTypeQueryHandler : IQueryHandler<ContentTypeQuery, ContentType[]>

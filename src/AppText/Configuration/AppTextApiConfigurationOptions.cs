@@ -2,7 +2,7 @@
 
 namespace AppText.Configuration
 {
-    public class AppTextMvcConfigurationOptions
+    public class AppTextApiConfigurationOptions
     {
         public const string DefaultRoutePrefix = "cms";
 
@@ -10,11 +10,6 @@ namespace AppText.Configuration
         /// The route prefix for the API. Default is 'cms'.
         /// </summary>
         public string RoutePrefix { get; set; }
-
-        /// <summary>
-        /// Extension point to register additional services.
-        /// </summary>
-        public AppTextBuilder AppTextServices { get; }
 
         /// <summary>
         /// Does the API require an authenticated user?
@@ -36,10 +31,9 @@ namespace AppText.Configuration
         /// </summary>
         public bool EnableGraphiql { get; set; }
 
-        public AppTextMvcConfigurationOptions(IServiceCollection services)
+        public AppTextApiConfigurationOptions(IServiceCollection services)
         {
             this.RoutePrefix = DefaultRoutePrefix;
-            this.AppTextServices = services.AddAppText();
             this.RequireAuthenticatedUser = false;
             this.RequiredAuthorizationPolicy = null;
             this.RegisterClaimsPrincipal = true;

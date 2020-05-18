@@ -1,6 +1,6 @@
-﻿using AppText.Configuration;
+﻿using AppText.AdminApp.Controllers;
+using AppText.Configuration;
 using AppText.Shared.Infrastructure.Mvc;
-using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -9,46 +9,28 @@ using System.Reflection;
 
 namespace AppText.AdminApp.Configuration
 {
-    public static class MvcBuilderExtensions
+    public static class AppTextBuilderExtensions
     {
-        public static IMvcCoreBuilder AddAppTextAdmin(this IMvcCoreBuilder builder, Action<AppTextAdminConfigurationOptions> setupAction = null)
+        public static AppTextBuilder AddAdmin(this AppTextBuilder appTextBuilder, Action<AppTextAdminConfigurationOptions> setupAction = null)
         {
-            var assembly = typeof(Startup).Assembly;
-            builder.AddApplicationPart(assembly);
+            var mvcBuilder = appTextBuilder.Services.AddMvcCore();
+            var assembly = typeof(AdminController).Assembly;
+            mvcBuilder.AddApplicationPart(assembly);
 
-            var options = GetOptions(builder.Services, setupAction);
+            var options = GetOptions(appTextBuilder.Services, setupAction);
 
-            ConfigureServices(builder.Services, assembly, options);
+            ConfigureServices(appTextBuilder.Services, assembly, options);
 
-            builder.AddMvcOptions(mvcOptions =>
+            mvcBuilder.AddMvcOptions(mvcOptions =>
             {
                 mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix, assembly));
                 mvcOptions.Conventions.Add(new AppTextAuthorizationConvention(
-                    options.RequireAuthenticatedUser.HasValue ? options.RequireAuthenticatedUser.Value : false, 
-                    options.RequiredAuthorizationPolicy, 
+                    options.RequireAuthenticatedUser.HasValue ? options.RequireAuthenticatedUser.Value : false,
+                    options.RequiredAuthorizationPolicy,
                     assembly));
             });
-            return builder;
-        }
 
-        public static IMvcBuilder AddAppTextAdmin(this IMvcBuilder builder, Action<AppTextAdminConfigurationOptions> setupAction = null)
-        {
-            var assembly = typeof(Startup).Assembly;
-            builder.AddApplicationPart(assembly);
-
-            var options = GetOptions(builder.Services, setupAction);
-
-            ConfigureServices(builder.Services, assembly, options);
-
-            builder.AddMvcOptions(mvcOptions =>
-            {
-                mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix, assembly));
-                mvcOptions.Conventions.Add(new AppTextAuthorizationConvention(
-                    options.RequireAuthenticatedUser.HasValue ? options.RequireAuthenticatedUser.Value : false, 
-                    options.RequiredAuthorizationPolicy, 
-                    assembly));
-            });
-            return builder;
+            return appTextBuilder;
         }
 
         private static AppTextAdminConfigurationOptions GetOptions(

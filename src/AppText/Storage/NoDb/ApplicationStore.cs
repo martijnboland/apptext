@@ -8,8 +8,6 @@ namespace AppText.Storage.NoDb
 {
     public class ApplicationStore : IApplicationStore
     {
-        private const string ApplicationsProjectId = "apps";
-
         private readonly IBasicQueries<App> _queries;
         private readonly IBasicCommands<App> _commands;
 
@@ -21,35 +19,35 @@ namespace AppText.Storage.NoDb
 
         public Task<App> GetApp(string id)
         {
-            return _queries.FetchAsync(ApplicationsProjectId, id);
+            return _queries.FetchAsync(Constants.ApplicationsProjectId, id);
         }
 
         public async Task<App[]> GetApps(AppQuery query)
         {
-            var apps = await _queries.GetAllAsync(ApplicationsProjectId);
+            var apps = await _queries.GetAllAsync(Constants.ApplicationsProjectId);
             return apps.ToArray();
         }
 
         public async Task<bool> AppExists(string id)
         {
-            var exists = (await _queries.GetAllAsync(ApplicationsProjectId)).Any(a => a.Id == id);
+            var exists = (await _queries.GetAllAsync(Constants.ApplicationsProjectId)).Any(a => a.Id == id);
             return exists;
         }
 
         public async Task<string> AddApp(App app)
         {
-            await _commands.CreateAsync(ApplicationsProjectId, app.Id, app);
+            await _commands.CreateAsync(Constants.ApplicationsProjectId, app.Id, app);
             return app.Id;
         }
 
         public Task DeleteApp(string id)
         {
-            return _commands.DeleteAsync(ApplicationsProjectId, id);
+            return _commands.DeleteAsync(Constants.ApplicationsProjectId, id);
         }
 
         public Task UpdateApp(App app)
         {
-            return _commands.UpdateAsync(ApplicationsProjectId, app.Id, app);
+            return _commands.UpdateAsync(Constants.ApplicationsProjectId, app.Id, app);
         }
     }
 }

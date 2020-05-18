@@ -19,7 +19,14 @@ namespace AppText.Storage.LiteDb
             var q = _liteRepository.Query<ContentType>();
             if (! string.IsNullOrEmpty(query.AppId))
             {
-                q = q.Where(ct => ct.AppId == query.AppId);
+                if (query.IncludeGlobalContentTypes)
+                {
+                    q = q.Where(ct => ct.AppId == query.AppId || ct.AppId == null);
+                }
+                else
+                {
+                    q = q.Where(ct => ct.AppId == query.AppId);
+                }
             }
             if (!string.IsNullOrEmpty(query.Id))
             {

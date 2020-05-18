@@ -2,6 +2,7 @@
 using AppText.Features.GraphQL;
 using AppText.Shared.Commands;
 using AppText.Shared.Infrastructure;
+using AppText.Shared.Infrastructure.Mvc;
 using AppText.Shared.Queries;
 using AppText.Shared.Validation;
 using AppText.Storage;
@@ -21,6 +22,23 @@ namespace AppText.Configuration
         {
             Services = services;
             RegisterCoreServices();
+        }
+
+        public AppTextBuilder AddApi(Action<AppTextApiConfigurationOptions> configureOptionsAction = null)
+        {
+            var mvcBuilder = Services.AddMvcCore();
+            var assembly = typeof(Startup).Assembly;
+            mvcBuilder.AddApplicationPart(assembly);
+
+            var options = GetOptions(Services, configureOptionsAction);
+
+            mvcBuilder.AddMvcOptions(mvcOptions =>
+            {
+                mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix, assembly));
+                mvcOptions.Conventions.Add(new AppTextAuthorizationConvention(options.RequireAuthenticatedUser, options.RequiredAuthorizationPolicy));
+                mvcOptions.Conventions.Add(new AppTextGraphiqlConvention(options.EnableGraphiql));
+            });
+            return this;
         }
 
         private void RegisterCoreServices()
@@ -73,6 +91,32 @@ namespace AppText.Configuration
 
             // Cache
             Services.AddMemoryCache();
+        }
+
+        private static AppTextApiConfigurationOptions GetOptions(
+            IServiceCollection services,
+            Action<AppTextApiConfigurationOptions> configureOptionsAction = null
+        )
+        {
+            var enrichOptions = configureOptionsAction ?? delegate { };
+            var options = new AppTextApiConfigurationOptions(services);
+            enrichOptions(options);
+
+            if (options.RegisterClaimsPrincipal)
+            {
+                RegisterClaimsPrincipal(services);
+            }
+
+            // Register public options as singleton for other modules
+            services.AddSingleton(options.ToPublicConfiguration());
+
+            return options;
+        }
+
+        private static void RegisterClaimsPrincipal(IServiceCollection services)
+        {
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.TryAddTransient(sp => sp.GetService<IHttpContextAccessor>().HttpContext.User);
         }
     }
 }

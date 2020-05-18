@@ -70,26 +70,27 @@ namespace HostAppExample
 
             var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
 
+            services.AddAppText()
+                .AddLiteDbStorage(connectionString)
+                .AddApi(options =>
+                {
+                    options.RoutePrefix = "apptext";
+                    options.RequiredAuthorizationPolicy = "AppText";
+                    options.EnableGraphiql = true;
+                })
+                .AddAdmin(options =>
+                {
+                    options.RoutePrefix = "admin";
+                    options.ApiBaseUrl = "/apptext";
+                })
+                .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en");
+
             services
                 .AddControllersWithViews()
                     .AddNewtonsoftJson(options =>
                     {
                         options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                         options.SerializerSettings.Converters.Add(new StringEnumConverter());
-                    })
-                    .AddAppText(options =>
-                    {
-                        options.RoutePrefix = "apptext";
-                        options.RequiredAuthorizationPolicy = "AppText";
-                        options.AppTextServices
-                            .AddLiteDbStorage(connectionString)
-                            .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en");
-                        options.EnableGraphiql = true;
-                    })
-                    .AddAppTextAdmin(options =>
-                    {
-                        options.RoutePrefix = "admin";
-                        options.ApiBaseUrl = "/apptext";
                     });
             services.AddRazorPages();
         }
