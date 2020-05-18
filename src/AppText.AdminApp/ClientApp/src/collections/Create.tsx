@@ -15,7 +15,7 @@ const Create: React.FC<RouteComponentProps> = ({ history }) => {
   const url = `${appConfig.apiBaseUrl}/${currentApp.id}/collections`;
   const createCollection = useApi<Collection>(url, 'POST');
 
-  const contentTypesUrl = `${appConfig.apiBaseUrl}/${currentApp.id}/contenttypes`;
+  const contentTypesUrl = `${appConfig.apiBaseUrl}/${currentApp.id}/contenttypes?includeglobalcontenttypes=true`;
   const { data: contentTypes } = useApiGet<ContentType[]>(contentTypesUrl, []);
 
   const initialCollection: Collection = {

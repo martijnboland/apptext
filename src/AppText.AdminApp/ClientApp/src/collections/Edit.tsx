@@ -20,7 +20,7 @@ const Edit: React.FC<EditProps> = ({ match, history }) => {
   const { currentApp } = useContext(AppContext);
   const url = `${appConfig.apiBaseUrl}/${currentApp.id}/collections/${match.params.id}`;
   const { data: collection } = useApiGet<Collection>(url);
-  const contentTypesUrl = `${appConfig.apiBaseUrl}/${currentApp.id}/contenttypes`;
+  const contentTypesUrl = `${appConfig.apiBaseUrl}/${currentApp.id}/contenttypes?includeglobalcontenttypes=true`;
   const { data: contentTypes } = useApiGet<ContentType[]>(contentTypesUrl);
   const updateCollection = useApi<Collection>(url, 'PUT');
   const deleteCollection = useApi<Collection>(url, 'DELETE');

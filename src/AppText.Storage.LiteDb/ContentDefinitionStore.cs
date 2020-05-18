@@ -36,7 +36,7 @@ namespace AppText.Storage.LiteDb
             {
                 q = q.Where(ct => ct.Name == query.Name);
             }
-            var result = q.ToArray().OrderBy(ct => ct.Name).ToArray();
+            var result = q.ToArray().OrderByDescending(ct => ct.AppId).OrderBy(ct => ct.Name).ToArray();
             return Task.FromResult(result);
         }
 

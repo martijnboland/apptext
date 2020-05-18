@@ -50,7 +50,7 @@ namespace AppText.Storage.NoDb
             {
                 contentTypes = contentTypes.Where(ct => ct.Name == query.Name);
             }
-            return contentTypes.OrderBy(ct => ct.Name).ToArray();
+            return contentTypes.OrderByDescending(ct => ct.AppId).ThenBy(ct => ct.Name).ToArray();
         }
 
         public Task UpdateContentType(ContentType contentType)

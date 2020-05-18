@@ -46,7 +46,7 @@ namespace AppText.Translations.Controllers
             {
                 contentCollectionQuery.Name = collection;
             }
-            var collections = await _contentStore.GetContentCollections(contentCollectionQuery);
+            var collections = (await _contentStore.GetContentCollections(contentCollectionQuery)).Where(c => c.ContentType.Id == translationContentType.Id);
             var result = new SortedDictionary<string, string>();
             foreach (var contentCollection in collections)
             {
@@ -58,7 +58,7 @@ namespace AppText.Translations.Controllers
                     string value = null;
                     if (contentItem.Content.ContainsKey(Constants.TranslationTextFieldName))
                     {
-                        var contentItemFieldValue = contentItem.Content[Constants.TranslationTextFieldName] as JObject;
+                        var contentItemFieldValue = JObject.FromObject(contentItem.Content[Constants.TranslationTextFieldName]);
                         if (contentItemFieldValue != null)
                         {
                             var jToken = contentItemFieldValue.GetValue(language);

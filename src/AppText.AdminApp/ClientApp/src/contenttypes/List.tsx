@@ -11,8 +11,16 @@ interface ListProps extends RouteComponentProps<{}> {
 
 const List: React.FunctionComponent<ListProps> = ({ match }) => {
   const { currentApp } = useContext(AppContext);
-  const url = `${appConfig.apiBaseUrl}/${currentApp.id}/contenttypes`;
+  const url = `${appConfig.apiBaseUrl}/${currentApp.id}/contenttypes?includeglobalcontenttypes=true`;
   const { data, isLoading } = useApiGet<ContentType[]>(url, []);
+
+  const ContentTypeTitle = ({ contentType }) => {
+    if (contentType.appId) {
+      return <Link to={{ pathname: `${match.url}/edit/${contentType.id}` }}>{contentType.name}</Link>
+    } else {
+      return <span>{contentType.name} (global)</span>
+    }
+  }
 
   return (
     <>
@@ -31,7 +39,7 @@ const List: React.FunctionComponent<ListProps> = ({ match }) => {
           <dl>
             {data.map(ct => 
               <React.Fragment key={ct.id}>
-                <dt><Link to={{ pathname: `${match.url}/edit/${ct.id}` }}>{ct.name}</Link></dt>
+                <dt><ContentTypeTitle contentType={ct} /></dt>
                 <dd>{ct.description}</dd>
               </React.Fragment>
             )}

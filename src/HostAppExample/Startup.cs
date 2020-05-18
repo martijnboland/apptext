@@ -2,6 +2,7 @@
 using AppText.Configuration;
 using AppText.Features.Application;
 using AppText.Storage.LiteDb;
+using AppText.Translations.Configuration;
 using HostAppExample.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -83,6 +84,7 @@ namespace HostAppExample
                     options.RoutePrefix = "admin";
                     options.ApiBaseUrl = "/apptext";
                 })
+                .AddTranslations()
                 .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en");
 
             services
