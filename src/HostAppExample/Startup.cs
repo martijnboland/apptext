@@ -71,6 +71,14 @@ namespace HostAppExample
 
             var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
 
+            services.AddControllersWithViews()
+                    .AddNewtonsoftJson(options =>
+                    {
+                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                        options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                    });
+            services.AddRazorPages();
+
             services.AddAppText()
                 .AddLiteDbStorage(connectionString)
                 .AddApi(options =>
@@ -86,15 +94,6 @@ namespace HostAppExample
                 })
                 .AddTranslations()
                 .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en");
-
-            services
-                .AddControllersWithViews()
-                    .AddNewtonsoftJson(options =>
-                    {
-                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                        options.SerializerSettings.Converters.Add(new StringEnumConverter());
-                    });
-            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

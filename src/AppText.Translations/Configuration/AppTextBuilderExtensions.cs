@@ -1,6 +1,7 @@
 ﻿using AppText.Configuration;
 using AppText.Shared.Infrastructure.Mvc;
 using AppText.Translations.Controllers;
+using AppText.Translations.Formatters;
 using AppText.Translations.Initialization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,19 @@ namespace AppText.Translations.Configuration
             mvcBuilder.AddMvcOptions(mvcOptions =>
             {
                 mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(translationsPrefix, assembly));
+            });
+
+            // Add the custom output formatters
+            mvcBuilder.AddMvcOptions(options =>
+            {
+                options.OutputFormatters.Insert(0, new TranslationResultJsonFormatter());
+                options.OutputFormatters.Add(new TranslationResultResxFormatter());
+                options.OutputFormatters.Add(new TranslationResultPoFormatter());
+            });
+            mvcBuilder.AddFormatterMappings(options =>
+            {
+                options.SetMediaTypeMappingForFormat("resx", "text/microsoft-resx");
+                options.SetMediaTypeMappingForFormat("po", "text/x-gettext-translation");
             });
 
             return appTextBuilder;
