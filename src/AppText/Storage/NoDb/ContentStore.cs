@@ -77,6 +77,10 @@ namespace AppText.Storage.NoDb
             {
                 contentItems = contentItems.Where(ci => ci.CollectionId == query.CollectionId);
             }
+            if (! string.IsNullOrEmpty(query.ContentKey))
+            {
+                contentItems = contentItems.Where(ci => ci.ContentKey == query.ContentKey);
+            }
             if (!string.IsNullOrEmpty(query.ContentKeyStartsWith))
             {
                 contentItems = contentItems.Where(ci => ci.ContentKey.StartsWith(query.ContentKeyStartsWith));

@@ -68,6 +68,10 @@ namespace AppText.Storage.LiteDb
             {
                 q = q.Where(ci => ci.CollectionId == query.CollectionId);
             }
+            if (!string.IsNullOrEmpty(query.ContentKey))
+            {
+                q = q.Where(ci => ci.ContentKey == query.ContentKey);
+            }
             if (!string.IsNullOrEmpty(query.ContentKeyStartsWith))
             {
                 q = q.Where(ci => ci.ContentKey.StartsWith(query.ContentKeyStartsWith));

@@ -9,6 +9,7 @@ namespace AppText.Features.ContentManagement
         public string AppId { get; set; }
         public string Id { get; set; }
         public string CollectionId { get; set; }
+        public string ContentKey { get; set; }
         public string ContentKeyStartsWith { get; set; }
         public int? First { get; set; }
         public int? Offset { get; set; }

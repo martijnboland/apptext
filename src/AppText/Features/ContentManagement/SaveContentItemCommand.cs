@@ -32,6 +32,8 @@ namespace AppText.Features.ContentManagement
         public SaveContentItemCommand()
         {
             LanguagesToValidate = new string[0];
+            Meta = new Dictionary<string, object>();
+            Content = new Dictionary<string, object>();
         }
 
         public ContentItem CreateContentItem(IPrincipal currentUser)
