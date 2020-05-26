@@ -20,6 +20,7 @@ namespace AppText.Features.ContentManagement
 
         public async Task<bool> IsValidForLanguages(ContentItem objectToValidate, string[] languagesToValidate)
         {
+            ClearErrors();
             await ValidateAsync(objectToValidate);
             await ValidateForLanguages(objectToValidate, languagesToValidate);
 

@@ -23,7 +23,7 @@ namespace AppText.Shared.Validation
         /// <returns></returns>
         public async Task<bool> IsValid(T objectToValidate)
         {
-            _errors.Clear();
+            ClearErrors();
             await ValidateAsync(objectToValidate);
             return _errors.Count == 0;
         }
@@ -114,6 +114,12 @@ namespace AppText.Shared.Validation
             _errors.AddRange(errors);
         }
 
-        
+        /// <summary>
+        /// Clear the current validation errors.
+        /// </summary>
+        protected void ClearErrors()
+        {
+            _errors.Clear();
+        }
     }
 }

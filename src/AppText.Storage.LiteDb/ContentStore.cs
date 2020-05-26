@@ -14,6 +14,15 @@ namespace AppText.Storage.LiteDb
         public ContentStore(LiteDatabase liteDatabase)
         {
             _liteRepository = new LiteRepository(liteDatabase);
+            
+            var db = _liteRepository.Database;
+            
+            db.GetCollection<ContentCollection>().EnsureIndex("IX_ContentCollection_AppId", cc => cc.ContentType.AppId);
+            db.GetCollection<ContentCollection>().EnsureIndex("IX_ContentCollection_Name", cc => cc.Name);
+
+            db.GetCollection<ContentItem>().EnsureIndex("IX_ContentItem_AppId", ci => ci.AppId);
+            db.GetCollection<ContentItem>().EnsureIndex("IX_ContentItem_CollectionId", ci => ci.CollectionId);
+            db.GetCollection<ContentItem>().EnsureIndex("IX_ContentItem_ContentKey", ci => ci.ContentKey);
         }
 
         public Task<ContentCollection[]> GetContentCollections(ContentCollectionQuery query)

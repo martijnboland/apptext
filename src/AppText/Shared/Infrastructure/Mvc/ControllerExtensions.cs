@@ -54,7 +54,7 @@ namespace AppText.Shared.Infrastructure.Mvc
         }
 
         /// <summary>
-        /// Returns an object that only contains vaildation errors of the CommandResult and converts the property names to camelCase
+        /// Returns an object that only contains validation errors of the CommandResult and converts the property names to camelCase
         /// for easier usage in client apps.
         /// </summary>
         /// <param name="result"></param>

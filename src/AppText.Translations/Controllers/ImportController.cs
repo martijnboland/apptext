@@ -1,10 +1,12 @@
-﻿using AppText.Features.ContentDefinition;
+﻿using AppText.Features.Application;
+using AppText.Features.ContentDefinition;
 using AppText.Features.ContentManagement;
 using AppText.Shared.Commands;
 using AppText.Shared.Queries;
 using AppText.Storage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,6 +22,7 @@ namespace AppText.Translations.Controllers
     [ApiController]
     public class ImportController : ControllerBase
     {
+        private readonly ILogger<ImportController> _logger;
         private readonly IQueryHandler<ContentTypeQuery, ContentType[]> _contentTypeQueryHandler;
         private readonly IQueryHandler<ContentCollectionQuery, ContentCollection[]> _contentCollectionQueryHandler;
         private readonly ICommandHandler<SaveContentCollectionCommand> _saveContentCollectionCommand;
@@ -27,17 +30,19 @@ namespace AppText.Translations.Controllers
         private readonly ICommandHandler<SaveContentItemCommand> _saveContentItemCommand;
 
         public ImportController(
+            ILogger<ImportController> logger,
             IQueryHandler<ContentTypeQuery, ContentType[]> contentTypeQueryHandler,
             IQueryHandler<ContentCollectionQuery, ContentCollection[]> contentCollectionQueryHandler,
             ICommandHandler<SaveContentCollectionCommand> saveContentCollectionCommand,
             IQueryHandler<ContentItemQuery, ContentItem[]> contentItemQueryHandler,
-            ICommandHandler<SaveContentItemCommand> saveContentItemCommand, IQueryHandler<ContentCollectionQuery, ContentCollection[]> contentcollectionQueryHandler)
+            ICommandHandler<SaveContentItemCommand> saveContentItemCommand)
         {
             _contentTypeQueryHandler = contentTypeQueryHandler;
             _contentCollectionQueryHandler = contentCollectionQueryHandler;
             _saveContentCollectionCommand = saveContentCollectionCommand;
             _contentItemQueryHandler = contentItemQueryHandler;
             _saveContentItemCommand = saveContentItemCommand;
+            _logger = logger;
         }
 
         [HttpPost("fromresx/{language}/{collection}")]
@@ -118,7 +123,19 @@ namespace AppText.Translations.Controllers
                 contentFieldValue[language] = keyValuePair.Value;
                 saveContentItemCommand.Content[Constants.TranslationTextFieldName] = contentFieldValue;
 
-                await _saveContentItemCommand.Handle(saveContentItemCommand);
+                var result = await _saveContentItemCommand.Handle(saveContentItemCommand);
+                switch (result.Status)
+                {
+                    case ResultStatus.Success:
+                        _logger.LogInformation("Successfully imported item {0} into collection {1} for app {2}", keyValuePair.Key, collectionId, appId);
+                        break;
+                    case ResultStatus.ValidationError:
+                        foreach (var error in result.ValidationErrors)
+                        {
+                            _logger.LogWarning("Validation error while importing item {0} into collection {1} for app {2}: {3}", keyValuePair.Key, collectionId, appId, error.ErrorMessage);
+                        }
+                        break;
+                }
             }
         }
     }
