@@ -9,13 +9,16 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Text;
@@ -71,12 +74,7 @@ namespace HostAppExample
 
             var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
 
-            services.AddControllersWithViews()
-                    .AddNewtonsoftJson(options =>
-                    {
-                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                        options.SerializerSettings.Converters.Add(new StringEnumConverter());
-                    });
+            services.AddControllersWithViews();
             services.AddRazorPages();
 
             services.AddAppText()
@@ -94,6 +92,16 @@ namespace HostAppExample
                 })
                 .AddTranslations()
                 .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en");
+            
+            //services.Configure<MvcNewtonsoftJsonOptions>(o =>
+            //{
+            //    o.SerializerSettings.ContractResolver = new DefaultContractResolver
+            //    {
+            //        NamingStrategy = new CamelCaseNamingStrategy()
+            //    };
+            //    o.SerializerSettings.Converters = new List<JsonConverter> { new StringEnumConverter() };
+
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -37,6 +37,7 @@ namespace AppText.Configuration
                 mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix, assembly));
                 mvcOptions.Conventions.Add(new AppTextAuthorizationConvention(options.RequireAuthenticatedUser, options.RequiredAuthorizationPolicy));
                 mvcOptions.Conventions.Add(new AppTextGraphiqlConvention(options.EnableGraphiql));
+                mvcOptions.Conventions.Add(new AppTextNewtonsoftJsonConvention(assembly));
             });
             return this;
         }
