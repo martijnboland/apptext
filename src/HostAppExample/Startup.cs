@@ -92,16 +92,16 @@ namespace HostAppExample
                 })
                 .AddTranslations()
                 .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en");
-            
-            //services.Configure<MvcNewtonsoftJsonOptions>(o =>
-            //{
-            //    o.SerializerSettings.ContractResolver = new DefaultContractResolver
-            //    {
-            //        NamingStrategy = new CamelCaseNamingStrategy()
-            //    };
-            //    o.SerializerSettings.Converters = new List<JsonConverter> { new StringEnumConverter() };
 
-            //});
+            services.Configure<MvcNewtonsoftJsonOptions>(o =>
+            {
+                o.SerializerSettings.ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy()
+                };
+                o.SerializerSettings.Converters = new List<JsonConverter> { new StringEnumConverter() };
+
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
