@@ -1,6 +1,9 @@
 ﻿using AppText.AdminApp.Controllers;
+using AppText.AdminApp.Initialization;
 using AppText.Configuration;
+using AppText.Features.Application;
 using AppText.Shared.Infrastructure.Mvc;
+using AppText.Translations.Configuration;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -13,6 +16,7 @@ namespace AppText.AdminApp.Configuration
     {
         public static AppTextBuilder AddAdmin(this AppTextBuilder appTextBuilder, Action<AppTextAdminConfigurationOptions> setupAction = null)
         {
+            // Register as application part with embedded views
             var mvcBuilder = appTextBuilder.Services.AddMvcCore();
             var assembly = typeof(AdminController).Assembly;
             mvcBuilder.AddApplicationPart(assembly);
@@ -29,6 +33,15 @@ namespace AppText.AdminApp.Configuration
                     options.RequiredAuthorizationPolicy,
                     assembly));
             });
+
+            // Enable Translations module for our own translations.
+            appTextBuilder.AddTranslations();
+
+            // Create AdminApp
+            appTextBuilder.InitializeApp(Constants.AppTextAdminAppId, Constants.AppTextAdminAppDescription, new[] { "en", "nl", "de" }, "en");
+
+            // Import translations (register as IHostedService)
+            appTextBuilder.Services.AddHostedService<AppTextAdminInitializer>();
 
             return appTextBuilder;
         }

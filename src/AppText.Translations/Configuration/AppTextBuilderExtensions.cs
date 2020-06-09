@@ -32,7 +32,7 @@ namespace AppText.Translations.Configuration
             }
 
             // Add translations initializer.
-            appTextBuilder.Services.AddTransient<IStartupFilter>(sp => new TranslationsInitializer(sp));
+            appTextBuilder.Services.AddHostedService<TranslationsInitializer>();
 
             // Add controller routes
             var mvcBuilder = appTextBuilder.Services.AddMvcCore();

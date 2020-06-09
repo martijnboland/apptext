@@ -1,0 +1,6 @@
+﻿[
+  { "AppText:Required": "Required" },
+  { "AppText:StringLength": "Max {0} characters" },
+  { "AppText:DefaultLanguageNotInLanguages": "The default language {1} does not exist in the languages of the app ({0})" },
+  { "AppText:AppIdAlreadyExists": "The app with id {0} already exists" }
+]

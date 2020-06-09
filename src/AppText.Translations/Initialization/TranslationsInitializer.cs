@@ -5,13 +5,16 @@ using AppText.Storage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AppText.Translations.Initialization
 {
-    public class TranslationsInitializer : IStartupFilter
+    public class TranslationsInitializer : IHostedService
     {
         private readonly IServiceProvider _serviceProvider;
 
@@ -20,7 +23,7 @@ namespace AppText.Translations.Initialization
             _serviceProvider = serviceProvider;
         }
 
-        public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
             // Ensure that the global Translations content type exists
             using (var scope = _serviceProvider.CreateScope())
@@ -30,11 +33,11 @@ namespace AppText.Translations.Initialization
 
                 var contentDefinitionStore = scope.ServiceProvider.GetRequiredService<IContentDefinitionStore>();
                 var translationContentTypeQuery = new ContentTypeQuery { AppId = null, Name = "Translation" };
-                var translationContentType = AsyncHelper.RunSync(() => contentDefinitionStore.GetContentTypes(translationContentTypeQuery)).FirstOrDefault();
+                var translationContentType = (await contentDefinitionStore.GetContentTypes(translationContentTypeQuery)).FirstOrDefault();
                 if (translationContentType == null)
                 {
                     logger.LogInformation($"Global Translation content type not found, creating...");
-                    AsyncHelper.RunSync(() => contentDefinitionStore.AddContentType(new ContentType
+                    await contentDefinitionStore.AddContentType(new ContentType
                     {
                         AppId = null, // global
                         Name = Constants.TranslationContentType,
@@ -44,14 +47,18 @@ namespace AppText.Translations.Initialization
                             new Field { Name = Constants.TranslationTextFieldName, Description = "Text", FieldType = new ShortText(), IsRequired = true }
                         },
                         Version = 0
-                    }));
+                    });
                 }
                 else
                 {
                     logger.LogInformation($"Global Translation content type already registered. Skipping creation...");
                 }
             }
-            return next;
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
         }
     }
 }
