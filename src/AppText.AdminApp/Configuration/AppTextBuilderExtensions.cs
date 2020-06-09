@@ -70,14 +70,17 @@ namespace AppText.AdminApp.Configuration
 
         private static void ConfigureServices(IServiceCollection services, Assembly assembly, AppTextAdminConfigurationOptions options)
         {
-            // Register EmbeddedFileProvider for views
-            services.Configure<MvcRazorRuntimeCompilationOptions>(razorOptions =>
+            if (! options.EmbeddedViewsDisabled)
             {
-                razorOptions.FileProviders.Add(new EmbeddedFileProvider(assembly));
-            });
+                // Register EmbeddedFileProvider for views
+                services.Configure<MvcRazorRuntimeCompilationOptions>(razorOptions =>
+                {
+                    razorOptions.FileProviders.Add(new EmbeddedFileProvider(assembly));
+                });
 
-            // Register Embedded Static Files provider
-            services.ConfigureOptions(typeof(EmbeddedStaticFilesOptions));
+                // Register Embedded Static Files provider
+                services.ConfigureOptions(typeof(EmbeddedStaticFilesOptions));
+            }
         }
     }
 }

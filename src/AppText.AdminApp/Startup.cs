@@ -4,26 +4,34 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using AppText.Configuration;
+using AppText.Storage.NoDb;
+using System.IO;
 
 namespace AppText.AdminApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Env = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Env { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(new AppTextAdminConfigurationOptions
-            {
-                ApiBaseUrl = "https://localhost:5001",
-                RoutePrefix = ""
-            });
+            var dataPath = Path.Combine(Env.ContentRootPath, "App_Data");
+            services.AddAppText()
+                .AddNoDbStorage(dataPath)
+                .AddApi()
+                .AddAdmin(o =>
+                {
+                    o.EmbeddedViewsDisabled = true;
+                });
             services.AddControllersWithViews();
         }
 
@@ -43,7 +51,8 @@ namespace AppText.AdminApp
             app.UseRouting();
 
             app.UseHttpsRedirection();
-            app.UseEndpoints(endpoints => {
+            app.UseEndpoints(endpoints =>
+            {
                 endpoints.MapControllers();
             });
         }

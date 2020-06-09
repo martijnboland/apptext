@@ -4,10 +4,10 @@ namespace AppText.Configuration
 {
     public class AppTextApiConfigurationOptions
     {
-        public const string DefaultRoutePrefix = "cms";
+        public const string DefaultRoutePrefix = "apptext";
 
         /// <summary>
-        /// The route prefix for the API. Default is 'cms'.
+        /// The route prefix for the API. Default is 'apptext'.
         /// </summary>
         public string RoutePrefix { get; set; }
 

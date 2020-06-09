@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\" />
+    <Folder Include="Views\Admin\" />
     <Folder Include="wwwroot\dist\" />
   </ItemGroup>
 

@@ -81,15 +81,10 @@ namespace HostAppExample
                 .AddLiteDbStorage(connectionString)
                 .AddApi(options =>
                 {
-                    options.RoutePrefix = "apptext";
                     options.RequiredAuthorizationPolicy = "AppText";
                     options.EnableGraphiql = true;
                 })
-                .AddAdmin(options =>
-                {
-                    options.RoutePrefix = "admin";
-                    options.ApiBaseUrl = "/apptext";
-                })
+                .AddAdmin()
                 .AddTranslations()
                 .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en");
 

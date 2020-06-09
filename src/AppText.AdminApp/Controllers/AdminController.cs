@@ -19,7 +19,7 @@ namespace AppText.AdminApp.Controllers
         [HttpGet("{*catchall}")]
         public IActionResult AppTextAdmin()
         {
-            var appBaseUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+            var appBaseUrl = $"//{this.Request.Host}{this.Request.PathBase}";
             var model = new AdminAppModel(_options, appBaseUrl, Request.PathBase);
             return View(model);
         }
