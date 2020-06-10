@@ -8,6 +8,7 @@ namespace AppText.AdminApp
         public const string AppTextAdminAppDescription = "AppText Admin App";
         public const string AppTextAdminLabelsCollection = "Labels";
         public const string AppTextAdminMessagesCollection = "Messages";
-        public static readonly string[] AppTextAdminCollections = new[] { AppTextAdminLabelsCollection, AppTextAdminMessagesCollection };
+        public const string AppTextAdminErrorsCollection = "Errors";
+        public static readonly string[] AppTextAdminCollections = new[] { AppTextAdminLabelsCollection, AppTextAdminMessagesCollection, AppTextAdminErrorsCollection };
     }
 }

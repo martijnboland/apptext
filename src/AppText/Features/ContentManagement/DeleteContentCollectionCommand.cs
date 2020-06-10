@@ -33,7 +33,7 @@ namespace AppText.Features.ContentManagement
             // Verify that the collection has no content.
             if (await _contentStore.CollectionContainsContent(command.Id, command.AppId))
             {
-                result.AddValidationError(new ValidationError() { Name = "", ErrorMessage = "AppText:DeleteCollectionContainsContent" });
+                result.AddValidationError(new ValidationError() { Name = "", ErrorMessage = "DeleteCollectionContainsContent" });
             }
             if (! result.ValidationErrors.Any())
             {

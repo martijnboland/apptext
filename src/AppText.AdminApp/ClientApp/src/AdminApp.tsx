@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import classNames from 'classnames';
 import { ModalProvider } from 'react-modal-hook';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 import 'react-toastify/dist/ReactToastify.css';
 
 import UserContextProvider from './auth/UserContextProvider';
@@ -36,33 +37,35 @@ export const AdminApp: React.FunctionComponent = () => {
   toast.configure();
 
   return (
-    <BrowserRouter basename={appConfig.clientBaseRoute}>
-      <ModalProvider>
-        <UserContextProvider>
-          <AppContextProvider>
-            <div className={classNames('page-wrapper', { 'toggled': sidebarToggled })}>
-              <nav className="sidebar-wrapper">
-                <Sidebar close={onSidebarClose} />
-              </nav>
-              <main className="page-content">
-                <div className="overlay"></div>
-                <Header sidebarToggled={sidebarToggled} toggleSidebar={onToggleSidebar} />
-                <div className="container-fluid ml-0 mt-3">
-                  <Switch>
-                    <Route exact path="/login-callback" component={LoginCallback} />
-                    <ProtectedRoute path="/apps" component={Apps} />
-                    <ProtectedRoute path="/content" component={Content} currentApp />
-                    <ProtectedRoute path="/collections" component={Collections} currentApp />
-                    <ProtectedRoute path="/contenttypes" component={ContentTypes} currentApp />
-                    <ProtectedRoute exact path="/" component={Dashboard} />
-                  </Switch>
-                </div>  
-              </main>
-            </div>
-          </AppContextProvider>
-        </UserContextProvider>
-      </ModalProvider>
-    </BrowserRouter>
+    <Suspense fallback="Loading...">
+      <BrowserRouter basename={appConfig.clientBaseRoute}>
+        <ModalProvider>
+          <UserContextProvider>
+            <AppContextProvider>
+              <div className={classNames('page-wrapper', { 'toggled': sidebarToggled })}>
+                <nav className="sidebar-wrapper">
+                  <Sidebar close={onSidebarClose} />
+                </nav>
+                <main className="page-content">
+                  <div className="overlay"></div>
+                  <Header sidebarToggled={sidebarToggled} toggleSidebar={onToggleSidebar} />
+                  <div className="container-fluid ml-0 mt-3">
+                    <Switch>
+                      <Route exact path="/login-callback" component={LoginCallback} />
+                      <ProtectedRoute path="/apps" component={Apps} />
+                      <ProtectedRoute path="/content" component={Content} currentApp />
+                      <ProtectedRoute path="/collections" component={Collections} currentApp />
+                      <ProtectedRoute path="/contenttypes" component={ContentTypes} currentApp />
+                      <ProtectedRoute exact path="/" component={Dashboard} />
+                    </Switch>
+                  </div>  
+                </main>
+              </div>
+            </AppContextProvider>
+          </UserContextProvider>
+        </ModalProvider>
+      </BrowserRouter>
+    </Suspense>
   );
 
 };

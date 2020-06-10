@@ -3,6 +3,8 @@ import '../styles/styles.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import './i18n';
+
 const renderApp = () => {
   const AdminApp = require('./AdminApp').AdminApp;
 

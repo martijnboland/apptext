@@ -25,11 +25,11 @@ namespace AppText.Features.ContentDefinition
                 var app = await _applicationStore.GetApp(objectToValidate.AppId);
                 if (app == null)
                 {
-                    AddError(new ValidationError { Name = "AppId", ErrorMessage = "AppText:AppNotFound", Parameters = new[] { objectToValidate.AppId } } );
+                    AddError(new ValidationError { Name = "AppId", ErrorMessage = "AppNotFound", Parameters = new[] { objectToValidate.AppId } } );
                 }
             }
             else {
-                AddError(new ValidationError { Name = "AppId", ErrorMessage = "AppText:AppIdEmpty" } );
+                AddError(new ValidationError { Name = "AppId", ErrorMessage = "AppIdEmpty" } );
             }
 
             // Duplicate content type name
@@ -38,7 +38,7 @@ namespace AppText.Features.ContentDefinition
                 var contentTypesWithSameName = await _contentDefinitionStore.GetContentTypes(new ContentTypeQuery { AppId = objectToValidate.AppId, Name = objectToValidate.Name });
                 if (contentTypesWithSameName.Any(ct => ct.Id != objectToValidate.Id))
                 {
-                    AddError(new ValidationError { Name = "Name", ErrorMessage = "AppText:DuplicateContentTypeName", Parameters = new[] { objectToValidate.Name } });
+                    AddError(new ValidationError { Name = "Name", ErrorMessage = "DuplicateContentTypeName", Parameters = new[] { objectToValidate.Name } });
                 }
             }
         }

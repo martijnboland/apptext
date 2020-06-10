@@ -8,10 +8,10 @@ namespace AppText.Features.ContentManagement
     {
         public string Id { get; set; }
 
-        [Required(ErrorMessage = "AppText:Required")]
+        [Required(ErrorMessage = "Required")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "AppText:Required")]
+        [Required(ErrorMessage = "Required")]
         public ContentType ContentType { get; set; }
 
         public string ListDisplayField { get; set; }

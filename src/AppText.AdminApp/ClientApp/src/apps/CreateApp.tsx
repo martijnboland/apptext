@@ -10,8 +10,11 @@ import { useApi, useApiGet } from '../common/api';
 import { App, Language } from './models';
 import { CustomSelect } from '../common/components/form/CustomSelect';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const CreateApp: React.FunctionComponent = () => {
+
+  const { t, i18n } = useTranslation(['Labels', 'Messages']);
 
   const url = `${appConfig.apiBaseUrl}/apps`;
   const createApp = useApi<App>(url, 'POST');

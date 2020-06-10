@@ -9,9 +9,11 @@ import { useApiGet, useApi } from '../common/api';
 import { Language, App } from './models';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
 
+  const { t, i18n } = useTranslation(['Labels', 'Messages']);
   const { currentApp, initApps } = useContext(AppContext);
 
   const url = `${appConfig.apiBaseUrl}/apps/${currentApp.id}`;
@@ -24,7 +26,7 @@ const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
     updateApp.callApi(values)
       .then(res => {
         if (res.ok) {
-          toast.success(`App ${currentApp.id} updated`);
+          toast.success(t('AppUpdated', { '0': currentApp.id }));
           initApps()
             .then(() => history.push('/'));
         } else { 

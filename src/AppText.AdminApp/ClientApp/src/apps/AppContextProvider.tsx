@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { RouteComponentProps, Redirect, withRouter } from 'react-router-dom';
+import { withTranslation, WithTranslationProps } from 'react-i18next';
 
 import AppContext, { AppContextState } from './AppContext';
-import { RouteComponentProps, Redirect, withRouter } from 'react-router-dom';
 import { App } from './models';
 import { getApps } from './api';
 
@@ -13,7 +14,7 @@ interface AppContextProviderProps extends RouteComponentProps<any> {
 interface AppContextProviderState extends AppContextState {
 }
 
-class AppContextProvider extends React.Component<AppContextProviderProps, AppContextProviderState>
+class AppContextProvider extends React.Component<AppContextProviderProps & WithTranslationProps, AppContextProviderState>
 {  
   constructor(props) {
     super(props);
@@ -52,7 +53,7 @@ class AppContextProvider extends React.Component<AppContextProviderProps, AppCon
 
   render() {
     const { apps, currentApp } = this.state;
-    const { location } = this.props;
+    const { location, i18n } = this.props;
     const shouldRender = currentApp !== undefined || location.pathname === '/apps/select' || location.pathname === '/apps/create';
 
     return (
@@ -70,11 +71,11 @@ class AppContextProvider extends React.Component<AppContextProviderProps, AppCon
             :
               <Redirect to="/apps/select" />
         :
-          <div>Loading app context...</div>
+          <div>{i18n.t('Messages:LoadingAppContext')}</div>
       }
       </>
     );
   }
 }
 
-export default withRouter(AppContextProvider);
+export default withRouter(withTranslation()(AppContextProvider) as any);

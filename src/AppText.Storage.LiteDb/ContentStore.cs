@@ -65,6 +65,7 @@ namespace AppText.Storage.LiteDb
         public Task<ContentItem[]> GetContentItems(ContentItemQuery query)
         {
             var q = _liteRepository.Query<ContentItem>();
+
             if (! string.IsNullOrEmpty(query.AppId))
             {
                 q = q.Where(ci => ci.AppId == query.AppId);
@@ -85,6 +86,8 @@ namespace AppText.Storage.LiteDb
             {
                 q = q.Where(ci => ci.ContentKey.StartsWith(query.ContentKeyStartsWith));
             }
+
+            q = q.OrderBy(ci => ci.ContentKey);
 
             ILiteQueryableResult<ContentItem> result = q;
             if (query.Offset.HasValue)

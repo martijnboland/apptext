@@ -39,7 +39,7 @@ namespace AppText.Features.ContentManagement
             if (collections.Any(c => c.ContentType.Id == command.Id))
             {
                 var collectionNames = collections.Where(c => c.ContentType.Id == command.Id).Select(c => c.Name);
-                result.AddValidationError(new ValidationError() { Name = "", ErrorMessage = "AppText:DeleteContentTypeInUse", Parameters = new[] { string.Join(",", collectionNames) } });
+                result.AddValidationError(new ValidationError() { Name = "", ErrorMessage = "DeleteContentTypeInUse", Parameters = new[] { string.Join(",", collectionNames) } });
             }
 
             if (!result.ValidationErrors.Any())

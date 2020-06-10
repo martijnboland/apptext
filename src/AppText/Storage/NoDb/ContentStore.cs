@@ -85,6 +85,9 @@ namespace AppText.Storage.NoDb
             {
                 contentItems = contentItems.Where(ci => ci.ContentKey.StartsWith(query.ContentKeyStartsWith));
             }
+
+            contentItems = contentItems.OrderBy(ci => ci.ContentKey);
+
             if (query.Offset.HasValue)
             {
                 contentItems = contentItems.Skip(query.Offset.Value);

@@ -7,10 +7,10 @@ namespace AppText.Features.ContentDefinition
     {
         public string Id { get; set; }
 
-        [Required(ErrorMessage = "AppText:Required")]
+        [Required(ErrorMessage = "Required")]
         public string AppId { get; set; }
 
-        [Required(ErrorMessage = "AppText:Required")]
+        [Required(ErrorMessage = "Required")]
         public string Name { get; set; }
 
         public string Description { get; set; }

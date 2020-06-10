@@ -25,7 +25,7 @@ namespace AppText.Features.ContentManagement
             var contentType = (await _contentDefinitionStore.GetContentTypes(new ContentTypeQuery { Id = contentTypeId, AppId = appId, IncludeGlobalContentTypes = true })).FirstOrDefault();
             if (contentType == null)
             {
-                AddError("ContentType.Id", "AppText:UnknownContentType", contentTypeId);
+                AddError("ContentType.Id", "UnknownContentType", contentTypeId);
             }
             else
             {
@@ -39,14 +39,14 @@ namespace AppText.Features.ContentManagement
                 {
                     if (objectToValidate.Id == null || objectToValidate.Id != otherCollection.Id)
                     {
-                        AddError("Name", "AppText:DuplicateContentCollectionName", objectToValidate.Name);
+                        AddError("Name", "DuplicateContentCollectionName", objectToValidate.Name);
                     }
                 }
 
                 // Check if ListDisplayField is actually in the content type
                 if (! string.IsNullOrEmpty(objectToValidate.ListDisplayField) && ! contentType.ContentFields.Any(cf => cf.Name == objectToValidate.ListDisplayField))
                 {
-                    AddError("ListDisplayField", "AppText:ListDisplayFieldIsNotInContentFields", objectToValidate.ListDisplayField);
+                    AddError("ListDisplayField", "ListDisplayFieldIsNotInContentFields", objectToValidate.ListDisplayField);
                 }
             }
         }

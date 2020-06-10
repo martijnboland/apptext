@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError, Method } from 'axios';
 import { setIn,  } from 'formik';
 import { globalValidationProperty } from '../config/constants';
+import i18n from 'i18next';
 
 export interface IApiResult {
   ok: boolean,
@@ -44,7 +45,10 @@ export const handleApiError = (err: AxiosError): IApiResult => {
       // Group errors by property name
       result.errors = data.errors.reduce((reducedValue, currentValue) => {
         const propertyName = currentValue['name'] || globalValidationProperty;
-        const errorMessage = currentValue['errorMessage'] + '\n'; // TODO: params and localization
+        const errorParams: any[] = currentValue['parameters'] || [];
+        const paramsObject = {};
+        errorParams.forEach((p, idx) => paramsObject[idx] = p);
+        const errorMessage = i18n.t(`Errors:${currentValue['errorMessage']}`, paramsObject) +'\n';
         const val = reducedValue[propertyName] || '';
         const updatedValue = val.concat(errorMessage);
         return setIn(reducedValue, propertyName, updatedValue);

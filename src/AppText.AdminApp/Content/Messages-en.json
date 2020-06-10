@@ -1,22 +1,4 @@
-﻿[
-  { "AppText:Required": "Required" },
-  { "AppText:StringLength": "Max {0} characters" },
-  { "AppText:DefaultLanguageNotInLanguages": "The default language {1} does not exist in the languages of the app ({0})" },
-  { "AppText:AppIdAlreadyExists": "The app with id {0} already exists" },
-  { "AppText:AppNotFound": "The app with id {0} could not be found" },
-  { "AppText:AppIdEmpty": "The app id may not be empty" },
-  { "AppText:DuplicateContentTypeName": "The content type {0} already exists" },
-  { "AppText:DeleteContentTypeInUse": "Can not delete content type because it is being used in a collection" },
-  { "AppText:UnknownContentType": "The content type with id {0} is not known" },
-  { "AppText:DuplicateContentCollectionName": "The content collection with name {0} already exists" },
-  { "AppText:ListDisplayFieldIsNotInContentFields": "The given list display field ({0}) is not a field in the content type" },
-  { "AppText:UnknownCollection": "The collection with id {0} is not known" },
-  { "AppText:ContentKeyAlreadyExists": "A content item with key {0} already exists in the {1} collection" },
-  { "AppText:UnknownContentField": "The content field {0} is not known" },
-  { "AppText:MissingContentFieldValue": "A value for the {0} field is required for language {1}" },
-  { "AppText:InvalidContentFieldValue": "The value {0} is not valid for a {1} field" },
-  { "AppText:UnknownMetaField": "The meta field {0} is not known" },
-  { "AppText:MissingMetaFieldValue": "A value for the {0} field is required" },
-  { "AppText:InvalidMetaFieldValue": "The value {0} is not valid for a {1} field" },
-  { "AppText:DeleteCollectionContainsContent":  "Could not delete the content collection because it still contains content" }
+[
+  { "LoadingAppContext": "Loading app context..." },
+  { "AppUpdated": "App {{0}} updated" }
 ]

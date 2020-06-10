@@ -54,7 +54,7 @@ namespace AppText.Features.Application
                     result.AddValidationError(new ValidationError
                     {
                         Name = "Id",
-                        ErrorMessage = "AppText:AppIdAlreadyExists",
+                        ErrorMessage = "AppIdAlreadyExists",
                         Parameters = new[] { app.Id }
                     });
                 }
