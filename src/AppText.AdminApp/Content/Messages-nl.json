@@ -1,1 +1,22 @@
-[]
+[
+  { "AppText:Required": "Verplicht" },
+  { "AppText:StringLength": "Max {0} tekens" },
+  { "AppText:DefaultLanguageNotInLanguages": "The standaardtaal {1} is niet aanwezig in de talen van de app ({0})" },
+  { "AppText:AppIdAlreadyExists": "De app met id {0} bestaat al" },
+  { "AppText:AppNotFound": "De app met id {0} kan niet gevonden worden" },
+  { "AppText:AppIdEmpty": "De app id mag niet leeg zijn" },
+  { "AppText:DuplicateContentTypeName": "Content type {0} bestaat al" },
+  { "AppText:DeleteContentTypeInUse": "Kan content type niet verwijderen omdat het nog gebruikt wordt in een content collection" },
+  { "AppText:UnknownContentType": "Content type met id {0} is onbekend" },
+  { "AppText:DuplicateContentCollectionName": "De content collection met id {0} bestaat al" },
+  { "AppText:ListDisplayFieldIsNotInContentFields": "Het opgegeven lijstweergaveveld ({0}) is geen veld in het content type" },
+  { "AppText:UnknownCollection": "De content collection met id {0} is onbekend" },
+  { "AppText:ContentKeyAlreadyExists": "Een content item met key {0} bestaat al in de {1} collection" },
+  { "AppText:UnknownContentField": "Het content veld {0} onbekend" },
+  { "AppText:MissingContentFieldValue": "Voor taal {1} is een waarde verplicht voor het {0} veld" },
+  { "AppText:InvalidContentFieldValue": "De waarde {0} is ongeldig voor een {1} veld" },
+  { "AppText:UnknownMetaField": "Het meta veld {0} is onbekend" },
+  { "AppText:MissingMetaFieldValue": "Een waarde is verplicht voor het {0} veld" },
+  { "AppText:InvalidMetaFieldValue": "De waarde {0} is ongeldig voor een {1} veld" },
+  { "AppText:DeleteCollectionContainsContent": "Kan collection niet verwijderen omdat deze nog content items bevat" }
+]

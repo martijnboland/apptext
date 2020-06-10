@@ -60,7 +60,7 @@ namespace AppText.Shared.Validation
             AddErrors(from prop in props
                       from attribute in prop.Attributes.OfType<ValidationAttribute>()
                       where !prop.Attributes.OfType<IgnoreValidationAttribute>().Any() && !attribute.IsValid(prop.GetValue(objectToValidate))
-                      select new ValidationError { Name = $"{prefix}{prop.Name}", ErrorMessage = attribute.FormatErrorMessage(prop.Name) });
+                      select GenerateValidationError(prefix, prop.Name, attribute));
 
             // Recurse into collections
             var enumerableProperties = props.Where(p => typeof(ICollection).IsAssignableFrom(p.PropertyType));
@@ -76,6 +76,18 @@ namespace AppText.Shared.Validation
                     idx++;
                 }
             }
+        }
+
+        private ValidationError GenerateValidationError(string prefix, string propertyName, ValidationAttribute attribute)
+        {
+            // Post-process validation error by converting everything after the | suffix to params (e.g. StringTooLong|0,20)
+            var errorMessage = attribute.FormatErrorMessage(propertyName);
+            var errorMessageParts = errorMessage.Split('|');
+            var errorMessageText = errorMessageParts[0];
+            var errorMessageParams = errorMessageParts.Length > 1
+                ? errorMessageParts[1].Split(',')
+                : new object[0];
+            return new ValidationError { Name = $"{prefix}{propertyName}", ErrorMessage = errorMessageText, Parameters = errorMessageParams };
         }
 
         protected virtual Task ValidateCustom(T objectToValidate)

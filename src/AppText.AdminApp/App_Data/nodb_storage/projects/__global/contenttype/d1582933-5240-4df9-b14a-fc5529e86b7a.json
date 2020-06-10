@@ -1,1 +1,0 @@
-{"Id":"d1582933-5240-4df9-b14a-fc5529e86b7a","AppId":null,"Name":"Translation","Description":"Built-in content type for translations","MetaFields":[],"ContentFields":[{"Name":"text","Description":"Text","FieldType":"ShortText","IsRequired":true,"IsLocalizable":true}],"Version":0}
