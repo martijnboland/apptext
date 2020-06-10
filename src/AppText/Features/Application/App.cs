@@ -15,5 +15,7 @@ namespace AppText.Features.Application
         public string[] Languages { get; set; }
 
         public string DefaultLanguage { get; set; }
+
+        public bool IsSystemApp { get; set; }
     }
 }

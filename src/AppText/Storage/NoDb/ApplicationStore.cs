@@ -25,7 +25,7 @@ namespace AppText.Storage.NoDb
         public async Task<App[]> GetApps(AppQuery query)
         {
             var apps = await _queries.GetAllAsync(Constants.ApplicationsProjectId);
-            return apps.ToArray();
+            return apps.OrderBy(a => a.IsSystemApp).ThenBy(a => a.Id).ToArray();
         }
 
         public async Task<bool> AppExists(string id)

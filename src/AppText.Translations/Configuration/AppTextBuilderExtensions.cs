@@ -3,8 +3,8 @@ using AppText.Shared.Infrastructure.Mvc;
 using AppText.Translations.Controllers;
 using AppText.Translations.Formatters;
 using AppText.Translations.Initialization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 
 namespace AppText.Translations.Configuration

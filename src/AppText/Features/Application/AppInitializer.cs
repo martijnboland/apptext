@@ -1,22 +1,23 @@
-﻿using AppText.Shared.Infrastructure;
-using AppText.Storage;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+﻿using AppText.Storage;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AppText.Features.Application
 {
-    public class AppInitializer : IStartupFilter
+    public class AppInitializer : IHostedService
     {
         private readonly string _appId;
         private readonly string _displayName;
         private readonly string[] _languages;
         private readonly string _defaultLanguage;
         private readonly IServiceProvider _serviceProvider;
+        private readonly bool _isSystemApp;
 
-        public AppInitializer(IServiceProvider serviceProvider, string appId, string displayName, string[] languages, string defaultLanguage)
+        public AppInitializer(IServiceProvider serviceProvider, string appId, string displayName, string[] languages, string defaultLanguage, bool isSystemApp = false)
         {
             if (String.IsNullOrEmpty(appId))
             {
@@ -28,9 +29,10 @@ namespace AppText.Features.Application
             _languages = languages;
             _defaultLanguage = defaultLanguage;
             _serviceProvider = serviceProvider;
+            _isSystemApp = isSystemApp;
         }
 
-        public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
             // Ensure that the app exists.
             using (var scope = _serviceProvider.CreateScope())
@@ -39,16 +41,17 @@ namespace AppText.Features.Application
                 logger.LogInformation($"Initializing app {_appId}");
 
                 var applicationStore = scope.ServiceProvider.GetRequiredService<IApplicationStore>();
-                if (!AsyncHelper.RunSync(() => applicationStore.AppExists(_appId)))
+                if (!await applicationStore.AppExists(_appId))
                 {
                     logger.LogInformation($"App {_appId} doesn't exist yet. Initializing...");
-                    AsyncHelper.RunSync(() => applicationStore.AddApp(new App
+                    await applicationStore.AddApp(new App
                     {
                         Id = _appId,
                         DisplayName = _displayName,
                         Languages = _languages,
-                        DefaultLanguage = _defaultLanguage
-                    }));
+                        DefaultLanguage = _defaultLanguage,
+                        IsSystemApp = _isSystemApp
+                    });
                     logger.LogInformation($"App {_appId} created and initialized");
                 }
                 else
@@ -56,7 +59,11 @@ namespace AppText.Features.Application
                     logger.LogInformation($"App {_appId} is already initialized");
                 }
             }
-            return next;
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
         }
     }
 }

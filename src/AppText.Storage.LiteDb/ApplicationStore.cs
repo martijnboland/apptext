@@ -1,5 +1,6 @@
 ﻿using AppText.Features.Application;
 using LiteDB;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppText.Storage.LiteDb
@@ -25,7 +26,7 @@ namespace AppText.Storage.LiteDb
             {
                 q = q.Where(a => a.Id == query.Id);
             }
-            return Task.FromResult(q.ToArray());
+            return Task.FromResult(q.OrderBy(a => a.IsSystemApp).ToArray());
         }
 
         public Task<bool> AppExists(string id)

@@ -6,6 +6,7 @@ using AppText.Shared.Infrastructure.Mvc;
 using AppText.Translations.Configuration;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
 using System;
 using System.Reflection;
@@ -38,7 +39,7 @@ namespace AppText.AdminApp.Configuration
             appTextBuilder.AddTranslations();
 
             // Create AdminApp
-            appTextBuilder.InitializeApp(Constants.AppTextAdminAppId, Constants.AppTextAdminAppDescription, new[] { "en", "nl", "de" }, "en");
+            appTextBuilder.InitializeApp(Constants.AppTextAdminAppId, Constants.AppTextAdminAppDescription, new[] { "en", "nl", "de" }, "en", isSystem: true);
 
             // Import translations (register as IHostedService)
             appTextBuilder.Services.AddHostedService<AppTextAdminInitializer>();
@@ -76,7 +77,7 @@ namespace AppText.AdminApp.Configuration
             }
 
             // Register options as singleton
-            services.AddSingleton(options);
+            services.TryAddSingleton(options);
 
             return options;
         }
