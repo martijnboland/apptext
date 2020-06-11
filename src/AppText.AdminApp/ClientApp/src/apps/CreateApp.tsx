@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 
 const CreateApp: React.FunctionComponent = () => {
 
-  const { t, i18n } = useTranslation(['Labels', 'Messages']);
+  const { t } = useTranslation(['Labels', 'Messages']);
 
   const url = `${appConfig.apiBaseUrl}/apps`;
   const createApp = useApi<App>(url, 'POST');
@@ -37,7 +37,7 @@ const CreateApp: React.FunctionComponent = () => {
           actions.setErrors(res.errors);
         } else {
           const newApp = res.data;
-          toast.success(`App ${newApp.id} created`);
+          toast.success(t('AppCreated', newApp.id));
           initApps()
             .then(() => setCurrentApp(newApp));
         }
@@ -64,13 +64,13 @@ const CreateApp: React.FunctionComponent = () => {
           
               return (
                 <form onSubmit={handleSubmit}>
-                  <Field name="id" label="App ID" component={TextInput} />
-                  <Field name="displayName" label="App display name" component={TextInput} />
-                  <Field name="languages" label="Languages" component={CustomSelect} isMulti={true} options={languageOptions} />
-                  <Field name="defaultLanguage" label="Default language" component={CustomSelect} isMulti={false} options={defaultLanguageOptions} />
-                  <button type="submit" className="btn btn-primary mr-2"><FaSave className="mr-1" />Save</button>
+                  <Field name="id" label={t('Labels:AppId')} component={TextInput} />
+                  <Field name="displayName" label={t('Labels:AppDisplayName')} component={TextInput} />
+                  <Field name="languages" label={t('Labels:Languages')} component={CustomSelect} isMulti={true} options={languageOptions} />
+                  <Field name="defaultLanguage" label={t('Labels:DefaultLanguage')} component={CustomSelect} isMulti={false} options={defaultLanguageOptions} />
+                  <button type="submit" className="btn btn-primary mr-2"><FaSave className="mr-1" />{t('Labels:SaveButton')}</button>
                   {currentApp && 
-                    <Link to={{ pathname: '/' }} className="btn btn-link">Cancel</Link>
+                    <Link to={{ pathname: '/' }} className="btn btn-link">{t('Labels:CancelButton')}</Link>
                   }
                 </form>
               )

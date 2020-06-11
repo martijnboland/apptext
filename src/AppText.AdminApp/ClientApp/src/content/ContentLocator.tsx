@@ -3,6 +3,7 @@ import { Field, Formik } from 'formik';
 import { TextInput, Select, SelectOption } from '../common/components/form';
 
 import { Collection } from '../collections/models';
+import { useTranslation } from 'react-i18next';
 
 interface ContentLocatorProps {
   collections: Collection[],
@@ -12,6 +13,7 @@ interface ContentLocatorProps {
 }
 
 const ContentLocator: React.FC<ContentLocatorProps> = ({ collections, collectionId, onCollectionChanged, onSearch }) => {
+  const { t } = useTranslation('Labels');
 
   const collectionOptions: SelectOption[] = collections.map(c =>  ({
     value: c.id,
@@ -35,8 +37,8 @@ const ContentLocator: React.FC<ContentLocatorProps> = ({ collections, collection
       {({handleSubmit}) => (
         <form onSubmit={handleSubmit}>
           <div className="form-row">
-            <Field name="collectionId" label="Collection" className="form-group col-md-6" component={Select} options={collectionOptions} onChange={onCollectionChanged} />
-            <Field name="searchTerm" label="Key starts with" className="form-group col-md-6" component={TextInput} />
+            <Field name="collectionId" label={t('Labels:Collection')} className="form-group col-md-6" component={Select} options={collectionOptions} onChange={onCollectionChanged} />
+            <Field name="searchTerm" label={t('Labels:KeyStartsWith')} className="form-group col-md-6" component={TextInput} />
           </div>
         </form>
       )}

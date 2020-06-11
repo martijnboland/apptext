@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 
 const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
 
-  const { t, i18n } = useTranslation(['Labels', 'Messages']);
+  const { t } = useTranslation(['Labels', 'Messages']);
   const { currentApp, initApps } = useContext(AppContext);
 
   const url = `${appConfig.apiBaseUrl}/apps/${currentApp.id}`;
@@ -26,7 +26,7 @@ const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
     updateApp.callApi(values)
       .then(res => {
         if (res.ok) {
-          toast.success(t('AppUpdated', { '0': currentApp.id }));
+          toast.success(t('Messages:AppUpdated', { name: currentApp.id }));
           initApps()
             .then(() => history.push('/'));
         } else { 
@@ -54,11 +54,11 @@ const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
                 : [];
               return (
                 <form onSubmit={handleSubmit}>
-                  <Field name="displayName" label="App display name" component={TextInput} />
-                  <Field name="languages" label="Languages" component={CustomSelect} isMulti={true} options={languageOptions} />
-                  <Field name="defaultLanguage" label="Default language" component={CustomSelect} options={defaultLanguageOptions} />
-                  <button type="submit" className="btn btn-primary mr-2"><FaSave className="mr-1" />Save</button>
-                  <Link to={{ pathname: '/' }} className="btn btn-link">Cancel</Link>
+                  <Field name="displayName" label={t('Labels:AppDisplayName')} component={TextInput} />
+                  <Field name="languages" label={t('Labels:Languages')} component={CustomSelect} isMulti={true} options={languageOptions} />
+                  <Field name="defaultLanguage" label={t('Labels:DefaultLanguage')} component={CustomSelect} options={defaultLanguageOptions} />
+                  <button type="submit" className="btn btn-primary mr-2"><FaSave className="mr-1" />{t('Labels:SaveButton')}</button>
+                  <Link to={{ pathname: '/' }} className="btn btn-link">{t('Labels:CancelButton')}</Link>
                 </form>
               )
             }}

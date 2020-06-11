@@ -11,12 +11,13 @@ import { IdParams } from '../common/routeParams';
 import CollectionForm from './CollectionForm';
 import Confirm from '../common/components/dialogs/Confirm';
 import { ContentType } from '../contenttypes/models';
+import { useTranslation } from 'react-i18next';
 
 interface EditProps extends RouteComponentProps<IdParams> {
 }
 
 const Edit: React.FC<EditProps> = ({ match, history }) => {
-
+  const { t } = useTranslation(['Labels', 'Messages']);
   const { currentApp } = useContext(AppContext);
   const url = `${appConfig.apiBaseUrl}/${currentApp.id}/collections/${match.params.id}`;
   const { data: collection } = useApiGet<Collection>(url);
@@ -29,7 +30,7 @@ const Edit: React.FC<EditProps> = ({ match, history }) => {
     return updateCollection.callApi(collection)
       .then(res => {
         if (res.ok) {
-          toast.success(`Collection ${collection.name} updated`);
+          toast.success(t('Messages:CollectionUpdated', { name: collection.name }));
           history.push('/collections');
         }
         return res;
@@ -39,11 +40,11 @@ const Edit: React.FC<EditProps> = ({ match, history }) => {
   const [showDeleteConfirmation, hideDeleteConfirmation] = useModal(() => (
       <Confirm
         visible={true}
-        title="Delete collection"
+        title={t('Labels:DeleteCollection')}
         onOk={() => handleDelete(collection, hideDeleteConfirmation)}
         onCancel={hideDeleteConfirmation}
       >
-        Do you really want to delete the collection?
+        {t('Messages:DeleteConfirm', { name: collection.name })}
       </Confirm>
   ), [collection]);
 
@@ -51,7 +52,7 @@ const Edit: React.FC<EditProps> = ({ match, history }) => {
     return deleteCollection.callApi(collection)
       .then(res => {
         if (res.ok) {
-          toast.success(`Collection ${collection.name} deleted`);
+          toast.success(t('Messages:CollectionDeleted', { name: collection.name }));
           history.push('/collections');
         }
         else {
@@ -66,7 +67,7 @@ const Edit: React.FC<EditProps> = ({ match, history }) => {
 
   return (  
     <>
-      <h2>Edit collections</h2>
+      <h2>{t('Labels:EditCollection')}</h2>
       {collection && contentTypes &&
         <div className="row">
           <div className="col-lg-8">

@@ -23,7 +23,6 @@ export const CustomSelect: React.FunctionComponent<CustomSelectProps> = ({ label
       // options are cleared, also clear form value
       setLocalOptions(options);
       form.setFieldValue(field.name, null);
-      console.log('Options cleared, clear also form value.')
     }
     if (localOptions === undefined || options.length > localOptions.length) {
       setLocalOptions(options);
@@ -31,7 +30,6 @@ export const CustomSelect: React.FunctionComponent<CustomSelectProps> = ({ label
   });
 
   const onChange = (option: ValueType<Option | Option[]>) => {
-    console.log(`Value of ${field.name} changed =>`, option)
     form.setFieldValue(
       field.name,
       option !== null

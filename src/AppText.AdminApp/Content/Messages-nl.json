@@ -1,4 +1,19 @@
 [
   { "LoadingAppContext": "Laden app context..." },
-  { "AppUpdated": "App {{0}| is gewijzigd" }
+  { "AppUpdated": "App {{name}} is gewijzigd" },
+  { "AppCreated": "App {{name}} is aangemaakt" },
+  { "AccessDenied": "Geen toegang" },
+  { "CompletingAuthentication": "Afronden authenticatie..." },
+  { "Authenticating": "Authenticeren..." },
+  { "CollectionCreated": "Collection {{name}} is aangemaakt" },
+  { "CollectionUpdated": "Collection {{name}} is gewijzigd" },
+  { "CollectionDeleted": "Collection {{name}} is verwijderd" },
+  { "Loading": "Laden..." },
+  { "ContentItemCreated": "Content item {{contentKey}} is aangemaakt" },
+  { "ContentItemUpdated": "Content item {{contentKey}} is gewijzigd" },
+  { "ContentItemDeleted": "Content item {{contentKey}} is verwijderd"},
+  { "DeleteConfirm": "Weet je zeker dat je {{name}} wilt verwijderen?" },
+  { "ContentTypeCreated": "Content type {{name}} is aangemaakt" },
+  { "ContentTypeUpdated": "Content type {{name}} is gewijzigd" },
+  { "ContentTypeDeleted": "Content type {{name}} is verwijderd"}
 ]

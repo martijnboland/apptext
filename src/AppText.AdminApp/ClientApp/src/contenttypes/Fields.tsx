@@ -5,6 +5,7 @@ import { FaPlus } from 'react-icons/fa';
 import { Field as ContentTypeField } from './models';
 import FieldEditor from './FieldEditor';
 import DisplayField from './DisplayField';
+import { useTranslation } from 'react-i18next';
 
 interface FieldsProps {
   name: string,
@@ -13,7 +14,7 @@ interface FieldsProps {
 }
 
 const Fields: React.FunctionComponent<FieldsProps> = ({ name, label, fields }) => {
-
+  const { t } = useTranslation('Labels');
   const initialDisplayState = fields.map(() => { return { isNew: false, isEdit: false } } )
 
   const [displayState, setDisplayState] = useState(initialDisplayState);
@@ -69,7 +70,7 @@ const Fields: React.FunctionComponent<FieldsProps> = ({ name, label, fields }) =
             })}
             <li>
               <button className="btn btn-secondary" type="button" onClick={addItem}>
-                <FaPlus className="mr-1" />Add field
+                <FaPlus className="mr-1" />{t('Labels:AddField')}
               </button>
             </li>
           </ul>

@@ -10,12 +10,14 @@ import { ContentType } from './models';
 import { IdParams } from '../common/routeParams';
 import ContentTypeForm from './ContentTypeForm';
 import Confirm from '../common/components/dialogs/Confirm';
+import { useTranslation } from 'react-i18next';
 
 interface EditProps extends RouteComponentProps<IdParams> {
 }
 
 const Edit: React.FunctionComponent<EditProps> = ({ match, history,  }) => {
 
+  const { t } = useTranslation(['Labels', 'Messages']);
   const { currentApp } = useContext(AppContext);
   const url = `${appConfig.apiBaseUrl}/${currentApp.id}/contenttypes/${match.params.id}`;
   const { data } = useApiGet<ContentType>(url);
@@ -26,7 +28,7 @@ const Edit: React.FunctionComponent<EditProps> = ({ match, history,  }) => {
     return updateContentType.callApi(contentType)
       .then(res => {
         if (res.ok) {
-          toast.success(`Content type ${data.name} updated`);
+          toast.success(t('Messages:ContentTypeUpdated', { name: data.name }));
           history.push('/contenttypes');
         }
         return res;
@@ -36,11 +38,11 @@ const Edit: React.FunctionComponent<EditProps> = ({ match, history,  }) => {
   const [showDeleteConfirmation, hideDeleteConfirmation] = useModal(() => (
       <Confirm
         visible={true}
-        title="Delete content type"
+        title={t('Labels:DeleteContentType')}
         onOk={() => handleDelete(data, hideDeleteConfirmation)}
         onCancel={hideDeleteConfirmation}
       >
-        Do you really want to delete the content type?
+        {t('Messages:DeleteConfirm', { name: 'the content type'})}
       </Confirm>
   ), [data]);
 
@@ -48,7 +50,7 @@ const Edit: React.FunctionComponent<EditProps> = ({ match, history,  }) => {
     return deleteContentType.callApi(contentType)
       .then(res => {
         if (res.ok) {
-          toast.success(`Content type  ${contentType.name} deleted`);
+          toast.success(t('Messages:ContentTypeDeleted', { name: contentType.name} ));
           history.push('/contenttypes');
         }
         else {
@@ -63,7 +65,7 @@ const Edit: React.FunctionComponent<EditProps> = ({ match, history,  }) => {
 
   return (  
     <>
-      <h2>Edit content type</h2>
+      <h2>{t('Labels:EditContentType')}</h2>
       {data &&
         <div className="row">
           <div className="col-lg-8">

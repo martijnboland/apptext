@@ -7,6 +7,7 @@ import { FaSave, FaTrash } from 'react-icons/fa';
 import { TextInput } from '../common/components/form';
 import { IApiResult } from '../common/api';
 import Fields from './Fields';
+import { useTranslation } from 'react-i18next';
 
 interface EditFormProps {
   contentType?: ContentType,
@@ -15,7 +16,7 @@ interface EditFormProps {
 }
 
 const EditForm: React.FunctionComponent<EditFormProps> = ({ contentType, onSave, onDelete }) => {
-  
+  const { t } = useTranslation('Labels');
   const onSubmit = (values: any, actions: FormikHelpers<any>) => {
     onSave(values)
       .then(res => {
@@ -36,15 +37,15 @@ const EditForm: React.FunctionComponent<EditFormProps> = ({ contentType, onSave,
     > 
       {({ handleSubmit, values }) => (
         <form onSubmit={handleSubmit}>
-          <Field name="name" label="Name" component={TextInput} />
-          <Field name="description" label="Description" component={TextInput} />
-          <Fields name="contentFields" label="Content fields" fields={values.contentFields} />
-          <Fields name="metaFields" label="Meta fields" fields={values.metaFields} />
+          <Field name="name" label={t('Labels:Name')} component={TextInput} />
+          <Field name="description" label={t('Labels:Description')} component={TextInput} />
+          <Fields name="contentFields" label={t('Labels:ContentFields')} fields={values.contentFields} />
+          <Fields name="metaFields" label={t('Labels:MetaFields')} fields={values.metaFields} />
           <div className="d-flex">
-            <button type="submit" className="btn btn-primary mr-2"><FaSave className="mr-1" />Save</button>
-            <Link to={{ pathname: '/contenttypes' }} className="btn btn-link">Cancel</Link>
+            <button type="submit" className="btn btn-primary mr-2"><FaSave className="mr-1" />{t('Labels:SaveButton')}</button>
+            <Link to={{ pathname: '/contenttypes' }} className="btn btn-link">{t('Labels:CancelButton')}</Link>
             {contentType && contentType.id &&
-              <button type="button" className="btn btn-danger ml-auto" onClick={onDeleteContentType}><FaTrash className="mr-1" />Delete</button>          
+              <button type="button" className="btn btn-danger ml-auto" onClick={onDeleteContentType}><FaTrash className="mr-1" />{t('Labels:DeleteButton')}</button>          
             }
           </div>
         </form>

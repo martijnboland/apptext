@@ -1,4 +1,19 @@
 [
   { "LoadingAppContext": "Loading app context..." },
-  { "AppUpdated": "App {{0}} updated" }
+  { "AppUpdated": "App {{name}} updated" },
+  { "AppCreated": "App {{name}} created" },
+  { "AccessDenied": "Access denied" },
+  { "CompletingAuthentication": "Completing authentication..." },
+  { "Authenticating": "Authenticating..." },
+  { "CollectionCreated": "Collection {{name}} is created" },
+  { "CollectionUpdated": "Collection {{name}} is updated" },
+  { "CollectionDeleted": "Collection {{name}} is deleted" },
+  { "Loading": "Loading..." },
+  { "ContentItemCreated": "Content item {{contentKey}} is created" },
+  { "ContentItemUpdated": "Content item {{contentKey}} is updated" },
+  { "ContentItemDeleted": "Content item {{contentKey}} is deleted"},
+  { "DeleteConfirm": "Are you sure you want to delete {{name}}?" },
+  { "ContentTypeCreated": "Content type {{name}} is created" },
+  { "ContentTypeUpdated": "Content type {{name}} is updated" },
+  { "ContentTypeDeleted": "Content type {{name}} is deleted"}
 ]

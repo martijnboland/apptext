@@ -1,9 +1,13 @@
 import React, { useContext } from 'react';
 import AppContext from './AppContext';
+import { useTranslation } from 'react-i18next';
 
 const SelectApp: React.FunctionComponent = () => {
 
+  const { t } = useTranslation('Labels');
+
   var appContext = useContext(AppContext);
+
 
   return (
     <>
@@ -14,7 +18,7 @@ const SelectApp: React.FunctionComponent = () => {
             <div className="card-body">
               <h5 className="card-title">{app.id}</h5>
               <p className="card-text">{app.displayName}</p>
-              <button className="btn btn-primary" onClick={() => appContext.setCurrentApp(app)}>Select</button>
+              <button className="btn btn-primary" onClick={() => appContext.setCurrentApp(app)}>{t('Labels:SaveButton')}</button>
             </div>
           </div>
         ))}

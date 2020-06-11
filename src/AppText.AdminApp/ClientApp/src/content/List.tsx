@@ -10,6 +10,7 @@ import { ContentItem } from './models';
 import ListItem from './ListItem';
 import EditableListItem from './EditableListItem';
 import { FaPlus } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 interface ContentRouteProps {
   collectionId?: string
@@ -19,6 +20,7 @@ interface ListProps  extends RouteComponentProps<ContentRouteProps> {
 }
 
 const List: React.FC<ListProps> = ({ match }) => {
+  const { t } = useTranslation('Labels');
   const { currentApp } = useContext(AppContext);
   const baseUrl = `${appConfig.apiBaseUrl}/${currentApp.id}`;
 
@@ -114,10 +116,10 @@ const List: React.FC<ListProps> = ({ match }) => {
   return (
     <div>          
       <div className="d-flex flex-row justify-content-between align-items-center">
-        <h2>Content</h2>
+        <h2>{t('Labels:Content')}</h2>
         <button type="button" className="btn btn-primary" onClick={newItem}>
           <FaPlus className="mr-1" />
-          New item
+          {t('Labels:NewContentItem')}
         </button>    
       </div>
       <div className="d-flex flex-horizontal">

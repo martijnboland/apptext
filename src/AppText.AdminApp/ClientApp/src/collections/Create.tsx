@@ -8,9 +8,10 @@ import { useApi, useApiGet } from '../common/api';
 import { Collection } from './models';
 import { toast } from 'react-toastify';
 import { ContentType } from '../contenttypes/models';
+import { useTranslation } from 'react-i18next';
 
 const Create: React.FC<RouteComponentProps> = ({ history }) => {
-
+  const { t } = useTranslation(['Labels', 'Messages']);
   const { currentApp } = useContext(AppContext);
   const url = `${appConfig.apiBaseUrl}/${currentApp.id}/collections`;
   const createCollection = useApi<Collection>(url, 'POST');
@@ -28,7 +29,7 @@ const Create: React.FC<RouteComponentProps> = ({ history }) => {
     return createCollection.callApi(collection)
       .then(res => {
         if (res.ok) {
-          toast.success(`Collection ${collection.name} created`);
+          toast.success(t('Messages:CollectionCreated', { name: collection.name }));
           history.push('/collections');
         }
         return res;
@@ -37,7 +38,7 @@ const Create: React.FC<RouteComponentProps> = ({ history }) => {
 
   return (
     <>
-      <h2>Create collection</h2>
+      <h2>{t('Labels:CreateCollection')}</h2>
       {contentTypes &&
         <div className="row">
           <div className="col-lg-8">

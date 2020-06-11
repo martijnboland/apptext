@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 interface ModalProps {
   children: React.ReactNode,
@@ -11,6 +12,7 @@ interface ModalProps {
 }
 
 const Modal: React.FunctionComponent<ModalProps> = ({ children, onClickBackdrop, visible, title, onClose, renderFooter }) => {
+  const { t } = useTranslation('Labels')
 
   const [isVisible, setVisible] = useState(visible);
 
@@ -47,7 +49,7 @@ const Modal: React.FunctionComponent<ModalProps> = ({ children, onClickBackdrop,
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">{title}</h5>
-              <button type="button" className="close" aria-label="Close" onClick={close}>
+              <button type="button" className="close" aria-label={t('Labels:CloseButton')} onClick={close}>
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>

@@ -5,11 +5,13 @@ import { ContentType } from './models';
 import AppContext from '../apps/AppContext';
 import { appConfig } from '../config/AppConfig';
 import { useApiGet } from '../common/api';
+import { useTranslation } from 'react-i18next';
 
 interface ListProps extends RouteComponentProps<{}> {
 }
 
 const List: React.FunctionComponent<ListProps> = ({ match }) => {
+  const { t } = useTranslation(['Labels', 'Messages']);
   const { currentApp } = useContext(AppContext);
   const url = `${appConfig.apiBaseUrl}/${currentApp.id}/contenttypes?includeglobalcontenttypes=true`;
   const { data, isLoading } = useApiGet<ContentType[]>(url, []);
@@ -26,14 +28,14 @@ const List: React.FunctionComponent<ListProps> = ({ match }) => {
     <>
     {isLoading 
       ? 
-        <div>Loading...</div>
+        <div>{t('Messages:Loading')}</div>
       :
         <>
           <div className="d-flex flex-row justify-content-between align-items-center">
-            <h2>Content types</h2>
+            <h2>{t('Labels:ContentTypes')}</h2>
             <Link to={{ pathname: `${match.url}/create` }} className="btn btn-primary">
               <FaPlus className="mr-1" />
-              New content type
+              {t('Labels:NewContentType')}
             </Link>    
           </div>
           <dl>

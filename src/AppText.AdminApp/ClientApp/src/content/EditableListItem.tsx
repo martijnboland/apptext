@@ -11,6 +11,7 @@ import { FaSave, FaTimes, FaTrash } from 'react-icons/fa';
 import { useModal } from 'react-modal-hook';
 import Confirm from '../common/components/dialogs/Confirm';
 import { editorMap } from './contentEditors';
+import { useTranslation } from 'react-i18next';
 
 interface IEditableListItemProps {
   isNew: boolean,
@@ -24,6 +25,7 @@ interface IEditableListItemProps {
 
 const EditableListItem: React.FunctionComponent<IEditableListItemProps> = ({ isNew, collection, contentItem, activeLanguages, onClose, onItemSaved, onItemDeleted }) => {
 
+  const { t } = useTranslation(['Labels', 'Messages']);
   const { currentApp } = useContext(AppContext);
   const url = `${appConfig.apiBaseUrl}/${currentApp.id}/content`;
   const contentItemApiAction = isNew 
@@ -37,9 +39,9 @@ const EditableListItem: React.FunctionComponent<IEditableListItemProps> = ({ isN
       .then(res => {
         if (res.ok) {
           if (isNew) {
-            toast.success(`Content item ${contentItem.contentKey} created`);
+            toast.success(t('Messages:ContentItemCreated', { contentKey: contentItem.contentKey}));
           } else {
-            toast.success(`Content item ${contentItem.contentKey} updated`);
+            toast.success(t('Messages:ContentItemUpdated', { contentKey: contentItem.contentKey}));
           }
           onItemSaved();
         } else {
@@ -53,7 +55,7 @@ const EditableListItem: React.FunctionComponent<IEditableListItemProps> = ({ isN
     return deleteContentItem.callApi(null)
       .then(res => {
         if (res.ok) {
-          toast.success(`Item ${contentItem.contentKey} deleted`);
+          toast.success(t('Messages:ContentItemDeleted', { contentKey: contentItem.contentKey}));
           onItemDeleted();
         }
         else {
@@ -69,11 +71,11 @@ const EditableListItem: React.FunctionComponent<IEditableListItemProps> = ({ isN
   const [showDeleteConfirmation, hideDeleteConfirmation] = useModal(() => (
     <Confirm
       visible={true}
-      title="Delete item"
+      title={t('Labels:DeleteItem')}
       onOk={() => handleDelete(contentItem, hideDeleteConfirmation)}
       onCancel={hideDeleteConfirmation}
     >
-      Do you really want to delete the item?
+      {t('Messages:DeleteConfirm', { name: 'the item' })}
     </Confirm>
   ), [contentItem]);
 
@@ -92,7 +94,7 @@ const EditableListItem: React.FunctionComponent<IEditableListItemProps> = ({ isN
               <form onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-3">
-                    <Field name="contentKey" label="Key" component={TextInput} />
+                    <Field name="contentKey" label={t('Labels:ContentKey')} component={TextInput} />
                     {nonLocalizableFields.map(field => {
                       const Editor = editorMap[field.fieldType];
                       return <Field key={field.name} name={`content.${field.name}`} label={field.description} component={Editor} />
@@ -111,10 +113,10 @@ const EditableListItem: React.FunctionComponent<IEditableListItemProps> = ({ isN
                     </div>
                   )}
                   <div className="col-2 d-flex flex-column">
-                    <button type="submit" className="btn btn-primary btn-block"><FaSave className="mr-1" />Save</button>
-                    <button type="button" className="btn btn-secondary btn-block" onClick={onClose}><FaTimes className="mr-1" />Cancel</button>
+                    <button type="submit" className="btn btn-primary btn-block"><FaSave className="mr-1" />{t('Labels:SaveButton')}</button>
+                    <button type="button" className="btn btn-secondary btn-block" onClick={onClose}><FaTimes className="mr-1" />{t('Labels:CancelButton')}</button>
                     { ! isNew &&
-                      <button type="button" className="btn btn-danger btn-block" onClick={showDeleteConfirmation}><FaTrash className="mr-1" />Delete</button>                  
+                      <button type="button" className="btn btn-danger btn-block" onClick={showDeleteConfirmation}><FaTrash className="mr-1" />{t('Labels:DeleteButton')}</button>                  
                     }
                   </div>
                 </div>

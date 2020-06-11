@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaTimes } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 interface IListHeaderProps {
   allLanguages: string[],
@@ -9,7 +10,7 @@ interface IListHeaderProps {
 }
 
 const ListHeader: React.FunctionComponent<IListHeaderProps> = ({ allLanguages, activeLanguages, onLanguageAdded, onLanguageRemoved }) => {
-
+  const { t } = useTranslation('Labels');
   const availableLanguages =  allLanguages.filter(l => ! activeLanguages.includes(l));
 
   const languageSelected = (ev: React.ChangeEvent<HTMLSelectElement>) => {
@@ -29,7 +30,7 @@ const ListHeader: React.FunctionComponent<IListHeaderProps> = ({ allLanguages, a
         <div className="col-2">
           {availableLanguages.length > 0 &&
             <select className="form-control" onChange={languageSelected}>
-              <option>Language...</option>
+              <option>{t('Labels:ChooseLanguage')}</option>
               {availableLanguages.map(lang =>
                 <option key={lang} value={lang}>{lang}</option>
               )}

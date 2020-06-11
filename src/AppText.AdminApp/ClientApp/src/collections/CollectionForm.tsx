@@ -7,6 +7,7 @@ import { FaSave, FaTrash } from 'react-icons/fa';
 import { TextInput, Select, SelectOption } from '../common/components/form';
 import { IApiResult } from '../common/api';
 import { ContentType } from '../contenttypes/models';
+import { useTranslation } from 'react-i18next';
 
 interface CollectionFormProps {
   collection?: Collection,
@@ -16,7 +17,7 @@ interface CollectionFormProps {
 }
 
 const CollectionForm: React.FC<CollectionFormProps> = ({ collection, contentTypes, onSave, onDelete }) => {
-  
+  const { t } = useTranslation('Labels');
   const initialContentType = collection.contentType || (contentTypes.length > 0 ? contentTypes[0] : undefined);
   const [ currentContentType, setCurrentContentType ] = useState(initialContentType);
   if (currentContentType === undefined && initialContentType !== undefined) {
@@ -59,14 +60,14 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ collection, contentType
     >
       {({ handleSubmit, values }) => (
         <form onSubmit={handleSubmit}>
-          <Field name="name" label="Name" component={TextInput} />
-          <Field name="contentType" label="Content type" component={Select} options={contentTypeOptions} onChange={onContentTypeChanged} />
-          <Field name="listDisplayField" label="Field that is displayed in content lists" component={Select} options={contentFieldOptions} insertEmpty />
+          <Field name="name" label={t('Labels:Name')} component={TextInput} />
+          <Field name="contentType" label={t('Labels:ContentType')} component={Select} options={contentTypeOptions} onChange={onContentTypeChanged} />
+          <Field name="listDisplayField" label={t('Labels:ListDisplayField')} component={Select} options={contentFieldOptions} insertEmpty />
           <div className="d-flex">
-            <button type="submit" className="btn btn-primary mr-2"><FaSave className="mr-1" />Save</button>
-            <Link to={{ pathname: '/collections' }} className="btn btn-link">Cancel</Link>
+            <button type="submit" className="btn btn-primary mr-2"><FaSave className="mr-1" />{t('Labels:SaveButton')}</button>
+            <Link to={{ pathname: '/collections' }} className="btn btn-link">{t('Labels:CancelButton')}</Link>
             {collection && collection.id &&
-              <button type="button" className="btn btn-danger ml-auto" onClick={onDeleteCollection}><FaTrash className="mr-1" />Delete</button>          
+              <button type="button" className="btn btn-danger ml-auto" onClick={onDeleteCollection}><FaTrash className="mr-1" />{t('Labels:DeleteButton')}</button>          
             }
           </div>
         </form>
