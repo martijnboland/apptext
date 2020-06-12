@@ -15,6 +15,7 @@
   { "Collections": "Collections" },
   { "NewCollection": "Nieuwe collection" },
   { "OkButton": "OK" },
+  { "CloseButton": "Close" },
   { "Unknown": "Onbekend" },
   { "ContentItemInfo": "Versie {{version}}, laatst gewijzigd {{- lastUpdated}} door {{lastModifiedBy}}" },
   { "Collection": "Collection" },

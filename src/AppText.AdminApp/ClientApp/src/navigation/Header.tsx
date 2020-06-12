@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 
+import LanguageSelector from './LanguageSelector';
 import UserContext from '../auth/UserContext';
 
 interface HeaderProps {
@@ -11,11 +12,12 @@ const Header: React.FunctionComponent<HeaderProps> = ({ sidebarToggled, toggleSi
   const userContext = useContext(UserContext);
 
   return (
-    <nav className="navbar navbar-light bg-light flex-md-nowrap shadow">
-      <button className="navbar-toggler btn-link" type="button">
+    <nav className="navbar navbar-expand navbar-light bg-light flex-md-nowrap shadow">
+      <button className="navbar-toggler btn-link d-block mr-auto" type="button">
         <span className="navbar-toggler-icon" onClick={toggleSidebar}></span>
       </button>
       <ul className="navbar-nav">
+        <LanguageSelector />
         {userContext.isAuthenticated && 
           <li className="nav-item">
             <a className="nav-link">{userContext.userName}</a>

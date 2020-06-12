@@ -15,6 +15,7 @@
   { "Collections": "Collections" },
   { "NewCollection": "New collection" },
   { "OkButton": "OK" },
+  { "CloseButton": "Close" },
   { "Unknown": "Unknown" },
   { "ContentItemInfo": "Version {{version}}, last updated {{- lastUpdated}} by {{lastModifiedBy}}" },
   { "Collection": "Collection" },
