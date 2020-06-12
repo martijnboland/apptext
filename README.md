@@ -11,10 +11,6 @@ The primary goal of AppText is to enable content updates in applications without
 ## Who should use it?
 AppText is intended for application developers who want an easy way of managing content for their applications and being able to delegate content management to non-developers.
 
-[![Screenshot edit translations](media/screenshots/edit-translations-240.png?raw=true "Edit translations")](media/screenshots/edit-translations.png?raw=true)
-[![Screenshot edit pages](media/screenshots/edit-pages-240.png?raw=true "Edit pages")](media/screenshots/edit-pages.png?raw=true)
-[![Screenshot GraphQL api](media/screenshots/graphiql-240.png?raw=true "Edit pages")](media/screenshots/graphiql.png?raw=true)
-
 ## Getting started
 This project is still in the early stages. To try it out, you have to clone this repository and build a version yourself. 
 
@@ -72,6 +68,12 @@ Finally go to the src/HostAppExample folder and execute
 dotnet run
 ```
 The host app is available at https://localhost:5001 and the AppText admin app is at https://localhost:5001/admin. Note that you have to create an account first and log in before you can access the admin app.
+
+## Screenshots
+
+[![Screenshot edit translations](media/screenshots/edit-translations-240.png?raw=true "Edit translations")](media/screenshots/edit-translations.png?raw=true)
+[![Screenshot edit pages](media/screenshots/edit-pages-240.png?raw=true "Edit pages")](media/screenshots/edit-pages.png?raw=true)
+[![Screenshot GraphQL api](media/screenshots/graphiql-240.png?raw=true "Edit pages")](media/screenshots/graphiql.png?raw=true)
 
 ## Concepts
 
