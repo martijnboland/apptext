@@ -2,8 +2,8 @@
 AppText is a Content Management System for Applications. A hybrid between a headless Content Management System and a Translation Management System.
 
 
-![Screenshot edit translations](media/screenshots/edit-translations-480.png?raw=true "Edit translations")
-![Screenshot edit pages](media/screenshots/edit-pages-480.png?raw=true "Edit pages")
+[![Screenshot edit translations](media/screenshots/edit-translations-240.png?raw=true "Edit translations")](media/screenshots/edit-translations.png?raw=true)
+[![Screenshot edit pages](media/screenshots/edit-pages-240.png?raw=true "Edit pages")](media/screenshots/edit-pages.png?raw=true)
 
 ## Why?
 Many custom software applications (web, mobile, native) are shipped with embedded content. Think of labels, tooltips or even complete pages with information. This content often needs to be localized in multiple languages.
