@@ -3,7 +3,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import classNames from 'classnames';
 import { ModalProvider } from 'react-modal-hook';
 import { toast } from 'react-toastify';
-import { useTranslation } from 'react-i18next';
+import './i18n';
+
 import 'react-toastify/dist/ReactToastify.css';
 
 import UserContextProvider from './auth/UserContextProvider';

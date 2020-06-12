@@ -1,26 +1,40 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import classNames from 'classnames';
 import useComponentVisible from '../common/hooks/useComponentVisible';
+import AppContext from '../apps/AppContext';
+import { useTranslation } from 'react-i18next';
 
-interface ILanguageSelectorProps {
-}
-
-const LanguageSelector: React.FunctionComponent<ILanguageSelectorProps> = (props) => {
+const LanguageSelector: React.FunctionComponent = () => {
+  
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
+
+  const { i18n } = useTranslation();
 
   const toggleLanguageSelector = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
     setIsComponentVisible(true);
   };
 
+  const changeLanguage = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, language: string) => {
+    e.preventDefault();
+    i18n.changeLanguage(language, () => setIsComponentVisible(false));
+  }
+
+  const currentLanguage = i18n.language;
+
+  const { apps} = useContext(AppContext);
+  const adminApp = apps.find(a => a.id === 'apptext-admin');
+  const languages = adminApp?.languages.filter(l => l !== currentLanguage) || [];
+
   return (
     <li className="nav-item dropdown">
       <a className="nav-link dropdown-toggle" id="languageselector" href="#" aria-haspopup="true" aria-expanded="false" onClick={toggleLanguageSelector}>
-        {}
+        {currentLanguage}
       </a>
       <div ref={ref} className={classNames('dropdown-menu', 'dropdown-menu-right', { show: isComponentVisible })} aria-labelledby="languageselector">
-        <a className="dropdown-item" href="#">nl</a>
-        <a className="dropdown-item" href="#">de</a>
+        {languages.map(language =>
+          <a key={language} className="dropdown-item" href="#" onClick={(e) => changeLanguage(e, language)}>{language}</a>
+        )}
       </div>
     </li>
   );

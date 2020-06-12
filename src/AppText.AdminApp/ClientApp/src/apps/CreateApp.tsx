@@ -37,7 +37,7 @@ const CreateApp: React.FunctionComponent = () => {
           actions.setErrors(res.errors);
         } else {
           const newApp = res.data;
-          toast.success(t('AppCreated', newApp.id));
+          toast.success(t('Messages:AppCreated', newApp.id));
           initApps()
             .then(() => setCurrentApp(newApp));
         }

@@ -8,12 +8,14 @@ i18n
   .use(Backend)
   .use(initReactI18next)
   .init({
+    lng: 'en',
     fallbackLng: 'en',
     backend: {
       loadPath: `${appConfig.apiBaseUrl}/apptext-admin/translations/{{lng}}/{{ns}}`
     },
     debug: true,
-    ns: ['Labels', 'Messages', 'Errors']
+    ns: ['Labels', 'Messages', 'Errors'],
+    defaultNS: 'Labels'
   });
 
 
