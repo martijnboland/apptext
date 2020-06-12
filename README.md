@@ -32,22 +32,16 @@ Navigate to the folder where you cloned the sources. You'll see a /src folder an
 #### Build and run API and Admin app
 Follow the steps below to build and run the AppText API and Admin App.
 
-Open a terminal and navigate to the /src/AppText folder, then execute
-```
-dotnet run
-```
-You can verify if the API is running by visiting https://localhost:5001/apps. This should return an empty array without errors.
-
-Next, open a second terminal and navigate to the /src/AppText.Admin/ClientApp folder, then execute
+Open a terminal window and navigate to the /src/AppText.Admin/ClientApp folder, then execute
 ```
 npm install
 npm start
 ```
-Open a third terminal, navigate to the /src/AppText.AdminApp folder and execute
+Open a second terminal, navigate to the /src/AppText.AdminApp folder and execute
 ```
 dotnet run
 ```
-The admin interface is available at http://localhost:8080. You have to start with creating a new 'app' that serves as a container for all content types, collections and content.
+The admin interface is available at http://localhost:8080/apptext. The admin app is set up that it will initialize itself as app in AppText at startup.
 
 #### Build and run the Host App example
 
