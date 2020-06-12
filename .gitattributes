@@ -1,4 +1,6 @@
 * text auto
 
+*.png binary
+
 *.csproj text merge=union
 *.sln    text merge=union eol=crlf
