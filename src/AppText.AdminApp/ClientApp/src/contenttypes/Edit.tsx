@@ -42,7 +42,7 @@ const Edit: React.FunctionComponent<EditProps> = ({ match, history,  }) => {
         onOk={() => handleDelete(data, hideDeleteConfirmation)}
         onCancel={hideDeleteConfirmation}
       >
-        {t('Messages:DeleteConfirm', { name: 'the content type'})}
+        {t('Messages:DeleteConfirm', { name: '$t(TheContentType)'})}
       </Confirm>
   ), [data]);
 

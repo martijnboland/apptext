@@ -23,7 +23,7 @@
   { "ContentKey": "Content key" },
   { "Content": "Content" },
   { "NewContentItem": "Nieuw content item" },
-  { "ChooseLanguage": "Taal..."},
+  { "ChooseLanguage": "Taal..." },
   { "ContentFields": "Content velden" },
   { "MetaFields": "Meta velden" },
   { "CreateContentType": "Nieuw content type" },
@@ -38,5 +38,8 @@
   { "RemoveButton": "Verwijder" },
   { "AddField": "Veld toevoegen" },
   { "ContentTypes": "Content types" },
-  { "NewContentType": "Nieuw content type" }
+  { "NewContentType": "Nieuw content type" },
+  { "DeleteItem": "Verwijder item" },
+  { "TheItem": "het item" },
+  { "TheContentType": "het content type" }
 ]

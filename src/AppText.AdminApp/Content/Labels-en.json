@@ -38,5 +38,8 @@
   { "RemoveButton": "Remove" },
   { "AddField": "Add field" },
   { "ContentTypes": "Content types" },
-  { "NewContentType": "New content type" }
+  { "NewContentType": "New content type" },
+  { "DeleteItem":  "Delete item" },
+  { "TheItem": "the item" },
+  { "TheContentType":  "the content type" }
 ]

@@ -75,7 +75,7 @@ const EditableListItem: React.FunctionComponent<IEditableListItemProps> = ({ isN
       onOk={() => handleDelete(contentItem, hideDeleteConfirmation)}
       onCancel={hideDeleteConfirmation}
     >
-      {t('Messages:DeleteConfirm', { name: 'the item' })}
+      {t('Messages:DeleteConfirm', { name: '$t(Labels:TheItem)' })}
     </Confirm>
   ), [contentItem]);
 
