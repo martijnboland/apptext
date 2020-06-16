@@ -2,7 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,26 +12,13 @@ namespace AppText.Features.Application
 {
     public class AppInitializer : IHostedService
     {
-        private readonly string _appId;
-        private readonly string _displayName;
-        private readonly string[] _languages;
-        private readonly string _defaultLanguage;
         private readonly IServiceProvider _serviceProvider;
-        private readonly bool _isSystemApp;
+        private readonly List<App> _appsToInitialize;
 
-        public AppInitializer(IServiceProvider serviceProvider, string appId, string displayName, string[] languages, string defaultLanguage, bool isSystemApp = false)
+        public AppInitializer(IServiceProvider serviceProvider, IOptions<AppInitializerOptions> options)
         {
-            if (String.IsNullOrEmpty(appId))
-            {
-                throw new ArgumentException("The appId is requried for the AppInitializer");
-            }
-
-            _appId = appId;
-            _displayName = displayName;
-            _languages = languages;
-            _defaultLanguage = defaultLanguage;
             _serviceProvider = serviceProvider;
-            _isSystemApp = isSystemApp;
+            _appsToInitialize = options.Value?.Apps ?? new List<App>();
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -38,25 +27,24 @@ namespace AppText.Features.Application
             using (var scope = _serviceProvider.CreateScope())
             {
                 var logger = scope.ServiceProvider.GetRequiredService<ILogger<AppInitializer>>();
-                logger.LogInformation($"Initializing app {_appId}");
+                logger.LogInformation($"Initializing apps");
 
                 var applicationStore = scope.ServiceProvider.GetRequiredService<IApplicationStore>();
-                if (!await applicationStore.AppExists(_appId))
+
+                foreach (var app in _appsToInitialize)
                 {
-                    logger.LogInformation($"App {_appId} doesn't exist yet. Initializing...");
-                    await applicationStore.AddApp(new App
+                    logger.LogInformation($"Initializing app {app.Id}");
+                    if (!await applicationStore.AppExists(app.Id))
                     {
-                        Id = _appId,
-                        DisplayName = _displayName,
-                        Languages = _languages,
-                        DefaultLanguage = _defaultLanguage,
-                        IsSystemApp = _isSystemApp
-                    });
-                    logger.LogInformation($"App {_appId} created and initialized");
-                }
-                else
-                {
-                    logger.LogInformation($"App {_appId} is already initialized");
+                        logger.LogInformation($"App {app.Id} doesn't exist yet. Initializing...");
+                        await applicationStore.AddApp(app);
+                        logger.LogInformation($"App {app.Id} created and initialized");
+                    }
+                    else
+                    {
+                        logger.LogInformation($"App {app.Id} is already initialized");
+                    }
+
                 }
             }
         }

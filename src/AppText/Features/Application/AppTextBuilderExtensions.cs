@@ -7,7 +7,16 @@ namespace AppText.Features.Application
     {
         public static AppTextBuilder InitializeApp(this AppTextBuilder builder, string appId, string displayName, string[] languages, string defaultLanguage, bool isSystem = false)
         {
-            builder.Services.AddHostedService(sp => new AppInitializer(sp, appId, displayName, languages, defaultLanguage, isSystem));
+            builder.Services.Configure<AppInitializerOptions>(o =>
+                o.Apps.Add(new App
+                {
+                    Id = appId,
+                    DisplayName = displayName,
+                    Languages = languages,
+                    DefaultLanguage = defaultLanguage,
+                    IsSystemApp = isSystem
+                }));
+            builder.Services.AddHostedService<AppInitializer>();
 
             return builder;
         }
