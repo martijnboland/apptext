@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Localization.Internal;
-
-namespace AppText.AdminApp
+﻿namespace AppText.AdminApp
 {
     public static class Constants
     {

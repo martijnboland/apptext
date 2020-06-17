@@ -14,6 +14,8 @@ using AppText.AdminApp.Configuration;
 using AppText.Features.Application;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.Razor;
+using AppText.Localization;
 
 namespace HostAppExample
 {
@@ -57,22 +59,26 @@ namespace HostAppExample
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, IdentityConstants.ApplicationScheme));
             });
 
-            services.AddControllersWithViews();
-            
-            services.AddRazorPages();
-            
             // AppText configuration
             var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
 
             services.AddAppText()
                 .AddLiteDbStorage(connectionString)
                 .AddApi(options => // content api is available at /apptext/hostappexample
-                {
+                            {
                     options.RequiredAuthorizationPolicy = "AppText";
                     options.EnableGraphiql = true; // graphiql is available at /apptext/hostappexample/graphql/graphiql
-                })
+                            })
                 .AddAdmin() // admin api is available at /apptext
-                .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en");
+                .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en")
+                .AddAppTextLocalization();
+
+            // MVC
+            services.AddControllersWithViews()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+            
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

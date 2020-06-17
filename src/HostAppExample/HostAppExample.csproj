@@ -16,8 +16,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AppText.AdminApp\AppText.AdminApp.csproj" />
+    <ProjectReference Include="..\AppText.Localization\AppText.Localization.csproj" />
     <ProjectReference Include="..\AppText.Storage.LiteDb\AppText.Storage.LiteDb.csproj" />
     <ProjectReference Include="..\AppText\AppText.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
 
 </Project>
