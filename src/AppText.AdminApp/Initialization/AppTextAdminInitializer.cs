@@ -1,6 +1,7 @@
 ﻿using AppText.Features.ContentDefinition;
 using AppText.Features.ContentManagement;
 using AppText.Shared.Commands;
+using AppText.Shared.Infrastructure;
 using AppText.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -105,7 +106,8 @@ namespace AppText.AdminApp.Initialization
                     serviceProvider.GetRequiredService<IContentStore>(),
                     serviceProvider.GetRequiredService<IVersioner>(),
                     serviceProvider.GetRequiredService<ContentItemValidator>(),
-                    initPrincipal);
+                    initPrincipal,
+                    serviceProvider.GetRequiredService<Dispatcher>());
                 foreach (var contentFile in contentFiles)
                 {
                     _logger.LogInformation("Importing content from {0}", contentFile.Name);

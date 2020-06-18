@@ -66,12 +66,16 @@ namespace HostAppExample
                 .AddLiteDbStorage(connectionString)
                 .AddApi(options => // content api is available at /apptext/hostappexample
                             {
-                    options.RequiredAuthorizationPolicy = "AppText";
-                    options.EnableGraphiql = true; // graphiql is available at /apptext/hostappexample/graphql/graphiql
+                                options.RequiredAuthorizationPolicy = "AppText";
+                                options.EnableGraphiql = true; // graphiql is available at /apptext/hostappexample/graphql/graphiql
                             })
                 .AddAdmin() // admin api is available at /apptext
                 .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en")
-                .AddAppTextLocalization();
+                .AddAppTextLocalization(options =>
+                {
+                    options.AppId = "hostappexample";
+                    options.CreateItemsWhenNotFound = true;
+                });
 
             // MVC
             services.AddControllersWithViews()

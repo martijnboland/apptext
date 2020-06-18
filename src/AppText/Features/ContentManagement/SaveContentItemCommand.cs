@@ -1,4 +1,5 @@
 ﻿using AppText.Shared.Commands;
+using AppText.Shared.Infrastructure;
 using AppText.Storage;
 using System;
 using System.Collections.Generic;
@@ -81,13 +82,15 @@ namespace AppText.Features.ContentManagement
         private readonly IVersioner _versioner;
         private readonly ContentItemValidator _validator;
         private readonly ClaimsPrincipal _currentUser;
+        private readonly Dispatcher _dispatcher;
 
-        public SaveContentItemCommandHandler(IContentStore store, IVersioner versioner, ContentItemValidator validator, ClaimsPrincipal currentUser)
+        public SaveContentItemCommandHandler(IContentStore store, IVersioner versioner, ContentItemValidator validator, ClaimsPrincipal currentUser, Dispatcher dispatcher)
         {
             _store = store;
             _versioner = versioner;
             _validator = validator;
             _currentUser = currentUser;
+            _dispatcher = dispatcher;
         }
 
         public async Task<CommandResult> Handle(SaveContentItemCommand command)
@@ -131,6 +134,15 @@ namespace AppText.Features.ContentManagement
                         await _store.UpdateContentItem(contentItem);
                     }
                     result.SetResultData(contentItem);
+                    await _dispatcher.PublishEvent(new ContentItemChangedEvent
+                    {
+                        AppId = contentItem.AppId,
+                        CollectionId = contentItem.CollectionId,
+                        ContentKey = contentItem.ContentKey,
+                        Version = contentItem.Version,
+                        TimeStamp = contentItem.LastModifiedAt ?? contentItem.CreatedAt.Value,
+                        ModifiedBy = contentItem.LastModifiedBy ?? contentItem.CreatedBy
+                    });
                 }
             }
             return result;

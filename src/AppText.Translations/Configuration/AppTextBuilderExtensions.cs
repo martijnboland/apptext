@@ -6,6 +6,7 @@ using AppText.Translations.Initialization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
+using System.Linq;
 
 namespace AppText.Translations.Configuration
 {
@@ -13,12 +14,19 @@ namespace AppText.Translations.Configuration
     {
         public static AppTextBuilder AddTranslations(this AppTextBuilder appTextBuilder, Action<AppTextTranslationsConfigurationOptions> setupAction = null)
         {
+            // First, check existence of TranslationsInitializer. If registered, we assume that this module already has been registered.
+            if (appTextBuilder.Services.Any(s => s.ImplementationType == typeof(TranslationsInitializer)))
+            {
+                return appTextBuilder;
+            }
+
             // Set options
             var enrichOptions = setupAction ?? delegate { };
             var options = new AppTextTranslationsConfigurationOptions();
             enrichOptions(options);
 
             var serviceProvider = appTextBuilder.Services.BuildServiceProvider();
+
             var appTextConfiguration = serviceProvider.GetService<AppTextPublicConfiguration>();
             
             // Try to inherit auth options from api configuration when not set
