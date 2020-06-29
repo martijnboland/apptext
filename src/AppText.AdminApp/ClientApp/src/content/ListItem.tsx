@@ -22,7 +22,7 @@ const ListItem: React.FunctionComponent<IListItemProps> = ({ collection, content
       ? contentItem.content[collection.listDisplayField][lang]
       : firstContentField && contentItem.content[firstContentField]
         ? contentItem.content[firstContentField][lang]
-        : contentItem.contentKey
+        : ''
     return { lang: lang, title: title};
   });
   
