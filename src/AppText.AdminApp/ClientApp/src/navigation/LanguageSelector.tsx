@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import useComponentVisible from '../common/hooks/useComponentVisible';
 import AppContext from '../apps/AppContext';
 import { useTranslation } from 'react-i18next';
+import { appTextAdminAppId } from '../config/constants';
 
 const LanguageSelector: React.FunctionComponent = () => {
   
@@ -23,7 +24,7 @@ const LanguageSelector: React.FunctionComponent = () => {
   const currentLanguage = i18n.language;
 
   const { apps} = useContext(AppContext);
-  const adminApp = apps.find(a => a.id === 'apptext-admin');
+  const adminApp = apps.find(a => a.id === appTextAdminAppId);
   const languages = adminApp?.languages.filter(l => l !== currentLanguage) || [];
 
   return (

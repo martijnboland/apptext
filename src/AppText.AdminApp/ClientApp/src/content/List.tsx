@@ -11,6 +11,7 @@ import ListItem from './ListItem';
 import EditableListItem from './EditableListItem';
 import { FaPlus } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
+import { appTextAdminAppId } from '../config/constants';
 
 interface ContentRouteProps {
   collectionId?: string
@@ -20,7 +21,7 @@ interface ListProps  extends RouteComponentProps<ContentRouteProps> {
 }
 
 const List: React.FC<ListProps> = ({ match }) => {
-  const { t } = useTranslation('Labels');
+  const { t, i18n } = useTranslation('Labels');
   const { currentApp } = useContext(AppContext);
   const baseUrl = `${appConfig.apiBaseUrl}/${currentApp.id}`;
 
@@ -95,6 +96,14 @@ const List: React.FC<ListProps> = ({ match }) => {
     setEditItemId(null);
   }
 
+  const itemChanged = () => {
+    // Check if we're editing our own resources. In that case, the resources need to be reloaded
+    if (currentApp.id === appTextAdminAppId) {
+      i18n.reloadResources();
+    }
+    refreshList();
+  }
+
   const refreshList = () => {
     setAddNew(false);
     setEditItemId(null);
@@ -150,8 +159,8 @@ const List: React.FC<ListProps> = ({ match }) => {
                 contentItem={ci} 
                 activeLanguages={activeLanguages} 
                 onClose={closeEditor}
-                onItemSaved={refreshList}
-                onItemDeleted={refreshList}
+                onItemSaved={itemChanged}
+                onItemDeleted={itemChanged}
               />
             :
               <ListItem 

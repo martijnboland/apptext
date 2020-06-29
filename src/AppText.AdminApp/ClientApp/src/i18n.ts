@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-http-backend';
 
 import { appConfig } from './config/AppConfig';
+import { appTextAdminAppId } from './config/constants';
 
 i18n
   .use(Backend)
@@ -10,8 +11,9 @@ i18n
   .init({
     lng: 'en',
     fallbackLng: 'en',
+    returnNull: false,
     backend: {
-      loadPath: `${appConfig.apiBaseUrl}/apptext-admin/translations/{{lng}}/{{ns}}`
+      loadPath: `${appConfig.apiBaseUrl}/${appTextAdminAppId}/translations/{{lng}}/{{ns}}`
     },
     debug: true,
     ns: ['Labels', 'Messages', 'Errors'],

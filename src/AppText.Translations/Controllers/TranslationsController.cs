@@ -65,7 +65,7 @@ namespace AppText.Translations.Controllers
                         Key = contentItem.ContentKey,
                         Collection = contentCollection.Name
                     };
-                    entry.Value = entry.Key; // set translation to key as default
+                    //entry.Value = entry.Key; // set translation to key as default
                     if (contentItem.Content.ContainsKey(Constants.TranslationTextFieldName))
                     {
                         var contentItemFieldValue = JObject.FromObject(contentItem.Content[Constants.TranslationTextFieldName]);
