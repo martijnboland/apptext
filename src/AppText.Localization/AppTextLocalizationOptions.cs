@@ -30,6 +30,11 @@ namespace AppText.Localization
         public string DefaultLanguage { get; set; }
 
         /// <summary>
+        /// Should the ASP.NET Core request localization options (supported languages, default language) be based on the AppText app? (default false)
+        /// </summary>
+        public bool ConfigureRequestLocalizationOptions { get; set; }
+
+        /// <summary>
         /// The collection name where the content items are stored (default <see cref="Constants.DefaultCollectionName" />)
         /// </summary>
         public string CollectionName { get; set; }
@@ -42,6 +47,7 @@ namespace AppText.Localization
             AppId = Assembly.GetEntryAssembly().GetName().Name;
             DefaultLanguage = Constants.DefaultDefaultLanguage;
             CollectionName = Constants.DefaultCollectionName;
+            ConfigureRequestLocalizationOptions = false;
         }
     }
 }

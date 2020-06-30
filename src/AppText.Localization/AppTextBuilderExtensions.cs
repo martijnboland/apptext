@@ -2,12 +2,18 @@
 using AppText.Features.ContentManagement;
 using AppText.Localization.Initialization;
 using AppText.Shared.Commands;
+using AppText.Shared.Infrastructure;
+using AppText.Storage;
 using AppText.Translations.Configuration;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 using System;
+using System.Globalization;
+using System.Linq;
 
 namespace AppText.Localization
 {
@@ -24,6 +30,7 @@ namespace AppText.Localization
 
             services.AddScoped<IEventHandler<ContentItemChangedEvent>, ContentItemChangedEventHandler>();
 
+            // Register for IOptions<AppTextLocalizationOptions>
             if (setupAction != null)
             {
                 services.Configure(setupAction);
@@ -34,6 +41,26 @@ namespace AppText.Localization
 
             // Add initializer as hosted service
             appTextBuilder.Services.AddHostedService<LocalizationInitializer>();
+
+            // Configure RequestLocalizationOptions
+            var enrichOptions = setupAction ?? delegate { };
+            var options = new AppTextLocalizationOptions();
+            enrichOptions(options);
+
+            if (options.ConfigureRequestLocalizationOptions)
+            {
+                services.AddOptions<RequestLocalizationOptions>()
+                    .Configure<IServiceScopeFactory>((locOptions, serviceScopeFactory) =>
+                    {
+                        using (var scope = serviceScopeFactory.CreateScope())
+                        {
+                            var applicationStore = scope.ServiceProvider.GetRequiredService<IApplicationStore>();
+                            var app = AsyncHelper.RunSync(() => applicationStore.GetApp(options.AppId));
+                            locOptions.SupportedUICultures = app.Languages.Select(lang => new CultureInfo(lang)).ToList();
+                            locOptions.DefaultRequestCulture = new RequestCulture(CultureInfo.CurrentCulture, new CultureInfo(app.DefaultLanguage));
+                        }
+                    });
+            }
         }
     }
 }

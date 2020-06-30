@@ -40,7 +40,12 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - @L["HostAppExample"] - <a asp-area="" asp-controller="Home" asp-action="Privacy">@L["Privacy"]</a>
+            <div class="row">
+                <div class="col-md-6">&copy; 2020 - @L["HostAppExample"] - <a asp-area="" asp-controller="Home" asp-action="Privacy">@L["Privacy"]</a></div>
+                <div class="col-md-6 text-right">
+                    @await Html.PartialAsync("_SelectLanguagePartial")
+                </div>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
