@@ -1,4 +1,5 @@
 ﻿using AppText.Shared.Commands;
+using AppText.Shared.Infrastructure;
 using AppText.Shared.Validation;
 using AppText.Storage;
 using System.ComponentModel.DataAnnotations;
@@ -28,12 +29,13 @@ namespace AppText.Features.Application
     {
         private readonly IApplicationStore _store;
         private readonly AppValidator _validator;
+        private readonly Dispatcher _dispatcher;
 
-
-        public UpdateAppCommandHandler(IApplicationStore store, AppValidator validator)
+        public UpdateAppCommandHandler(IApplicationStore store, AppValidator validator, Dispatcher dispatcher)
         {
             _store = store;
             _validator = validator;
+            _dispatcher = dispatcher;
         }
 
         public async Task<CommandResult> Handle(UpdateAppCommand command)
@@ -56,6 +58,13 @@ namespace AppText.Features.Application
             else
             {
                 await _store.UpdateApp(app);
+                await _dispatcher.PublishEvent(new AppChangedEvent
+                {
+                    AppId = app.Id,
+                    DisplayName = app.DisplayName,
+                    Languages = app.Languages,
+                    DefaultLanguage = app.DefaultLanguage
+                });
             }
 
             return result;

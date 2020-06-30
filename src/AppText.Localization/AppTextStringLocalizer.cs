@@ -80,7 +80,7 @@ namespace AppText.Localization
                 var parentCulture = culture.Parent;
                 if (parentCulture != culture)
                 {
-                    return GetTranslation(name, culture.Parent);
+                    return GetTranslation(name, parentCulture);
                 }
                 return null;
             }

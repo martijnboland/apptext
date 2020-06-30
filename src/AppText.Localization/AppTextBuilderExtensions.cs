@@ -1,4 +1,5 @@
 ﻿using AppText.Configuration;
+using AppText.Features.Application;
 using AppText.Features.ContentManagement;
 using AppText.Localization.Initialization;
 using AppText.Shared.Commands;
@@ -29,6 +30,7 @@ namespace AppText.Localization
             services.TryAddTransient(typeof(IStringLocalizer<>), typeof(StringLocalizer<>));
 
             services.AddScoped<IEventHandler<ContentItemChangedEvent>, ContentItemChangedEventHandler>();
+            services.AddScoped<IEventHandler<AppChangedEvent>, AppChangedEventHandler>();
 
             // Register for IOptions<AppTextLocalizationOptions>
             if (setupAction != null)
