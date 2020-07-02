@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace AppText.Configuration
+﻿namespace AppText.Configuration
 {
     public class AppTextApiConfigurationOptions
     {
@@ -31,7 +29,7 @@ namespace AppText.Configuration
         /// </summary>
         public bool EnableGraphiql { get; set; }
 
-        public AppTextApiConfigurationOptions(IServiceCollection services)
+        public AppTextApiConfigurationOptions()
         {
             this.RoutePrefix = DefaultRoutePrefix;
             this.RequireAuthenticatedUser = false;
@@ -44,9 +42,9 @@ namespace AppText.Configuration
         /// Returns a configuration DTO that can be stored or serialized and contains settings that could be interesting for other modules.
         /// </summary>
         /// <returns></returns>
-        public AppTextPublicConfiguration ToPublicConfiguration()
+        public AppTextPublicApiConfiguration ToApiConfiguration()
         {
-            return new AppTextPublicConfiguration
+            return new AppTextPublicApiConfiguration
             {
                 RoutePrefix = this.RoutePrefix,
                 RequireAuthenticatedUser = this.RequireAuthenticatedUser,

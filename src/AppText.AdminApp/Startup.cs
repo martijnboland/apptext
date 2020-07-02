@@ -27,7 +27,6 @@ namespace AppText.AdminApp
             var dataPath = Path.Combine(Env.ContentRootPath, "App_Data");
             services.AddAppText()
                 .AddNoDbStorage(dataPath)
-                .AddApi()
                 .AddAdmin(o =>
                 {
                     o.EmbeddedViewsDisabled = true;

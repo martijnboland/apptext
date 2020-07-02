@@ -5,7 +5,6 @@ using AppText.Storage.NoDb;
 using AppText.Translations.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -24,7 +23,6 @@ namespace AppText.Translations
             var dataPath = Path.Combine(Env.ContentRootPath, "App_Data");
             services.AddAppText()
                 .AddNoDbStorage(dataPath)
-                .AddApi()
                 .AddTranslations()
                 .InitializeApp("translations", "Translations Development App", new string[] { "en", "nl", "de", "fr" }, "en");
         }

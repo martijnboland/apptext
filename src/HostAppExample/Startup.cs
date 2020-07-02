@@ -61,13 +61,12 @@ namespace HostAppExample
             // AppText configuration
             var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
 
-            services.AddAppText()
+            services.AddAppText(options => // content api is available at /apptext/hostappexample
+                {
+                    options.RequiredAuthorizationPolicy = "AppText";
+                    options.EnableGraphiql = true; // graphiql is available at /apptext/hostappexample/graphql/graphiql
+                })
                 .AddLiteDbStorage(connectionString)
-                .AddApi(options => // content api is available at /apptext/hostappexample
-                            {
-                                options.RequiredAuthorizationPolicy = "AppText";
-                                options.EnableGraphiql = true; // graphiql is available at /apptext/hostappexample/graphql/graphiql
-                            })
                 .AddAdmin() // admin api is available at /apptext
                 .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en")
                 .AddAppTextLocalization(options =>

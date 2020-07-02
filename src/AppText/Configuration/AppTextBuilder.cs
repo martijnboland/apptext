@@ -17,29 +17,13 @@ namespace AppText.Configuration
     public class AppTextBuilder
     {
         public IServiceCollection Services { get; }
+        public AppTextPublicApiConfiguration ApiConfiguration { get; private set; }
 
-        public AppTextBuilder(IServiceCollection services)
+        public AppTextBuilder(IServiceCollection services, Action<AppTextApiConfigurationOptions> configureOptionsAction = null)
         {
             Services = services;
             RegisterCoreServices();
-        }
-
-        public AppTextBuilder AddApi(Action<AppTextApiConfigurationOptions> configureOptionsAction = null)
-        {
-            var mvcBuilder = Services.AddMvcCore();
-            var assembly = typeof(Startup).Assembly;
-            mvcBuilder.AddApplicationPart(assembly);
-
-            var options = GetOptions(Services, configureOptionsAction);
-
-            mvcBuilder.AddMvcOptions(mvcOptions =>
-            {
-                mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix, assembly));
-                mvcOptions.Conventions.Add(new AppTextAuthorizationConvention(options.RequireAuthenticatedUser, options.RequiredAuthorizationPolicy));
-                mvcOptions.Conventions.Add(new AppTextGraphiqlConvention(options.EnableGraphiql));
-                mvcOptions.Conventions.Add(new AppTextNewtonsoftJsonConvention(assembly));
-            });
-            return this;
+            AddApi(configureOptionsAction);
         }
 
         private void RegisterCoreServices()
@@ -94,13 +78,30 @@ namespace AppText.Configuration
             Services.AddMemoryCache();
         }
 
-        private static AppTextApiConfigurationOptions GetOptions(
+        private void AddApi(Action<AppTextApiConfigurationOptions> configureOptionsAction = null)
+        {
+            var mvcBuilder = Services.AddMvcCore();
+            var assembly = typeof(Startup).Assembly;
+            mvcBuilder.AddApplicationPart(assembly);
+
+            var options = GetOptions(Services, configureOptionsAction);
+
+            mvcBuilder.AddMvcOptions(mvcOptions =>
+            {
+                mvcOptions.Conventions.Insert(0, new AppTextRouteConvention(options.RoutePrefix, assembly));
+                mvcOptions.Conventions.Add(new AppTextAuthorizationConvention(options.RequireAuthenticatedUser, options.RequiredAuthorizationPolicy));
+                mvcOptions.Conventions.Add(new AppTextGraphiqlConvention(options.EnableGraphiql));
+                mvcOptions.Conventions.Add(new AppTextNewtonsoftJsonConvention(assembly));
+            });
+        }
+
+        private AppTextApiConfigurationOptions GetOptions(
             IServiceCollection services,
             Action<AppTextApiConfigurationOptions> configureOptionsAction = null
         )
         {
             var enrichOptions = configureOptionsAction ?? delegate { };
-            var options = new AppTextApiConfigurationOptions(services);
+            var options = new AppTextApiConfigurationOptions();
             enrichOptions(options);
 
             if (options.RegisterClaimsPrincipal)
@@ -108,8 +109,8 @@ namespace AppText.Configuration
                 RegisterClaimsPrincipal(services);
             }
 
-            // Register public options as singleton for other modules
-            services.AddSingleton(options.ToPublicConfiguration());
+            // Set API configuration from options.
+            ApiConfiguration = options.ToApiConfiguration();
 
             return options;
         }

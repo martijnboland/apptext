@@ -22,7 +22,7 @@ namespace AppText.AdminApp.Configuration
             var assembly = typeof(AdminController).Assembly;
             mvcBuilder.AddApplicationPart(assembly);
 
-            var options = GetOptions(appTextBuilder.Services, setupAction);
+            var options = GetOptions(appTextBuilder.Services, appTextBuilder.ApiConfiguration, setupAction);
 
             ConfigureServices(appTextBuilder.Services, assembly, options);
 
@@ -49,6 +49,7 @@ namespace AppText.AdminApp.Configuration
 
         private static AppTextAdminConfigurationOptions GetOptions(
             IServiceCollection services,
+            AppTextPublicApiConfiguration apiConfiguration,
             Action<AppTextAdminConfigurationOptions> setupAction = null
         )
         {
@@ -58,21 +59,19 @@ namespace AppText.AdminApp.Configuration
             enrichOptions(options);
 
             // Try to set empty options from AppText API configuration
-            var serviceProvider = services.BuildServiceProvider();
-            var appTextConfiguration = serviceProvider.GetService<AppTextPublicConfiguration>();
-            if (appTextConfiguration != null)
+            if (apiConfiguration != null)
             {
                 if (String.IsNullOrEmpty(options.RoutePrefix))
                 {
-                    options.RoutePrefix = appTextConfiguration.RoutePrefix;
+                    options.RoutePrefix = apiConfiguration.RoutePrefix;
                 }
                 if (!options.RequireAuthenticatedUser.HasValue)
                 {
-                    options.RequireAuthenticatedUser = appTextConfiguration.RequireAuthenticatedUser;
+                    options.RequireAuthenticatedUser = apiConfiguration.RequireAuthenticatedUser;
                 }
                 if (options.RequiredAuthorizationPolicy == null)
                 {
-                    options.RequiredAuthorizationPolicy = appTextConfiguration.RequiredAuthorizationPolicy;
+                    options.RequiredAuthorizationPolicy = apiConfiguration.RequiredAuthorizationPolicy;
                 }
             }
 
