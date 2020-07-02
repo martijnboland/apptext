@@ -22,11 +22,15 @@ namespace AppText.Localization
         public Task Handle(AppChangedEvent publishedEvent)
         {
             // Clear cache of AppTextBridge when the app has changed that contains the translations for Localization
+            // because it might be possible that the default language has been changed or that a new language was added.
             if (publishedEvent.AppId == _options.AppId)
             {
                 _appTextBridge.ClearCache();
+
                 if (_options.RecycleHostAppAfterSavingApp)
                 {
+                    // HACK: the supported languages and default language are set via the RequestLocalizationOptions, but these are only set once
+                    // at application startup. To reflect the new language settings from the saved app, the process needs to be restarted.
                     _hostApplicationLifetime.StopApplication();
                 }
             }
