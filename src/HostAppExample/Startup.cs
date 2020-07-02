@@ -75,6 +75,8 @@ namespace HostAppExample
                     options.AppId = "hostappexample";
                     options.CreateItemsWhenNotFound = true;
                     options.ConfigureRequestLocalizationOptions = true;
+                    // ONLY set the option below to true when running behind something that automatically restarts a stopped ASP.NET Core process (IIS, systemd)
+                    // options.RecycleHostAppAfterSavingApp = true;
                 });
 
             // MVC

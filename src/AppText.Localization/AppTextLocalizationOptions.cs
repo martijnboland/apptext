@@ -35,6 +35,16 @@ namespace AppText.Localization
         public bool ConfigureRequestLocalizationOptions { get; set; }
 
         /// <summary>
+        /// When set to true, the host application is terminated after changing the AppText app. This is required to immediately 
+        /// see the effect of adding new languages or changing the default language. (default false)
+        /// </summary>
+        /// <remarks>
+        /// WARNING: this only works when running behind a server like IIS that automatically restarts the process when it is terminated.
+        /// Do not set this option to true when running standalone. It will kill your host application.
+        /// </remarks>
+        public bool RecycleHostAppAfterSavingApp { get; set; }
+
+        /// <summary>
         /// The collection name where the content items are stored (default <see cref="Constants.DefaultCollectionName" />)
         /// </summary>
         public string CollectionName { get; set; }
@@ -48,6 +58,7 @@ namespace AppText.Localization
             DefaultLanguage = Constants.DefaultDefaultLanguage;
             CollectionName = Constants.DefaultCollectionName;
             ConfigureRequestLocalizationOptions = false;
+            RecycleHostAppAfterSavingApp = false;
         }
     }
 }

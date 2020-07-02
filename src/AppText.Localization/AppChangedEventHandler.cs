@@ -1,5 +1,6 @@
 ﻿using AppText.Features.Application;
 using AppText.Shared.Commands;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
@@ -9,11 +10,13 @@ namespace AppText.Localization
     {
         private readonly AppTextBridge _appTextBridge;
         private readonly AppTextLocalizationOptions _options;
+        private readonly IHostApplicationLifetime _hostApplicationLifetime;
 
-        public AppChangedEventHandler(AppTextBridge appTextBridge, IOptions<AppTextLocalizationOptions> options)
+        public AppChangedEventHandler(AppTextBridge appTextBridge, IOptions<AppTextLocalizationOptions> options, IHostApplicationLifetime hostApplicationLifetime)
         {
             _appTextBridge = appTextBridge;
             _options = options.Value;
+            _hostApplicationLifetime = hostApplicationLifetime;
         }
 
         public Task Handle(AppChangedEvent publishedEvent)
@@ -22,6 +25,10 @@ namespace AppText.Localization
             if (publishedEvent.AppId == _options.AppId)
             {
                 _appTextBridge.ClearCache();
+                if (_options.RecycleHostAppAfterSavingApp)
+                {
+                    _hostApplicationLifetime.StopApplication();
+                }
             }
             return Task.CompletedTask;
         }
