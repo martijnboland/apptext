@@ -1,7 +1,7 @@
+![.NET Core CI](https://github.com/martijnboland/apptext/workflows/.NET%20Core%20CI/badge.svg)
+
 # AppText
 AppText is a Content Management System for Applications. A hybrid between a headless Content Management System and a Translation Management System.
-
-![.NET Core CI](https://github.com/martijnboland/apptext/workflows/.NET%20Core%20CI/badge.svg)
 
 ![Screenshot edit translations](media/screenshots/edit-translations-800.png?raw=true "Edit translations")
 
