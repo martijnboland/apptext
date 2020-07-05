@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <PackageId>AppText.Storage.LiteDb</PackageId>
+    <Description>AppText.Storage.LiteDb is a storage implementation for the AppText CMS that uses LiteDB as database.</Description>
+    <Authors>Martijn Boland</Authors>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

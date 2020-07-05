@@ -2,7 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <PackageId>AppText.Translations</PackageId>
+    <Description>AppText.Translations is an add-on for the AppText CMS that adds a system Translation content type and a few specialized API endpoints to deal with translations</Description>
+    <Authors>Martijn Boland</Authors>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <IncludeContentInPack>false</IncludeContentInPack>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="App_Data\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Karambolo.PO.Minimal" Version="1.5.1" />

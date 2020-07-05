@@ -4,10 +4,17 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>AppText</AssemblyName>
     <RootNamespace>AppText</RootNamespace>
+    <IsPackable>true</IsPackable>
+    <PackageId>AppText</PackageId>
+    <Description>AppText is a content management system for apps</Description>
+    <Authors>Martijn Boland</Authors>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <IncludeContentInPack>false</IncludeContentInPack>
   </PropertyGroup>
 
   <ItemGroup>
     <Content Remove="Features\GraphQL\GraphiQL\graphiql.cshtml" />
+    <Content Remove="App_Data\**" />
   </ItemGroup>
 
   <ItemGroup>

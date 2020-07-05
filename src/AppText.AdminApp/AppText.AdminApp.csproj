@@ -5,6 +5,12 @@
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <ClientAppFolder>ClientApp</ClientAppFolder>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <IsPackable>true</IsPackable>
+    <PackageId>AppText.AdminApp</PackageId>
+    <Description>AppText.AdminApp is the administration interface for the AppText content management system</Description>
+    <Authors>Martijn Boland</Authors>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <IncludeContentInPack>false</IncludeContentInPack>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Content\Messages-en.json" />
-    <Content Remove="Content\Messages-nl.json" />
+    <Content Remove="Content\**" />
+    <Content Remove="App_Data\**" />
   </ItemGroup>
 
   <ItemGroup>
