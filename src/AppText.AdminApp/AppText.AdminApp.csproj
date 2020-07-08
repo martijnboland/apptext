@@ -10,6 +10,9 @@
     <Description>AppText.AdminApp is the administration interface for the AppText content management system</Description>
     <Authors>Martijn Boland</Authors>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/martijnboland/apptext</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/martijnboland/apptext</RepositoryUrl>
     <IncludeContentInPack>false</IncludeContentInPack>
   </PropertyGroup>
 

@@ -6,6 +6,9 @@
     <PackageId>AppText.Storage.LiteDb</PackageId>
     <Description>AppText.Storage.LiteDb is a storage implementation for the AppText CMS that uses LiteDB as database.</Description>
     <Authors>Martijn Boland</Authors>
+    <PackageProjectUrl>https://github.com/martijnboland/apptext</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/martijnboland/apptext</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
 

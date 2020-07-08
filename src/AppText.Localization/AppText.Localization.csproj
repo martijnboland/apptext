@@ -7,6 +7,9 @@
     <Description>AppText.Localization enables .NET Core apps to use AppText for localization with the standard .NET Core localization API.</Description>
     <Authors>Martijn Boland</Authors>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/martijnboland/apptext</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/martijnboland/apptext</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
