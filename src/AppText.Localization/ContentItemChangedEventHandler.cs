@@ -25,7 +25,7 @@ namespace AppText.Localization
             // Clear cache of AppTextBridge when an item has changed
             if (publishedEvent.AppId == _options.AppId)
             {
-                var collection = (await _contentStore.GetContentCollections(new ContentCollectionQuery { Id = publishedEvent.CollectionId })).FirstOrDefault();
+                var collection = (await _contentStore.GetContentCollections(new ContentCollectionQuery { AppId = _options.AppId, Id = publishedEvent.CollectionId })).FirstOrDefault();
                 if (collection != null && collection.Name == _options.CollectionName)
                 {
                     _appTextBridge.ClearCache();
