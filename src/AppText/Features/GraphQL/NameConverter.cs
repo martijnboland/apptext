@@ -10,6 +10,7 @@ namespace AppText.Features.GraphQL
         /// Convert a name of a collection or content item field to a name that is compatible with GraphQL name.
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="convertedName"></param>
         /// <returns></returns>
         public static bool TryConvertToGraphQLName(string name, out string convertedName)
         {

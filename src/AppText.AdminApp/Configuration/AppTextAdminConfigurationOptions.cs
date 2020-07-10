@@ -2,6 +2,9 @@
 
 namespace AppText.AdminApp.Configuration
 {
+    /// <summary>
+    /// Configuration options for AppText.AdminApp.
+    /// </summary>
     public class AppTextAdminConfigurationOptions
     {
         public const string DefaultRoutePrefix = "";

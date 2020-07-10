@@ -12,6 +12,12 @@ namespace AppText.Translations.Configuration
 {
     public static class AppTextBuilderExtensions
     {
+        /// <summary>
+        /// Adds the Translation Content Type and extra endpoints to support specific translation formats (JSON, .NET RESX, GNU Gettext PO files).
+        /// </summary>
+        /// <param name="appTextBuilder">AppText components builder</param>
+        /// <param name="setupAction">Configures the AppText.Translations add-on</param>
+        /// <returns></returns>
         public static AppTextBuilder AddTranslations(this AppTextBuilder appTextBuilder, Action<AppTextTranslationsConfigurationOptions> setupAction = null)
         {
             // First, check existence of TranslationsInitializer. If registered, we assume that this module already has been registered.

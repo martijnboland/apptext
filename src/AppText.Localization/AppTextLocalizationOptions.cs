@@ -2,6 +2,9 @@
 
 namespace AppText.Localization
 {
+    /// <summary>
+    /// Options for the AppText.Localization add-on
+    /// </summary>
     public class AppTextLocalizationOptions
     {
         /// <summary>
@@ -10,7 +13,7 @@ namespace AppText.Localization
         public bool PrefixContentKeys { get; set; }
 
         /// <summary>
-        /// Separator between content key prefix and content key (default .)
+        /// Separator between content key prefix and content key (default '.')
         /// </summary>
         public string PrefixSeparator { get; set; }
 

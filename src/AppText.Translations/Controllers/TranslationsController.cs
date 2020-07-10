@@ -25,6 +25,7 @@ namespace AppText.Translations.Controllers
         /// <summary>
         /// Find all content with system content type 'Translation' and the given language. Optionally restrict to the given collection.
         /// </summary>
+        /// <param name="appId"></param>
         /// <param name="language"></param>
         /// <param name="collection"></param>
         /// <returns>Translations as key-value pairs, ordered by key.</returns>

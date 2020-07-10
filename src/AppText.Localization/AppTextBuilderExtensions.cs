@@ -20,7 +20,14 @@ namespace AppText.Localization
 {
     public static class AppTextBuilderExtensions
     {
-        public static void AddAppTextLocalization(this AppTextBuilder appTextBuilder, Action<AppTextLocalizationOptions> setupAction = null)
+        /// <summary>
+        /// Adds AppText as localization implementation for standard .NET Core Localization functionality. When added to an application, you can use the 
+        /// standard .NET Core localization facilities (IStringLocalizer, IViewLocalizer), but with AppText as content backend.
+        /// </summary>
+        /// <param name="appTextBuilder">AppText components builder</param>
+        /// <param name="setupAction">Configures AppText.Localization options</param>
+        /// <returns></returns>
+        public static AppTextBuilder AddAppTextLocalization(this AppTextBuilder appTextBuilder, Action<AppTextLocalizationOptions> setupAction = null)
         {
             var services = appTextBuilder.Services;
 
@@ -63,6 +70,8 @@ namespace AppText.Localization
                         }
                     });
             }
+
+            return appTextBuilder;
         }
     }
 }

@@ -9,13 +9,15 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using TranslationConstants = AppText.Translations.Constants;
 
 namespace AppText.Localization.Initialization
 {
+    /// <summary>
+    /// Initializer for AppText.Localization. It ensures that an app exists for Localization and that a collection exists for the resources.
+    /// </summary>
     public class LocalizationInitializer : IHostedService
     {
         private readonly IServiceProvider _serviceProvider;
