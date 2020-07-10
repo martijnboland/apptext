@@ -52,6 +52,11 @@
     <Exec WorkingDirectory="$(ClientAppFolder)" Command="npm install" />
   </Target>
 
+  <Target Name="BuildClientAssetsForEmbedding" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Release'">
+    <Exec WorkingDirectory="$(ClientAppFolder)" Command="npm install" />
+    <Exec WorkingDirectory="$(ClientAppFolder)" Command="npm run prod" />
+  </Target>
+
   <Target Name="BuildClientAssets" AfterTargets="ComputeFilesToPublish">
     <Exec WorkingDirectory="$(ClientAppFolder)" Command="npm install" />
     <Exec WorkingDirectory="$(ClientAppFolder)" Command="npm run prod" />
