@@ -20,7 +20,7 @@ namespace AppText.Localization
 {
     public static class AppTextBuilderExtensions
     {
-        public static void AddAppTextLocalization(this AppTextBuilder appTextBuilder, Action<AppTextLocalizationOptions> setupAction = null)
+        public static AppTextBuilder AddAppTextLocalization(this AppTextBuilder appTextBuilder, Action<AppTextLocalizationOptions> setupAction = null)
         {
             var services = appTextBuilder.Services;
 
@@ -63,6 +63,8 @@ namespace AppText.Localization
                         }
                     });
             }
+
+            return appTextBuilder;
         }
     }
 }
