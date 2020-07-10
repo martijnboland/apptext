@@ -10,6 +10,7 @@
     <PackageProjectUrl>https://github.com/martijnboland/apptext</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/martijnboland/apptext</RepositoryUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

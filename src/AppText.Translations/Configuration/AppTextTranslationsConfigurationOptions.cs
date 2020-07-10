@@ -1,9 +1,12 @@
 namespace AppText.Translations.Configuration
 {
+    /// <summary>
+    /// Configuration options for AppText.Translations.
+    /// </summary>
     public class AppTextTranslationsConfigurationOptions
     {
         /// <summary>
-        /// Does the app require an authenticated user? When left empty, the possible value of the API configuration is used. 
+        /// Does the app require an authenticated user? When left empty, the possible value of the API configuration is used.
         /// </summary>
         public bool? RequireAuthenticatedUser { get; set; }
 

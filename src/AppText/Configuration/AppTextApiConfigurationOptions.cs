@@ -1,7 +1,13 @@
 ﻿namespace AppText.Configuration
 {
+    /// <summary>
+    /// The configuration options for the AppText API.
+    /// </summary>
     public class AppTextApiConfigurationOptions
     {
+        /// <summary>
+        /// Default route prefix.
+        /// </summary>
         public const string DefaultRoutePrefix = "apptext";
 
         /// <summary>
@@ -29,6 +35,9 @@
         /// </summary>
         public bool EnableGraphiql { get; set; }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="AppTextApiConfigurationOptions"/> class.
+        /// </summary>
         public AppTextApiConfigurationOptions()
         {
             this.RoutePrefix = DefaultRoutePrefix;

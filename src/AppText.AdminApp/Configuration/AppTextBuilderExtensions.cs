@@ -15,6 +15,12 @@ namespace AppText.AdminApp.Configuration
 {
     public static class AppTextBuilderExtensions
     {
+        /// <summary>
+        /// Adds the AppText admin UI. By default it uses the same virtual path as the API. It can be overridden via the options.
+        /// </summary>
+        /// <param name="appTextBuilder">AppText components builder</param>
+        /// <param name="setupAction">Configures AppText.AdminApp options (optionally)</param>
+        /// <returns></returns>
         public static AppTextBuilder AddAdmin(this AppTextBuilder appTextBuilder, Action<AppTextAdminConfigurationOptions> setupAction = null)
         {
             // Register as application part with embedded views

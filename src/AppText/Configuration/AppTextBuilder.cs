@@ -14,11 +14,26 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace AppText.Configuration
 {
+    /// <summary>
+    /// AppText components builder.
+    /// </summary>
     public class AppTextBuilder
     {
+        /// <summary>
+        /// .NET Core DependencyInjection services collection.
+        /// </summary>
         public IServiceCollection Services { get; }
+
+        /// <summary>
+        /// AppText public API configuration accessible for other AppText modules during configuration.
+        /// </summary>
         public AppTextPublicApiConfiguration ApiConfiguration { get; private set; }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="AppTextBuilder"/> class.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configureOptionsAction"></param>
         public AppTextBuilder(IServiceCollection services, Action<AppTextApiConfigurationOptions> configureOptionsAction = null)
         {
             Services = services;

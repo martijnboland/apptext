@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace AppText.Features.Application
 {
+    /// <summary>
+    /// Initializes pre-configured AppText apps at application startup.
+    /// </summary>
     public class AppInitializer : IHostedService
     {
         private readonly IServiceProvider _serviceProvider;
