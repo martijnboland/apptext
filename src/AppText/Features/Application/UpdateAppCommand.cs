@@ -29,9 +29,9 @@ namespace AppText.Features.Application
     {
         private readonly IApplicationStore _store;
         private readonly AppValidator _validator;
-        private readonly Dispatcher _dispatcher;
+        private readonly IDispatcher _dispatcher;
 
-        public UpdateAppCommandHandler(IApplicationStore store, AppValidator validator, Dispatcher dispatcher)
+        public UpdateAppCommandHandler(IApplicationStore store, AppValidator validator, IDispatcher dispatcher)
         {
             _store = store;
             _validator = validator;

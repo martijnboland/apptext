@@ -9,9 +9,9 @@ namespace AppText.Features.Application
     [Route("apps")]
     public class AppsController : ControllerBase
     {
-        private readonly Dispatcher _dispatcher;
+        private readonly IDispatcher _dispatcher;
 
-        public AppsController(Dispatcher dispatcher)
+        public AppsController(IDispatcher dispatcher)
         {
             _dispatcher = dispatcher;
         }

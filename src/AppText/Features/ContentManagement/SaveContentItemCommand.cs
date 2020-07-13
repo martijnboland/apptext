@@ -82,9 +82,9 @@ namespace AppText.Features.ContentManagement
         private readonly IVersioner _versioner;
         private readonly ContentItemValidator _validator;
         private readonly ClaimsPrincipal _currentUser;
-        private readonly Dispatcher _dispatcher;
+        private readonly IDispatcher _dispatcher;
 
-        public SaveContentItemCommandHandler(IContentStore store, IVersioner versioner, ContentItemValidator validator, ClaimsPrincipal currentUser, Dispatcher dispatcher)
+        public SaveContentItemCommandHandler(IContentStore store, IVersioner versioner, ContentItemValidator validator, ClaimsPrincipal currentUser, IDispatcher dispatcher)
         {
             _store = store;
             _versioner = versioner;

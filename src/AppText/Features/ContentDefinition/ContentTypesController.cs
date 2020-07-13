@@ -10,9 +10,9 @@ namespace AppText.Features.ContentDefinition
     [Route("{appId}/contenttypes")]
     public class ContentTypesController : ControllerBase
     {
-        private readonly Dispatcher _dispatcher;
+        private readonly IDispatcher _dispatcher;
 
-        public ContentTypesController(Dispatcher dispatcher)
+        public ContentTypesController(IDispatcher dispatcher)
         {
             _dispatcher = dispatcher;
         }

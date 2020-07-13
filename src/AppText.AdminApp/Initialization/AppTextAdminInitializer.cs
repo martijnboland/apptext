@@ -107,7 +107,7 @@ namespace AppText.AdminApp.Initialization
                     serviceProvider.GetRequiredService<IVersioner>(),
                     serviceProvider.GetRequiredService<ContentItemValidator>(),
                     initPrincipal,
-                    serviceProvider.GetRequiredService<Dispatcher>());
+                    serviceProvider.GetRequiredService<IDispatcher>());
                 foreach (var contentFile in contentFiles)
                 {
                     _logger.LogInformation("Importing content from {0}", contentFile.Name);
