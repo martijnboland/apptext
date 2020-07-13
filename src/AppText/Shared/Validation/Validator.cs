@@ -69,11 +69,14 @@ namespace AppText.Shared.Validation
                 var nestedPrefix = String.IsNullOrEmpty(prefix) ? prop.Name :  $"{prefix}.{prop.Name}";
                 var enumerable = (IEnumerable)prop.GetValue(objectToValidate);
                 var idx = 0;
-                foreach (var obj in enumerable)
+                if (enumerable != null)
                 {
-                    var objPrefix = $"{nestedPrefix}[{idx}].";
-                    ValidateDataAnnotations(obj, objPrefix);
-                    idx++;
+                    foreach (var obj in enumerable)
+                    {
+                        var objPrefix = $"{nestedPrefix}[{idx}].";
+                        ValidateDataAnnotations(obj, objPrefix);
+                        idx++;
+                    }
                 }
             }
         }
