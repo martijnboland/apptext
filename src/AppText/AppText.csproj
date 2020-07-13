@@ -6,7 +6,8 @@
     <RootNamespace>AppText</RootNamespace>
     <IsPackable>true</IsPackable>
     <PackageId>AppText</PackageId>
-    <Description>AppText is a content management system for apps</Description>
+    <Description>AppText is a content management system for apps. Application developers can use it to replace 
+    static resources in applications with dynamic content and delegate content management to non-developers.</Description>
     <Authors>Martijn Boland</Authors>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/martijnboland/apptext</PackageProjectUrl>

@@ -7,7 +7,7 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <IsPackable>true</IsPackable>
     <PackageId>AppText.AdminApp</PackageId>
-    <Description>AppText.AdminApp is the administration interface for the AppText content management system</Description>
+    <Description>AppText.AdminApp is the administration interface for the AppText content management system.</Description>
     <Authors>Martijn Boland</Authors>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/martijnboland/apptext</PackageProjectUrl>

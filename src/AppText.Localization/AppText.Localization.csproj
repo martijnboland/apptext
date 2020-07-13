@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>true</IsPackable>
     <PackageId>AppText.Localization</PackageId>
-    <Description>AppText.Localization enables .NET Core apps to use AppText for localization with the standard .NET Core localization API.</Description>
+    <Description>AppText.Localization enables .NET Core apps to use AppText dynamic resources with the standard .NET Core localization API.</Description>
     <Authors>Martijn Boland</Authors>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/martijnboland/apptext</PackageProjectUrl>
