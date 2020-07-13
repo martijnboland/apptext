@@ -41,6 +41,9 @@ jobs:
         working-directory: src/AppText.AdminApp/ClientApp
       - name: Restore
         run: dotnet restore
+      - name: Build AppText.AdminApp JavaScript client
+        run: npm run prod
+        working-directory: src/AppText.AdminApp/ClientApp
       - name: Build
         run: dotnet build -c Release --no-restore
       - name: Test
