@@ -32,6 +32,13 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.301
+      - name: Setup Node.JS
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+      - name: Install AppText.AdminApp client packages
+        run: npm install
+        working-directory: src/AppText.AdminApp/ClientApp
       - name: Restore
         run: dotnet restore
       - name: Build
@@ -80,12 +87,18 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.301
-      - name: Restore
-        run: dotnet restore
-      - name: Build with release version number
-        run: dotnet build -c Release --no-restore -p:Version=${{steps.releaseversion.outputs.version}}
-      - name: Create Release NuGet package
-        run: dotnet pack -v normal -c Release --include-symbols --include-source --no-restore --no-build -p:PackageVersion=${{steps.releaseversion.outputs.version}} -o nupkg
+      - name: Setup Node.JS
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+      - name: Install AppText.AdminApp client packages
+        run: npm install
+        working-directory: src/AppText.AdminApp/ClientApp
+      - name: Build AppText.AdminApp JavaScript client
+        run: npm run prod
+        working-directory: src/AppText.AdminApp/ClientApp
+      - name: Build Release NuGet package
+        run: dotnet pack -c Release --include-symbols --include-source -p:Version=${{steps.releaseversion.outputs.version}} -o nupkg
       - name: Push to GitHub Feed
         run: |
           for f in ./nupkg/*.nupkg
