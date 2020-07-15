@@ -2,6 +2,7 @@
 AppText is a Content Management System for Applications. A hybrid between a headless Content Management System and a Translation Management System.
 
 ![.NET Core Build](https://github.com/martijnboland/apptext/workflows/.NET%20Core%20Build/badge.svg)
+![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/apptext)
 
 ![Screenshot edit translations](media/screenshots/edit-translations-800.png?raw=true "Edit translations")
 
