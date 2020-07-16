@@ -1,18 +1,19 @@
 import React, { useContext, useState } from 'react';
 import classNames from 'classnames';
-import { FaEdit, FaCaretDown, FaPlus } from 'react-icons/fa';
-import { Link, useHistory } from 'react-router-dom';
+import { FaEdit, FaCaretDown, FaPlus, FaDesktop } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 import AppContext from '../apps/AppContext';
 
 import './AppSelector.scss';
 import { App } from '../apps/models';
+import { useTranslation } from 'react-i18next';
 
 const AppSelector: React.FunctionComponent = () => {
   
   const [expandOtherApps, setExpandOtherApps] = useState(false);
   const { currentApp, apps, setCurrentApp } = useContext(AppContext);
-  const history = useHistory();
+  const { t } = useTranslation('Labels');
 
   const otherApps = currentApp 
     ? apps.filter(app => app.id !== currentApp.id)
@@ -32,10 +33,6 @@ const AppSelector: React.FunctionComponent = () => {
     collapseOtherApps();
   }
 
-  const navigateToDashboard = () => {
-    history.push('/');
-  }
-
   return (
     <div className="app-selector">
       {currentApp && 
@@ -43,7 +40,7 @@ const AppSelector: React.FunctionComponent = () => {
           <div className={classNames('current-app', { 'with-other-apps': otherApps.length > 0, 'expand': expandOtherApps })}>
             <div className="current-app-inner">
               <div className="d-flex justify-content-center">
-                <div className="app-id"><Link to="/">{currentApp.id}</Link></div>
+                <div className="app-id"><Link to="/"><FaDesktop className="mr-1" />{currentApp.id}</Link></div>
                 <div className="ml-auto">
                   <Link to="/apps/editcurrent">
                     <FaEdit />
