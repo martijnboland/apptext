@@ -45,6 +45,7 @@
   { "SelectButton": "Select" },
   { "ManageItems": "Manage items" },
   { "LatestChanges": "Latest changes" },
-  { "CollectionsHelpText": "The collections are buckets with content. Every collection is associated with a content type that defines the structure of the content that goes in there." },
-  { "ContentListHelpText":  "Manage content items for the active collection. Every content item has a unique content key. The other fields are defined by the content type that is associated with the collection." }
+  { "CollectionsHelpText": "The collections are buckets with content. Every collection is associated with a content type that defines the structure of the content that goes into the collection." },
+  { "ContentListHelpText":  "Manage content items for the active collection. Every content item has a unique content key. The other fields are defined by the content type that is associated with the collection. When there are multiple languages defined in the app, you can edit items for the same key side-by-side." },
+  { "ContentTypesHelpText": "Content types define the structure of the content. There are system-defined global content types that are shared between apps and app-specific content types that you define yourself." }
 ]
