@@ -13,14 +13,14 @@ import { FaPlus } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import { appTextAdminAppId } from '../config/constants';
 
-interface ContentRouteProps {
+interface ContentListRouteProps {
   collectionId?: string
 }
 
-interface ListProps  extends RouteComponentProps<ContentRouteProps> {
+interface ContentListProps  extends RouteComponentProps<ContentListRouteProps> {
 }
 
-const List: React.FC<ListProps> = ({ match }) => {
+const ContentList: React.FC<ContentListProps> = ({ match, history }) => {
   const { t, i18n } = useTranslation('Labels');
   const { currentApp } = useContext(AppContext);
   const baseUrl = `${appConfig.apiBaseUrl}/${currentApp.id}`;
@@ -66,6 +66,7 @@ const List: React.FC<ListProps> = ({ match }) => {
   const collectionChanged = (collectionId: string) => {
     setAddNew(false);
     setCollectionId(collectionId);
+    history.replace({ pathname: `/content/${collectionId}`})
   }
 
   const search = (searchTerm: string) => {
@@ -120,8 +121,6 @@ const List: React.FC<ListProps> = ({ match }) => {
     }    
   }, [collectionId, searchTerm])
 
-  const hasMoreLanguages = activeLanguages.length !== currentApp.languages.length;
-
   return (
     <div>          
       <div className="d-flex flex-row justify-content-between align-items-center">
@@ -131,6 +130,9 @@ const List: React.FC<ListProps> = ({ match }) => {
           {t('Labels:NewContentItem')}
         </button>    
       </div>
+      <p>
+        <small className="text-muted">{t('Labels:ContentListHelpText')}</small>
+      </p>
       <div className="d-flex flex-horizontal">
         {!isCollectionsLoading &&
           <ContentLocator collections={collections} collectionId={collectionId} onCollectionChanged={collectionChanged} onSearch={search} />
@@ -177,4 +179,4 @@ const List: React.FC<ListProps> = ({ match }) => {
   );
 };
 
-export default List;
+export default ContentList;

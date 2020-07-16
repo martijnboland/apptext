@@ -11,6 +11,8 @@ namespace AppText.Features.ContentManagement
         [Required(ErrorMessage = "Required")]
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         [Required(ErrorMessage = "Required")]
         public ContentType ContentType { get; set; }
 

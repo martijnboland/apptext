@@ -31,7 +31,7 @@ const Edit: React.FC<EditProps> = ({ match, history }) => {
       .then(res => {
         if (res.ok) {
           toast.success(t('Messages:CollectionUpdated', { name: collection.name }));
-          history.push('/collections');
+          history.push('/');
         }
         return res;
       });
@@ -53,7 +53,7 @@ const Edit: React.FC<EditProps> = ({ match, history }) => {
       .then(res => {
         if (res.ok) {
           toast.success(t('Messages:CollectionDeleted', { name: collection.name }));
-          history.push('/collections');
+          history.push('/');
         }
         else {
           toast.error(Object.values(res.errors).join(','));

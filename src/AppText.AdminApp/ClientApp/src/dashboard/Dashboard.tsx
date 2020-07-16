@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from '../apps/AppContext';
 import { useTranslation } from 'react-i18next';
 import useDocumentTitle from '../common/hooks/useDocumentTitle';
+import Collections from '../collections/Collections';
 
 const Dashboard: React.FunctionComponent = () => {
   const { t } = useTranslation(['Labels']);
@@ -10,13 +11,12 @@ const Dashboard: React.FunctionComponent = () => {
 
   return (
     <React.Fragment>
-      <h2 className="mb-4">{currentApp.displayName}</h2>
+      <h2 className="mb-5">{currentApp.displayName}</h2>
       <div className="row">
-        <div className="col">
-          <h3>{t('Labels:Collections')}</h3>
-          <small className="text-muted"></small>
+        <div className="col-md-6">
+          <Collections currentApp={currentApp} />
         </div>
-        <div className="col">
+        <div className="col-md-6">
           <h3>{t('Labels:LatestChanges')}</h3>
           <small className="text-muted"></small>
         </div>

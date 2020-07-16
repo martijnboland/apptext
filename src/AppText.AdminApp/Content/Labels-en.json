@@ -42,5 +42,9 @@
   { "DeleteItem":  "Delete item" },
   { "TheItem": "the item" },
   { "TheContentType": "the content type" },
-  { "SelectButton":  "Select" }
+  { "SelectButton": "Select" },
+  { "ManageItems": "Manage items" },
+  { "LatestChanges": "Latest changes" },
+  { "CollectionsHelpText": "The collections are buckets with content. Every collection is associated with a content type that defines the structure of the content that goes in there." },
+  { "ContentListHelpText":  "Manage content items for the active collection. Every content item has a unique content key. The other fields are defined by the content type that is associated with the collection." }
 ]
