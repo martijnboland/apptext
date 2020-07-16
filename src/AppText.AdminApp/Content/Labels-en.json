@@ -41,5 +41,6 @@
   { "NewContentType": "New content type" },
   { "DeleteItem":  "Delete item" },
   { "TheItem": "the item" },
-  { "TheContentType":  "the content type" }
+  { "TheContentType": "the content type" },
+  { "SelectButton":  "Select" }
 ]

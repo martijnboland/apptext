@@ -41,5 +41,6 @@
   { "NewContentType": "Nieuw content type" },
   { "DeleteItem": "Verwijder item" },
   { "TheItem": "het item" },
-  { "TheContentType": "het content type" }
+  { "TheContentType": "het content type" },
+  { "SelectButton":  "Selecteer" }
 ]
