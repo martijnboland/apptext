@@ -86,7 +86,15 @@ namespace AppText.Storage.NoDb
                 contentItems = contentItems.Where(ci => ci.ContentKey.StartsWith(query.ContentKeyStartsWith));
             }
 
-            contentItems = contentItems.OrderBy(ci => ci.ContentKey);
+            switch (query.OrderBy)
+            {
+                case ContentItemQuery.ContentItemsOrderBy.LastModifiedAtDescending:
+                    contentItems = contentItems.OrderByDescending(ci => ci.LastModifiedAt);
+                    break;
+                case ContentItemQuery.ContentItemsOrderBy.ContentKey:
+                    contentItems = contentItems.OrderBy(ci => ci.ContentKey);
+                    break;
+            }
 
             if (query.Offset.HasValue)
             {

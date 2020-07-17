@@ -54,7 +54,7 @@ export const AdminApp: React.FunctionComponent = () => {
                     <Switch>
                       <Route exact path="/login-callback" component={LoginCallback} />
                       <ProtectedRoute path="/apps" component={Apps} />
-                      <ProtectedRoute path="/content/:collectionId?" component={ContentList} currentApp />
+                      <ProtectedRoute path="/content/:collectionId?/:contentKey?" component={ContentList} currentApp />
                       <ProtectedRoute path="/collections" component={CollectionRoutes} currentApp />
                       <ProtectedRoute path="/contenttypes" component={ContentTypes} currentApp />
                       <ProtectedRoute exact path="/" component={Dashboard} />

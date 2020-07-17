@@ -87,7 +87,15 @@ namespace AppText.Storage.LiteDb
                 q = q.Where(ci => ci.ContentKey.StartsWith(query.ContentKeyStartsWith));
             }
 
-            q = q.OrderBy(ci => ci.ContentKey);
+            switch (query.OrderBy)
+            {
+                case ContentItemQuery.ContentItemsOrderBy.LastModifiedAtDescending:
+                    q = q.OrderByDescending(ci => ci.LastModifiedAt);
+                    break;
+                case ContentItemQuery.ContentItemsOrderBy.ContentKey:
+                    q = q.OrderBy(ci => ci.ContentKey);
+                    break;
+            }
 
             ILiteQueryableResult<ContentItem> result = q;
             if (query.Offset.HasValue)

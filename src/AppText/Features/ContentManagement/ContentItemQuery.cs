@@ -13,6 +13,18 @@ namespace AppText.Features.ContentManagement
         public string ContentKeyStartsWith { get; set; }
         public int? First { get; set; }
         public int? Offset { get; set; }
+        public ContentItemsOrderBy OrderBy { get; set; }
+
+        public enum ContentItemsOrderBy
+        {
+            ContentKey,
+            LastModifiedAtDescending
+        }
+
+        public ContentItemQuery()
+        {
+            OrderBy = ContentItemsOrderBy.ContentKey;
+        }
     }
 
     public class ContentItemQueryHandler : IQueryHandler<ContentItemQuery, ContentItem[]>

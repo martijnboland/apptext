@@ -45,7 +45,9 @@ namespace AppText.Features.ContentManagement
                 ContentKey = this.ContentKey,
                 CollectionId = this.CollectionId,
                 CreatedAt = DateTime.UtcNow,
-                CreatedBy = currentUser.Identity?.Name ?? "anonymous"
+                CreatedBy = currentUser.Identity?.Name ?? "anonymous",
+                LastModifiedAt = DateTime.UtcNow,
+                LastModifiedBy = currentUser.Identity?.Name ?? "anonymous"
             };
             if (this.Meta != null)
             {

@@ -14,7 +14,8 @@ import { useTranslation } from 'react-i18next';
 import { appTextAdminAppId } from '../config/constants';
 
 interface ContentListRouteProps {
-  collectionId?: string
+  collectionId?: string,
+  contentKey?: string
 }
 
 interface ContentListProps  extends RouteComponentProps<ContentListRouteProps> {
@@ -29,7 +30,7 @@ const ContentList: React.FC<ContentListProps> = ({ match, history }) => {
   const { data: collections, isLoading: isCollectionsLoading } = useApiGet<Collection[]>(collectionsUrl, []);
 
   const [ collectionId, setCollectionId ] = useState(match.params.collectionId);
-  const [ searchTerm, setSearchTerm ] = useState('');
+  const [ searchTerm, setSearchTerm ] = useState(match.params.contentKey || '');
   const [ activeLanguages, setActiveLanguages ] = useState([ currentApp.defaultLanguage ]);
   const [ addNew, setAddNew ] = useState(false);
   const [ editItemId, setEditItemId ] = useState<string|null>(null);
@@ -135,7 +136,7 @@ const ContentList: React.FC<ContentListProps> = ({ match, history }) => {
       </p>
       <div className="d-flex flex-horizontal">
         {!isCollectionsLoading &&
-          <ContentLocator collections={collections} collectionId={collectionId} onCollectionChanged={collectionChanged} onSearch={search} />
+          <ContentLocator collections={collections} collectionId={collectionId} searchTerm={searchTerm} onCollectionChanged={collectionChanged} onSearch={search} />
         }
       </div>
       {currentCollection &&
