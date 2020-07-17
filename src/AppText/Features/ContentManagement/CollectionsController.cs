@@ -8,9 +8,9 @@ namespace AppText.Features.ContentManagement
     [Route("{appId}/collections")]
     public class CollectionsController : ControllerBase
     {
-        private readonly Dispatcher _dispatcher;
+        private readonly IDispatcher _dispatcher;
 
-        public CollectionsController(Dispatcher dispatcher)
+        public CollectionsController(IDispatcher dispatcher)
         {
             _dispatcher = dispatcher;
         }

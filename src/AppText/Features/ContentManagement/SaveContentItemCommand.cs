@@ -45,7 +45,9 @@ namespace AppText.Features.ContentManagement
                 ContentKey = this.ContentKey,
                 CollectionId = this.CollectionId,
                 CreatedAt = DateTime.UtcNow,
-                CreatedBy = currentUser.Identity?.Name ?? "anonymous"
+                CreatedBy = currentUser.Identity?.Name ?? "anonymous",
+                LastModifiedAt = DateTime.UtcNow,
+                LastModifiedBy = currentUser.Identity?.Name ?? "anonymous"
             };
             if (this.Meta != null)
             {
@@ -82,9 +84,9 @@ namespace AppText.Features.ContentManagement
         private readonly IVersioner _versioner;
         private readonly ContentItemValidator _validator;
         private readonly ClaimsPrincipal _currentUser;
-        private readonly Dispatcher _dispatcher;
+        private readonly IDispatcher _dispatcher;
 
-        public SaveContentItemCommandHandler(IContentStore store, IVersioner versioner, ContentItemValidator validator, ClaimsPrincipal currentUser, Dispatcher dispatcher)
+        public SaveContentItemCommandHandler(IContentStore store, IVersioner versioner, ContentItemValidator validator, ClaimsPrincipal currentUser, IDispatcher dispatcher)
         {
             _store = store;
             _versioner = versioner;

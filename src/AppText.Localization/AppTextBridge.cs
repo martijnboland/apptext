@@ -158,7 +158,7 @@ namespace AppText.Localization
                 var contentStore = scope.ServiceProvider.GetRequiredService<IContentStore>();
                 var applicationStore = scope.ServiceProvider.GetRequiredService<IApplicationStore>();
                 var versioner = scope.ServiceProvider.GetRequiredService<IVersioner>();
-                var dispatcher = scope.ServiceProvider.GetRequiredService<Dispatcher>();
+                var dispatcher = scope.ServiceProvider.GetRequiredService<IDispatcher>();
 
                 var contentItem = (await contentStore.GetContentItems(new ContentItemQuery { AppId = appId, ContentKey = key })).FirstOrDefault();
                 if (contentItem == null)

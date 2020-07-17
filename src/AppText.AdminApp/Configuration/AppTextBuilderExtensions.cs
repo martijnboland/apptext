@@ -45,7 +45,7 @@ namespace AppText.AdminApp.Configuration
             appTextBuilder.AddTranslations();
 
             // Create AdminApp
-            appTextBuilder.InitializeApp(Constants.AppTextAdminAppId, Constants.AppTextAdminAppDescription, new[] { "en", "nl", "de" }, "en", isSystem: true);
+            appTextBuilder.InitializeApp(Constants.AppTextAdminAppId, Constants.AppTextAdminAppDescription, new[] { "en", "nl" }, "en", isSystem: true);
 
             // Import translations (register as IHostedService)
             appTextBuilder.Services.AddHostedService<AppTextAdminInitializer>();

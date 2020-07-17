@@ -9,9 +9,9 @@ namespace AppText.Features.ContentManagement
     [Route("{appId}/content")]
     public class ContentController : ControllerBase
     {
-        private readonly Dispatcher _dispatcher;
+        private readonly IDispatcher _dispatcher;
 
-        public ContentController(Dispatcher dispatcher)
+        public ContentController(IDispatcher dispatcher)
         {
             _dispatcher = dispatcher;
         }

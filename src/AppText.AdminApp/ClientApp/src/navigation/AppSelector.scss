@@ -7,6 +7,10 @@
   .current-app {
     position: relative;
 
+    a:hover {
+      text-decoration: none;
+    }
+  
     .current-app-inner {
       padding: $spacer;
       a {
@@ -28,13 +32,16 @@
         border-top: 1px solid $dark;
       }
     }
-  
+
+    &:hover {
+      background-color: lighten($dark, 10%);
+    }
+
     &.with-other-apps {
       .expander:hover {
         cursor: pointer;
       }
       &.expand {
-        background-color: lighten($dark, 10%);
         cursor: pointer;
         .other-apps {
           display: block;

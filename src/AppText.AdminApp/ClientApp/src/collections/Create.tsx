@@ -30,7 +30,7 @@ const Create: React.FC<RouteComponentProps> = ({ history }) => {
       .then(res => {
         if (res.ok) {
           toast.success(t('Messages:CollectionCreated', { name: collection.name }));
-          history.push('/collections');
+          history.push('/');
         }
         return res;
       })

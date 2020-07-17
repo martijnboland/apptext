@@ -21,9 +21,6 @@ const MainMenu: React.FunctionComponent<MainMenuProps> = (props) => {
             <Link to="/content"><FaRegEdit /> {t('Labels:Content')}</Link>
           </li>
           <li>
-            <Link to="/collections"><FaList /> {t('Labels:Collections')}</Link>
-          </li>
-          <li>
             <Link to="/contenttypes"><FaLayerGroup /> {t('Labels:ContentTypes')}</Link>
           </li>
         </ul>

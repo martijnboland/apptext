@@ -22,9 +22,9 @@ namespace AppText.Features.ContentDefinition
         private IContentDefinitionStore _store;
         private readonly IVersioner _versioner;
         private readonly ContentTypeValidator _validator;
-        private readonly Dispatcher _dispatcher;
+        private readonly IDispatcher _dispatcher;
 
-        public SaveContentTypeCommandHandler(IContentDefinitionStore store, IVersioner versioner, ContentTypeValidator validator, Dispatcher dispatcher)
+        public SaveContentTypeCommandHandler(IContentDefinitionStore store, IVersioner versioner, ContentTypeValidator validator, IDispatcher dispatcher)
         {
             _store = store;
             _versioner = versioner;

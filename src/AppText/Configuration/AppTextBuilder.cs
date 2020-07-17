@@ -44,7 +44,7 @@ namespace AppText.Configuration
         private void RegisterCoreServices()
         {
             // Dispatcher
-            Services.AddScoped(serviceProvider => new Dispatcher(serviceProvider));
+            Services.AddScoped<IDispatcher>(serviceProvider => new Dispatcher(serviceProvider));
 
             // Command & Query handlers 
             var coreAssembly = this.GetType().Assembly;

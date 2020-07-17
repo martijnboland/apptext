@@ -41,5 +41,11 @@
   { "NewContentType": "Nieuw content type" },
   { "DeleteItem": "Verwijder item" },
   { "TheItem": "het item" },
-  { "TheContentType": "het content type" }
+  { "TheContentType": "het content type" },
+  { "SelectButton":  "Selecteer" },
+  { "ManageItems": "Beheer items" },
+  { "LatestChanges": "Laatste wijzigingen" },
+  { "CollectionsHelpText": "De collections bevattem de content. Elke collection is gekoppeld aan een content type dat de structuur bepaalt van de content die in de collection past." },
+  { "ContentListHelpText":  "Beheer content items voor de geselecteerde collection. Ieder content item heeft een unieke content key. De overige velden in een content item worden bepaald door het content type van de collection. Wanneer er meerdere talen gedefinieerd zijn in de app, kunnen content items naast elkaar voor verschillende talen tegelijk bewerkt worden." },
+  { "ContentTypesHelpText": "Content types bepalen de structuur van de content. Er zijn system-gedefinieerde globale content types die in elke app gebruikt kunnen worden en app-specifieke content types die je zelf beheert." }
 ]

@@ -1,22 +1,26 @@
 import React, { useContext, useState } from 'react';
 import classNames from 'classnames';
-import { FaEdit, FaCaretDown, FaPlus } from 'react-icons/fa';
+import { FaEdit, FaCaretDown, FaPlus, FaDesktop } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 import AppContext from '../apps/AppContext';
 
 import './AppSelector.scss';
 import { App } from '../apps/models';
+import { useTranslation } from 'react-i18next';
 
 const AppSelector: React.FunctionComponent = () => {
   
   const [expandOtherApps, setExpandOtherApps] = useState(false);
   const { currentApp, apps, setCurrentApp } = useContext(AppContext);
+  const { t } = useTranslation('Labels');
+
   const otherApps = currentApp 
     ? apps.filter(app => app.id !== currentApp.id)
     : apps;
 
-  const onToggleExpand = () => {
+  const onToggleExpand = (ev: React.MouseEvent<SVGElement, MouseEvent>) => {
+    ev.preventDefault();
     setExpandOtherApps(! expandOtherApps);
   };
 
@@ -36,7 +40,7 @@ const AppSelector: React.FunctionComponent = () => {
           <div className={classNames('current-app', { 'with-other-apps': otherApps.length > 0, 'expand': expandOtherApps })}>
             <div className="current-app-inner">
               <div className="d-flex justify-content-center">
-                <div className="app-id">{currentApp.id}</div>
+                <div className="app-id"><Link to="/"><FaDesktop className="mr-1" />{currentApp.id}</Link></div>
                 <div className="ml-auto">
                   <Link to="/apps/editcurrent">
                     <FaEdit />
@@ -49,7 +53,7 @@ const AppSelector: React.FunctionComponent = () => {
                   }
                 </div>
               </div>
-              <div className="app-name">{currentApp.displayName}</div>
+              <div className="app-name"><Link to="/">{currentApp.displayName}</Link></div>
             </div>
             <ul className="other-apps">
               {otherApps.map(app => {

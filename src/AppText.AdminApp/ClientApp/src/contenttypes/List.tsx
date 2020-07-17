@@ -26,27 +26,29 @@ const List: React.FunctionComponent<ListProps> = ({ match }) => {
 
   return (
     <>
-    {isLoading 
+      <div className="d-flex flex-row justify-content-between align-items-center">
+        <h2>{t('Labels:ContentTypes')}</h2>
+        <Link to={{ pathname: `${match.url}/create` }} className="btn btn-primary">
+          <FaPlus className="mr-1" />
+          {t('Labels:NewContentType')}
+        </Link>    
+      </div>
+      <p>
+        <small className="text-muted">{t('Labels:ContentTypesHelpText')}</small>
+      </p>
+
+      {isLoading 
       ? 
         <div>{t('Messages:Loading')}</div>
       :
-        <>
-          <div className="d-flex flex-row justify-content-between align-items-center">
-            <h2>{t('Labels:ContentTypes')}</h2>
-            <Link to={{ pathname: `${match.url}/create` }} className="btn btn-primary">
-              <FaPlus className="mr-1" />
-              {t('Labels:NewContentType')}
-            </Link>    
-          </div>
-          <dl>
-            {data.map(ct => 
-              <React.Fragment key={ct.id}>
-                <dt><ContentTypeTitle contentType={ct} /></dt>
-                <dd>{ct.description}</dd>
-              </React.Fragment>
-            )}
-          </dl>
-        </>
+        <dl>
+          {data.map(ct => 
+            <React.Fragment key={ct.id}>
+              <dt><ContentTypeTitle contentType={ct} /></dt>
+              <dd>{ct.description}</dd>
+            </React.Fragment>
+          )}
+        </dl>
       }
     </>
   );

@@ -8,11 +8,12 @@ import { useTranslation } from 'react-i18next';
 interface ContentLocatorProps {
   collections: Collection[],
   collectionId?: string,
+  searchTerm?: string,
   onCollectionChanged: (collectionId: string) => void,
   onSearch: (searchTerm: string) => void
 }
 
-const ContentLocator: React.FC<ContentLocatorProps> = ({ collections, collectionId, onCollectionChanged, onSearch }) => {
+const ContentLocator: React.FC<ContentLocatorProps> = ({ collections, collectionId, searchTerm, onCollectionChanged, onSearch }) => {
   const { t } = useTranslation('Labels');
 
   const collectionOptions: SelectOption[] = collections.map(c =>  ({
@@ -22,7 +23,7 @@ const ContentLocator: React.FC<ContentLocatorProps> = ({ collections, collection
 
   const initialValues = {
     collectionId: collectionId,
-    searchTerm: ''
+    searchTerm: searchTerm || ''
   }
 
   const onSubmit = (values: any) => {

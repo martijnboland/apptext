@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace AppText.Shared.Infrastructure
 {
     /// <summary>
-    /// Mediator class for dispatching queries and commands.
+    /// Mediator for dispatching queries, commands and events.
     /// </summary>
-    public class Dispatcher
+    public class Dispatcher : IDispatcher
     {
         private readonly IServiceProvider _serviceProvider;
 
@@ -20,7 +20,7 @@ namespace AppText.Shared.Infrastructure
             _serviceProvider = serviceProvider;
         }
 
-        public Task<CommandResult> ExecuteCommand<T>(T command) where T: ICommand
+        public Task<CommandResult> ExecuteCommand<T>(T command) where T : ICommand
         {
             var handlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
             var handler = _serviceProvider.GetService(handlerType) as ICommandHandler<T>;
@@ -45,7 +45,7 @@ namespace AppText.Shared.Infrastructure
             throw new Exception("No handler found for command {0} " + query.ToString());
         }
 
-        public Task PublishEvent<T>(T eventToPublish) where T: IEvent
+        public Task PublishEvent<T>(T eventToPublish) where T : IEvent
         {
             var handlerType = typeof(IEventHandler<>).MakeGenericType(eventToPublish.GetType());
             var handlers = _serviceProvider.GetServices(handlerType) as IEnumerable<IEventHandler<T>>;
