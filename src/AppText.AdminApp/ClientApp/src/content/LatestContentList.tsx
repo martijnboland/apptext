@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { App } from '../apps/models';
 import { appConfig } from '../config/AppConfig';
@@ -18,10 +18,22 @@ const LatestContentList: React.FunctionComponent<ILatestContentListProps> = ({ i
   const baseUrl = `${appConfig.apiBaseUrl}/${currentApp.id}`;
 
   const collectionsUrl = `${baseUrl}/collections`;
-  const { data: collections, isLoading: isCollectionsLoading } = useApiGet<Collection[]>(collectionsUrl, []);
+  const { data: collections, isLoading: isCollectionsLoading, doGet: getCollections } = useApiGet<Collection[]>(collectionsUrl, []);
 
   const contentItemsUrl = `${baseUrl}/content?orderBy=LastModifiedAtDescending&first=${itemsToShow}`;
-  const { data: contentItems, isLoading: isContentItemsLoading } = useApiGet<ContentItem[]>(contentItemsUrl, []);
+  const { data: contentItems, isLoading: isContentItemsLoading, doGet: getContentItems } = useApiGet<ContentItem[]>(contentItemsUrl, []);
+
+  // Explicitly update the latest items list when the baseUrl (currentApp) changes, except on the 
+  // first mount because that conflicts with how the useApiGet works.
+  const isInitialMount = useRef(true);
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      getCollections(collectionsUrl);
+      getContentItems(contentItemsUrl);
+    }
+  }, [baseUrl]);
 
   return (
     <div>
