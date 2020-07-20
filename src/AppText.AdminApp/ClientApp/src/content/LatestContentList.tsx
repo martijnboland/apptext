@@ -41,39 +41,39 @@ const LatestContentList: React.FunctionComponent<ILatestContentListProps> = ({ i
       <p>
         <small className="text-muted">{t('Labels:LatestContentListHelpText', { itemsToShow: itemsToShow })}</small>
       </p>
-      {collections && contentItems && contentItems.length > 0
-      ?
-      contentItems.map(contentItem => {
-        var collection = collections.find(c => c.id === contentItem.collectionId);
-        var displayText = collection.listDisplayField
-          ? contentItem.content[collection.listDisplayField][currentApp.defaultLanguage]
-          : '';
-        var itemUrl = `/content/${collection.id}/${contentItem.contentKey}`;
-        var collectionUrl = `/content/${collection.id}`;
+      {collections && collections.length > 0 && contentItems && contentItems.length > 0
+        ?
+          contentItems.map(contentItem => {
+            var collection = collections.find(c => c.id === contentItem.collectionId);
+            var displayText = collection.listDisplayField
+              ? contentItem.content[collection.listDisplayField][currentApp.defaultLanguage]
+              : '';
+            var itemUrl = `/content/${collection.id}/${contentItem.contentKey}`;
+            var collectionUrl = `/content/${collection.id}`;
 
-        return (
-          <div className="card mb-3" key={contentItem.id}>
-            <div className="card-body">
-              <div className="card-text">
-                <div className="row">
-                  <div className="col-sm-8">
-                    <Link to={itemUrl}>
-                      <h6>{contentItem.contentKey}</h6>
-                    </Link>
-                  </div>
-                  <div className=" col-sm-4 text-right">
-                    <small className="text-muted">Collection <strong><Link to={collectionUrl}>{collection.name}</Link></strong></small>
+            return (
+              <div className="card mb-3" key={contentItem.id}>
+                <div className="card-body">
+                  <div className="card-text">
+                    <div className="row">
+                      <div className="col-sm-8">
+                        <Link to={itemUrl}>
+                          <h6>{contentItem.contentKey}</h6>
+                        </Link>
+                      </div>
+                      <div className=" col-sm-4 text-right">
+                        <small className="text-muted">Collection <strong><Link to={collectionUrl}>{collection.name}</Link></strong></small>
+                      </div>
+                    </div>
+                    <p>{displayText}</p>
+                    <ContentItemProperties contentItem={contentItem} />
                   </div>
                 </div>
-                <p>{displayText}</p>
-                <ContentItemProperties contentItem={contentItem} />
               </div>
-            </div>
-          </div>
-        )
-      })
-      :
-        <div>{t('Labels:NoItemsFound')}</div>
+            )
+          })
+        :
+          <div>{t('Labels:NoItemsFound')}</div>
       }
     </div>
   );
