@@ -51,5 +51,6 @@
   { "LatestContentListHelpText": "De {{itemsToShow}} laatst gewijzigde content items." },
   { "NoItemsFound": "Geen item(s) gevonden" },
   { "Description": "Omschrijving" },
-  { "NoCollectionsFound":  "Geen collection(s) gevonden"}
+  { "NoCollectionsFound": "Geen collection(s) gevonden" },
+  { "CreateApp": "Nieuwe app" }
 ]

@@ -1,22 +1,23 @@
 ﻿using AppText.Features.ContentDefinition;
 using AppText.Features.ContentManagement;
-using AppText.Storage;
+using GraphQL;
 using GraphQL.Types;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AppText.Features.GraphQL.Types
 {
     public class ContentItemType : ObjectGraphType<ContentItem>
     {
-        private readonly ContentCollection _collection;
-        private readonly Func<IContentStore> _getContentStore;
         private readonly string[] _languages;
+        private readonly string _defaultLanguage;
 
-        public ContentItemType(ContentCollection contentCollection, Func<IContentStore> getContentStore, string[] languages)
+        public ContentItemType(ContentCollection contentCollection, string[] languages, string defaultLanguage)
         {
-            _collection = contentCollection;
-            _getContentStore = getContentStore;
             _languages = languages;
+            _defaultLanguage = defaultLanguage;
 
             if (NameConverter.TryConvertToGraphQLName($"{contentCollection.Name}_{contentCollection.ContentType.Name}", out string graphQLName))
             {
@@ -54,7 +55,44 @@ namespace AppText.Features.GraphQL.Types
                         var contentItem = ctx.Source as ContentItem;
                         if (contentItem != null)
                         {
-                            return contentItem.Content[contentField.Name];
+                            if (contentField.IsLocalizable)
+                            {
+                                // Localizable field, check if a valid language argument is given and return the value for the requested language.
+                                // Otherwise, return the value for the default language of the app.
+                                var language = _defaultLanguage;
+                                if (ctx.Arguments.ContainsKey("language"))
+                                {
+                                    language = ctx.Arguments["language"].ToString();
+                                    if (!_languages.Any(l => l == language))
+                                    {
+                                        ctx.Errors.Add(new ExecutionError($"The language argument '{language}' for the '{contentField.Name}' field is not allowed for this app."));
+                                    }
+                                }
+
+                                var field = contentItem.Content[contentField.Name];
+                                Dictionary<string, object> fieldValues = null;
+
+                                // Source can be a JObject or Dictionary
+                                if (field is JObject)
+                                {
+                                    fieldValues = JObject.FromObject(field).ToObject<Dictionary<string, object>>();
+                                }
+                                else
+                                {
+                                    fieldValues = field as Dictionary<string, object>;
+                                }
+
+                                if (fieldValues != null && fieldValues.ContainsKey(language))
+                                {
+                                    return fieldValues[language];
+                                }
+                                return null;
+                            }
+                            else
+                            {
+                                // Non-localizable field, return value directly
+                                return contentItem.Content[contentField.Name];
+                            }
                         }
                         else
                         {
@@ -75,8 +113,12 @@ namespace AppText.Features.GraphQL.Types
             if (NameConverter.TryConvertToGraphQLName(field.Name, out string graphQLFieldName))
             {
                 // Create type from Field
-                var fieldGraphType = field.CreateGraphQLType(_languages);
-                this.Field(graphQLFieldName, fieldGraphType, resolve: resolveFunc, description: description);
+                var arguments = new QueryArguments();
+                if (field.IsLocalizable)
+                {
+                    arguments.Add(new QueryArgument<StringGraphType>() { Name = "language" });
+                }
+                this.Field(graphQLFieldName, field.FieldType.GraphQLType, resolve: resolveFunc, description: description, arguments: arguments);
             }
         }
     }

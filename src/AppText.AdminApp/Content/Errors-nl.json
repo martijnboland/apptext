@@ -18,5 +18,6 @@
   { "UnknownMetaField": "Het meta veld {{0}} is onbekend" },
   { "MissingMetaFieldValue": "Een waarde is verplicht voor het {{0}} veld" },
   { "InvalidMetaFieldValue": "De waarde {{0}} is ongeldig voor een {{1}} veld" },
-  { "DeleteCollectionContainsContent": "Kan collection niet verwijderen omdat deze nog content items bevat" }
+  { "DeleteCollectionContainsContent": "Kan collection niet verwijderen omdat deze nog content items bevat" },
+  { "AppIdInvalid": "App id bevat ongeldige tekens. Alleen lowercase letters, nummers en underscores zijn toegstaan." }
 ]

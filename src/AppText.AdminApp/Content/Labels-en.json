@@ -51,5 +51,6 @@
   { "LatestContentListHelpText": "The {{itemsToShow}} latest modified content items." },
   { "NoItemsFound": "No item(s) found" },
   { "Description": "Description" },
-  { "NoCollectionsFound": "No collection(s) found" }
+  { "NoCollectionsFound": "No collection(s) found" },
+  { "CreateApp": "Create new app" }
 ]

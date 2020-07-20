@@ -38,7 +38,7 @@ namespace AppText.Features.GraphQL
             {
                 if (NameConverter.TryConvertToGraphQLName(collection.Name, out string convertedName))
                 {
-                    var contentCollectionType = new ContentCollectionType(collection, _getContentStore, _app.Languages);
+                    var contentCollectionType = new ContentCollectionType(collection, _getContentStore, _app.Languages, _app.DefaultLanguage);
                     this.Field(convertedName, contentCollectionType, resolve: ctx => collection);
                 }
                 else

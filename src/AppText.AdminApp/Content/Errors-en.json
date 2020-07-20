@@ -18,5 +18,6 @@
   { "UnknownMetaField": "The meta field {{0}} is not known" },
   { "MissingMetaFieldValue": "A value for the {{0}} field is required" },
   { "InvalidMetaFieldValue": "The value {{0}} is not valid for a {{1}} field" },
-  { "DeleteCollectionContainsContent": "Could not delete the content collection because it still contains content" }
+  { "DeleteCollectionContainsContent": "Could not delete the content collection because it still contains content" },
+  { "AppIdInvalid": "The app id contains invalid characters. Only lowercase characters, numbers and underscores are allowed." }
 ]
