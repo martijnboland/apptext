@@ -3,13 +3,15 @@ import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-http-backend';
 
 import { appConfig } from './config/AppConfig';
-import { appTextAdminAppId } from './config/constants';
+import { appTextAdminAppId, currentLanguageStorageKey } from './config/constants';
+
+const language = localStorage.getItem(currentLanguageStorageKey) || 'en';
 
 i18n
   .use(Backend)
   .use(initReactI18next)
   .init({
-    lng: 'en',
+    lng: language,
     fallbackLng: 'en',
     returnNull: false,
     backend: {

@@ -3,10 +3,9 @@ import classNames from 'classnames';
 import useComponentVisible from '../common/hooks/useComponentVisible';
 import AppContext from '../apps/AppContext';
 import { useTranslation } from 'react-i18next';
-import { appTextAdminAppId } from '../config/constants';
+import { appTextAdminAppId, currentLanguageStorageKey } from '../config/constants';
 
-const LanguageSelector: React.FunctionComponent = () => {
-  
+const LanguageSelector: React.FunctionComponent = () => {  
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
 
   const { i18n } = useTranslation();
@@ -18,7 +17,11 @@ const LanguageSelector: React.FunctionComponent = () => {
 
   const changeLanguage = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, language: string) => {
     e.preventDefault();
-    i18n.changeLanguage(language, () => setIsComponentVisible(false));
+    i18n.changeLanguage(language)
+      .then(() => { 
+        setIsComponentVisible(false);
+        localStorage.setItem(currentLanguageStorageKey, language);
+      });
   }
 
   const currentLanguage = i18n.language;
