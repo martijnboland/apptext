@@ -50,5 +50,6 @@
   { "ContentTypesHelpText": "Content types bepalen de structuur van de content. Er zijn system-gedefinieerde globale content types die in elke app gebruikt kunnen worden en app-specifieke content types die je zelf beheert." },
   { "LatestContentListHelpText": "De {{itemsToShow}} laatst gewijzigde content items." },
   { "NoItemsFound": "Geen item(s) gevonden" },
-  { "Description": "Omschrijving" }
+  { "Description": "Omschrijving" },
+  { "NoCollectionsFound":  "Geen collection(s) gevonden"}
 ]

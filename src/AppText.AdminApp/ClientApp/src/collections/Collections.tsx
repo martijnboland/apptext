@@ -44,27 +44,30 @@ const Collections: React.FunctionComponent<ICollectionsProps> = ({ currentApp })
           <div>{t('Messages:Loading')}</div>
         :
           <div className="d-flex flex-row flex-wrap">
-            {collections.map(collection => {
-              return (
-                <div key={collection.id} className="w-50">
-                  <div className="card mr-3 mb-3">
-                    <div className="card-body">
-                      <div className="d-flex flex-row justify-content-between align-items-start">
-                        <h5 className="card-title">{collection.name}</h5>
-                        <Link to={`/collections/edit/${collection.id}`} title={t('Labels:EditCollection')}><FaPen /></Link>
-                      </div>
-                      <div className="card-text">{collection.description}</div>
-                      <div className="card-text mt-1 mb-3">
-                        <small className="text-muted">{t('Labels:ContentType')}: {collection.contentType.name}</small>
-                      </div>
-                      <div>
-                        <Link to={`/content/${collection.id}`} className="btn btn-primary">{t('Labels:ManageItems')}</Link>
+            {collections.length > 0
+              ? collections.map(collection => {
+                return (
+                  <div key={collection.id} className="w-50">
+                    <div className="card mr-3 mb-3">
+                      <div className="card-body">
+                        <div className="d-flex flex-row justify-content-between align-items-start">
+                          <h5 className="card-title">{collection.name}</h5>
+                          <Link to={`/collections/edit/${collection.id}`} title={t('Labels:EditCollection')}><FaPen /></Link>
+                        </div>
+                        <div className="card-text">{collection.description}</div>
+                        <div className="card-text mt-1 mb-3">
+                          <small className="text-muted">{t('Labels:ContentType')}: {collection.contentType.name}</small>
+                        </div>
+                        <div>
+                          <Link to={`/content/${collection.id}`} className="btn btn-primary">{t('Labels:ManageItems')}</Link>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              )
-            })}
+                )
+                })
+              : <div>{t('Labels:NoCollectionsFound')}</div>
+            }
           </div>    
       }
     </React.Fragment>

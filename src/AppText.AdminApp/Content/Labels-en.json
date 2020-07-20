@@ -50,5 +50,6 @@
   { "ContentTypesHelpText": "Content types define the structure of the content. There are system-defined global content types that are shared between apps and app-specific content types that you define yourself." },
   { "LatestContentListHelpText": "The {{itemsToShow}} latest modified content items." },
   { "NoItemsFound": "No item(s) found" },
-  { "Description":  "Description" }
+  { "Description": "Description" },
+  { "NoCollectionsFound": "No collection(s) found" }
 ]
