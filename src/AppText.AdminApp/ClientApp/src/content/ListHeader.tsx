@@ -22,7 +22,7 @@ const ListHeader: React.FunctionComponent<IListHeaderProps> = ({ allLanguages, a
   return (
     <div className="card-body">
       <div className="row align-items-center">
-        <div className="col-3"></div>
+        <div className="col-3">{t('Labels:ContentKey')}</div>
 
         {activeLanguages.map(lang => 
           <div key={lang} className="col"><button type="button" className="btn btn-light" onClick={() => onLanguageRemoved(lang)}>{lang}<FaTimes className="ml-1" /></button></div>

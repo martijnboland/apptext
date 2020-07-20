@@ -27,7 +27,7 @@ const LatestContentList: React.FunctionComponent<ILatestContentListProps> = ({ i
     <div>
       <h3>{t('Labels:LatestChanges')}</h3>
       <p>
-        <small className="text-muted"></small>
+        <small className="text-muted">{t('Labels:LatestContentListHelpText', { itemsToShow: itemsToShow })}</small>
       </p>
       {collections && contentItems && contentItems.length > 0
       ?
@@ -37,16 +37,22 @@ const LatestContentList: React.FunctionComponent<ILatestContentListProps> = ({ i
           ? contentItem.content[collection.listDisplayField][currentApp.defaultLanguage]
           : '';
         var itemUrl = `/content/${collection.id}/${contentItem.contentKey}`;
+        var collectionUrl = `/content/${collection.id}`;
+
         return (
           <div className="card mb-3" key={contentItem.id}>
             <div className="card-body">
               <div className="card-text">
-                <div className="text-right">
-                  <small className="text-muted">Collection <strong>{collection.name}</strong></small>
+                <div className="row">
+                  <div className="col-sm-8">
+                    <Link to={itemUrl}>
+                      <h6>{contentItem.contentKey}</h6>
+                    </Link>
+                  </div>
+                  <div className=" col-sm-4 text-right">
+                    <small className="text-muted">Collection <strong><Link to={collectionUrl}>{collection.name}</Link></strong></small>
+                  </div>
                 </div>
-                <Link to={itemUrl}>
-                  <h5>{contentItem.contentKey}</h5>
-                </Link>
                 <p>{displayText}</p>
                 <ContentItemProperties contentItem={contentItem} />
               </div>
