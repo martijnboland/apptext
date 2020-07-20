@@ -41,7 +41,7 @@ namespace AppText.Storage.NoDb
             {
                 contentCollections = contentCollections.Where(cc => cc.Name == query.Name);
             }
-            return contentCollections.ToArray();
+            return contentCollections.OrderBy(cc => cc.Name).ToArray();
         }
 
         public async Task<string> AddContentCollection(ContentCollection contentCollection)
@@ -79,11 +79,11 @@ namespace AppText.Storage.NoDb
             }
             if (! string.IsNullOrEmpty(query.ContentKey))
             {
-                contentItems = contentItems.Where(ci => ci.ContentKey == query.ContentKey);
+                contentItems = contentItems.Where(ci => string.Equals(ci.ContentKey, query.ContentKey, StringComparison.InvariantCultureIgnoreCase));
             }
             if (!string.IsNullOrEmpty(query.ContentKeyStartsWith))
             {
-                contentItems = contentItems.Where(ci => ci.ContentKey.StartsWith(query.ContentKeyStartsWith));
+                contentItems = contentItems.Where(ci => ci.ContentKey.StartsWith(query.ContentKeyStartsWith, StringComparison.InvariantCultureIgnoreCase));
             }
 
             switch (query.OrderBy)

@@ -40,7 +40,7 @@ namespace AppText.Storage.LiteDb
             {
                 q = q.Where(cc => cc.Name == query.Name);
             }
-            return Task.FromResult(q.ToArray());
+            return Task.FromResult(q.OrderBy(cc => cc.Name).ToArray());
         }
 
         public Task<string> AddContentCollection(ContentCollection contentCollection)
