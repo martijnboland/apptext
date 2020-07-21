@@ -54,5 +54,31 @@ namespace AppText.Storage.LiteDb
             return Task.CompletedTask;
         }
 
+        public Task<string> AddApiKey(ApiKey apiKey)
+        {
+            _liteRepository.Insert(apiKey);
+            return Task.FromResult(apiKey.Id);
+        }
+
+        public Task<ApiKey[]> GetApiKeys(ApiKeysQuery query)
+        {
+            var q = _liteRepository.Query<ApiKey>();
+
+            if (!string.IsNullOrEmpty(query.AppId))
+            {
+                q = q.Where(a => a.AppId == query.AppId);
+            }
+            if (!string.IsNullOrEmpty(query.Name))
+            {
+                q = q.Where(a => a.Name == query.Name);
+            }
+            return Task.FromResult(q.OrderBy(a => a.Name).ToArray());
+        }
+
+        public Task DeleteApiKey(string id, string appId)
+        {
+            _liteRepository.Delete<ApiKey>(id);
+            return Task.CompletedTask;
+        }
     }
 }
