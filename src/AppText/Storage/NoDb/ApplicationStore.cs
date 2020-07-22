@@ -74,6 +74,10 @@ namespace AppText.Storage.NoDb
             {
                 apiKeys = apiKeys.Where(a => a.Name == query.Name);
             }
+            if (!string.IsNullOrEmpty(query.Key))
+            {
+                apiKeys = apiKeys.Where(a => a.Key == query.Key);
+            }
             return apiKeys.OrderBy(a => a.Name).ToArray();
         }
 

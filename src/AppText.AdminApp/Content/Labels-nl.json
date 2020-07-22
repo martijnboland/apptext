@@ -15,7 +15,7 @@
   { "Collections": "Collections" },
   { "NewCollection": "Nieuwe collection" },
   { "OkButton": "OK" },
-  { "CloseButton": "Close" },
+  { "CloseButton": "Sluiten" },
   { "Unknown": "Onbekend" },
   { "ContentItemInfo": "Versie {{version}}, laatst gewijzigd {{- lastUpdated}} door {{lastModifiedBy}}" },
   { "Collection": "Collection" },
@@ -52,5 +52,15 @@
   { "NoItemsFound": "Geen item(s) gevonden" },
   { "Description": "Omschrijving" },
   { "NoCollectionsFound": "Geen collection(s) gevonden" },
-  { "CreateApp": "Nieuwe app" }
+  { "CreateApp": "Nieuwe app" },
+  { "EditApp": "Wijzig app" },
+  { "ApiKeysFor":  "API keys voor {{app}}" },
+  { "CreateButton": "Aanmaken" },
+  { "NewApiKey": "Nieuwe API key" },
+  { "ApiKeysHelpText": "API keys zijn app-specifiek en kunnen gebruikt worden om read-only toegang tot de AppText API te verkrijgen." },
+  { "DeleteApiKey": "Verwijder API key" },
+  { "TheApiKey": "de API key" },
+  { "GeneratedApiKeyIs": "De gegenereerde API key is:" },
+  { "GeneratedApiKeyHelpText": "BELANGRIJK: Dit is de enige keer dat de API key hier getoond wordt. Sla deze op op een veilige locatie." },
+  { "CopyToClipboardButton": "Kopieer naar klembord" }
 ]

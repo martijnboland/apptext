@@ -105,11 +105,15 @@ export function useApiGet<T>(initialUrl?: string, initialData?: T): ApiGetHookPr
     };
   }, [url]);
 
-  const doGet = (url, forceRefresh) => {
+  const doGet = (url: string, forceRefresh: boolean) => {
     setData(initialData);
     if (forceRefresh) {
       // Add timestamp to the url to force reload
-      url += `&ts=${new Date().getMilliseconds()}`;
+      if (! url.includes('?')) {
+        url += `?ts=${new Date().getMilliseconds()}`;
+      } else {
+        url += `&ts=${new Date().getMilliseconds()}`;
+      }
     }
     setUrl(url);
   };

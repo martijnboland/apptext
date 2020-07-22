@@ -10,6 +10,7 @@ import { Language, App } from './models';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import ApiKeyList from './ApiKeyList';
 
 const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
 
@@ -40,9 +41,9 @@ const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
     : [];
 
   return (
-    <>
-      <h2>Edit app {currentApp.id}</h2>
-      <div className="row">
+    <React.Fragment>
+      <h2>{t('Labels:EditApp',  { app: currentApp.id })}</h2>
+      <div className="row mb-4">
         <div className="col-lg-8">
           <Formik
             initialValues={currentApp}
@@ -65,7 +66,13 @@ const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
           </Formik>
         </div>
       </div>
-    </>
+      <div className="row">
+        <div className="col-lg-8">
+          <ApiKeyList />
+        </div>
+      </div>
+
+    </React.Fragment>
   );
 };
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AppText.Shared.Infrastructure.Security;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using System;
@@ -34,6 +35,14 @@ namespace AppText.Shared.Infrastructure.Mvc
                     action.Filters.Add(new AuthorizeFilter(requiredUserPolicy));
                 }
             }
+            if (ShouldApplyApiKeyConvention(action))
+            {
+                action.Filters.Add(
+                    new AuthorizeFilter(new AuthorizationPolicyBuilder()
+                        .AddAuthenticationSchemes(new[] { ApiKeyAuthenticationOptions.DefaultScheme })
+                        .RequireAssertion(ctx => true)
+                        .Build()));
+            }
         }
 
         private bool ShouldApplyConvention(ActionModel action)
@@ -44,6 +53,14 @@ namespace AppText.Shared.Infrastructure.Mvc
             return action.Controller.ControllerType.Assembly == assemblyType &&
                 !action.Attributes.Any(x => x.GetType() == typeof(AuthorizeAttribute)) &&
                 !action.Attributes.Any(x => x.GetType() == typeof(AllowAnonymousAttribute));
+        }
+
+        private bool ShouldApplyApiKeyConvention(ActionModel action)
+        {
+            var assemblyType = this._assembly ?? this.GetType().Assembly;
+
+            return action.Controller.ControllerType.Assembly == assemblyType &&
+                action.Attributes.Any(x => x.GetType() == typeof(AllowApiKeyAttribute));
         }
     }
 }

@@ -8,6 +8,7 @@ namespace AppText.Features.Application
     {
         public string AppId { get; set; }
         public string Name { get; set; }
+        public string Key { get; set; }
     }
 
     public class ApiKeysQueryHandler : IQueryHandler<ApiKeysQuery, ApiKey[]>

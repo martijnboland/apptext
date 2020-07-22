@@ -72,6 +72,10 @@ namespace AppText.Storage.LiteDb
             {
                 q = q.Where(a => a.Name == query.Name);
             }
+            if (!string.IsNullOrEmpty(query.Key))
+            {
+                q = q.Where(a => a.Key == query.Key);
+            }
             return Task.FromResult(q.OrderBy(a => a.Name).ToArray());
         }
 
