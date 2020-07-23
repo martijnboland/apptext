@@ -8,7 +8,7 @@ namespace AppText.Features.Application
     public class AppValidator : Validator<App>
     {
         protected override Task ValidateCustom(App app)
-        {
+        {            
             // Default language must exist in list of languages
             if (app.DefaultLanguage != null && ! app.Languages.Any(l => l == app.DefaultLanguage))
             {

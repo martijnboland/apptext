@@ -11,5 +11,8 @@ namespace AppText.Storage
         Task<string> AddApp(App app);
         Task UpdateApp(App app);
         Task DeleteApp(string id);
+        Task<string> AddApiKey(ApiKey apiKey);
+        Task<ApiKey[]> GetApiKeys(ApiKeysQuery query);
+        Task DeleteApiKey(string id, string appId);
     } 
 }

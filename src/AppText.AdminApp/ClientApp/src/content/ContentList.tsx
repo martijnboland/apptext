@@ -12,6 +12,7 @@ import EditableListItem from './EditableListItem';
 import { FaPlus } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import { appTextAdminAppId } from '../config/constants';
+import { Link } from 'react-router-dom';
 
 interface ContentListRouteProps {
   collectionId?: string,
@@ -126,7 +127,7 @@ const ContentList: React.FC<ContentListProps> = ({ match, history }) => {
     <div>          
       <div className="d-flex flex-row justify-content-between align-items-center">
         <h2>{t('Labels:Content')}</h2>
-        <button type="button" className="btn btn-primary" onClick={newItem}>
+        <button type="button" className="btn btn-primary" onClick={newItem} disabled={!currentCollection}>
           <FaPlus className="mr-1" />
           {t('Labels:NewContentItem')}
         </button>    
@@ -139,42 +140,47 @@ const ContentList: React.FC<ContentListProps> = ({ match, history }) => {
           <ContentLocator collections={collections} collectionId={collectionId} searchTerm={searchTerm} onCollectionChanged={collectionChanged} onSearch={search} />
         }
       </div>
-      {currentCollection &&
-        <div>
-          <ListHeader allLanguages={currentApp.languages} activeLanguages={activeLanguages} onLanguageAdded={languageAdded} onLanguageRemoved={languageRemoved} />
-          {addNew && 
-            <EditableListItem 
-              isNew={true}
-              collection={currentCollection} 
-              contentItem={initialContentItem}
-              activeLanguages={activeLanguages} 
-              onClose={closeEditor}
-              onItemSaved={refreshList}
-            />
-          }
-          {contentItems.map(ci => 
-            ci.id === editItemId
-            ?
+      {currentCollection
+        ?
+          <div>
+            <ListHeader allLanguages={currentApp.languages} activeLanguages={activeLanguages} onLanguageAdded={languageAdded} onLanguageRemoved={languageRemoved} />
+            {addNew && 
               <EditableListItem 
-                isNew={false}
-                key={ci.id} 
+                isNew={true}
                 collection={currentCollection} 
-                contentItem={ci} 
+                contentItem={initialContentItem}
                 activeLanguages={activeLanguages} 
                 onClose={closeEditor}
-                onItemSaved={itemChanged}
-                onItemDeleted={itemChanged}
+                onItemSaved={refreshList}
               />
-            :
-              <ListItem 
-                key={ci.id} 
-                collection={currentCollection} 
-                contentItem={ci} 
-                activeLanguages={activeLanguages} 
-                onEdit={() => editItem(ci.id)} 
-              />
-          )}
-        </div>
+            }
+            {contentItems.map(ci => 
+              ci.id === editItemId
+              ?
+                <EditableListItem 
+                  isNew={false}
+                  key={ci.id} 
+                  collection={currentCollection} 
+                  contentItem={ci} 
+                  activeLanguages={activeLanguages} 
+                  onClose={closeEditor}
+                  onItemSaved={itemChanged}
+                  onItemDeleted={itemChanged}
+                />
+              :
+                <ListItem 
+                  key={ci.id} 
+                  collection={currentCollection} 
+                  contentItem={ci} 
+                  activeLanguages={activeLanguages} 
+                  onEdit={() => editItem(ci.id)} 
+                />
+            )}
+          </div>
+        :
+          <div>
+            {t('Labels:NoCollectionsFound')}. <Link to="/collections/create">{t('Labels:CreateCollection')}</Link>
+          </div>
       }
     </div>
   );

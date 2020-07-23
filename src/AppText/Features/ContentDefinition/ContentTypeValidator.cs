@@ -28,7 +28,8 @@ namespace AppText.Features.ContentDefinition
                     AddError(new ValidationError { Name = "AppId", ErrorMessage = "AppNotFound", Parameters = new[] { objectToValidate.AppId } } );
                 }
             }
-            else {
+            else 
+            {
                 AddError(new ValidationError { Name = "AppId", ErrorMessage = "AppIdEmpty" } );
             }
 

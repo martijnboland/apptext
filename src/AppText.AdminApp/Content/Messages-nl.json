@@ -11,9 +11,13 @@
   { "Loading": "Laden..." },
   { "ContentItemCreated": "Content item {{contentKey}} is aangemaakt" },
   { "ContentItemUpdated": "Content item {{contentKey}} is gewijzigd" },
-  { "ContentItemDeleted": "Content item {{contentKey}} is verwijderd"},
+  { "ContentItemDeleted": "Content item {{contentKey}} is verwijderd" },
   { "DeleteConfirm": "Weet je zeker dat je {{name}} wilt verwijderen?" },
   { "ContentTypeCreated": "Content type {{name}} is aangemaakt" },
   { "ContentTypeUpdated": "Content type {{name}} is gewijzigd" },
-  { "ContentTypeDeleted": "Content type {{name}} is verwijderd"}
+  { "ContentTypeDeleted": "Content type {{name}} is verwijderd" },
+  { "ApiKeyCreated": "API key {{name}} is aangemaakt" },
+  { "ApiKeyDeleted": "API key {{name}} is verwijderd" },
+  { "ApiKeyCopiedToClipboard": "API key is is naar het klembord gekopieerd" },
+  { "BrowserDoesNotSupportCopyToClipboard": "De browser ondersteunt kopieren naar het klembord niet" }
 ]

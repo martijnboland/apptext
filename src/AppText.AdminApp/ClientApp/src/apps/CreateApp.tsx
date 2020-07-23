@@ -50,7 +50,7 @@ const CreateApp: React.FunctionComponent = () => {
 
   return (
     <>
-      <h1>Create app</h1>
+      <h1>{t('Labels:CreateApp')}</h1>
       <div className="row">
         <div className="col-lg-8">
           <Formik

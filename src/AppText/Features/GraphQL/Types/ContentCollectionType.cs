@@ -7,7 +7,7 @@ namespace AppText.Features.GraphQL.Types
 {
     public class ContentCollectionType : ObjectGraphType<ContentCollection>
     {
-        public ContentCollectionType(ContentCollection contentCollection, Func<IContentStore> getContentStore, string[] languages)
+        public ContentCollectionType(ContentCollection contentCollection, Func<IContentStore> getContentStore, string[] languages, string defaultLanguage)
         {
             if (NameConverter.TryConvertToGraphQLName(contentCollection.Name, out string graphQLName))
             {
@@ -19,7 +19,7 @@ namespace AppText.Features.GraphQL.Types
                 Field(cc => cc.Version).Description("The version of the content collection.");
                 Field<ContentTypeType>("ContentType");
 
-                var contentItemType = new ContentItemType(contentCollection, getContentStore, languages);
+                var contentItemType = new ContentItemType(contentCollection, languages, defaultLanguage);
                 var itemsType = new ListGraphType(contentItemType);
                 this.Field("items",
                     itemsType,

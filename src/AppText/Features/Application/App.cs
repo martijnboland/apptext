@@ -6,6 +6,7 @@ namespace AppText.Features.Application
     {
         [Required(ErrorMessage = "Required")]
         [StringLength(20, ErrorMessage = "StringLength|{1}")]
+        [RegularExpression(@"^[_a-z][_0-9a-z]*", ErrorMessage = "AppIdInvalid")]
         public string Id { get; set; }
 
         [Required(ErrorMessage = "Required")]

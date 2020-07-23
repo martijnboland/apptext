@@ -25,7 +25,7 @@ namespace AppText.AdminApp
         public void ConfigureServices(IServiceCollection services)
         {
             var dataPath = Path.Combine(Env.ContentRootPath, "App_Data");
-            services.AddAppText()
+            services.AddAppText(o => o.EnableGraphiql = true)
                 .AddNoDbStorage(dataPath)
                 .AddAdmin(o =>
                 {

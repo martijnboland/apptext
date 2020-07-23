@@ -12,6 +12,7 @@ namespace AppText.Storage.NoDb
         public static AppTextBuilder AddNoDbStorage(this AppTextBuilder builder, string baseFolder)
         {
             builder.Services.AddNoDb<App>();
+            builder.Services.AddNoDb<ApiKey>();
             builder.Services.AddNoDb<ContentType>();
             builder.Services.AddNoDb<ContentCollection>();
             builder.Services.AddNoDb<ContentItem>();

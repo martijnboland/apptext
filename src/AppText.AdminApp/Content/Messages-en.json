@@ -15,5 +15,9 @@
   { "DeleteConfirm": "Are you sure you want to delete {{name}}?" },
   { "ContentTypeCreated": "Content type {{name}} is created" },
   { "ContentTypeUpdated": "Content type {{name}} is updated" },
-  { "ContentTypeDeleted": "Content type {{name}} is deleted"}
+  { "ContentTypeDeleted": "Content type {{name}} is deleted" },
+  { "ApiKeyCreated": "API key {{name}} is created" },
+  { "ApiKeyDeleted": "API key {{name}} is deleted" },
+  { "ApiKeyCopiedToClipboard": "API key is copied to the clipboard" },
+  { "BrowserDoesNotSupportCopyToClipboard":  "Your browser does not support copying to the clipboard" }
 ]

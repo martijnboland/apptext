@@ -2,7 +2,7 @@
 {
     public static class Constants
     {
-        public const string AppTextAdminAppId = "apptext-admin";
+        public const string AppTextAdminAppId = "apptext_admin";
         public const string AppTextAdminAppDescription = "AppText Admin App";
         public const string AppTextAdminLabelsCollection = "Labels";
         public const string AppTextAdminMessagesCollection = "Messages";

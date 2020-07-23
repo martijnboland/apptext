@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using AppText.Shared.Infrastructure.Security;
 
 namespace AppText.Features.Controllers
 {
@@ -35,6 +36,7 @@ namespace AppText.Features.Controllers
         }
 
         [HttpGet]
+        [AllowApiKey]
         public async Task<ActionResult> ExecuteGet(string appId)
         {
             var gqlRequest = new GraphQLRequest();
@@ -44,6 +46,7 @@ namespace AppText.Features.Controllers
         }
 
         [HttpPost]
+        [AllowApiKey]
         public async Task<ActionResult> ExecutePost(string appId)
         {
             var gqlRequest = new GraphQLRequest();
