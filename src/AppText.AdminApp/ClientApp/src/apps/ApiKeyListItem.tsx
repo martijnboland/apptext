@@ -43,7 +43,7 @@ const ApiKeyListItem: React.FunctionComponent<IApiKeyListItemProps> = ({ apiKey,
       onOk={() => handleDelete(apiKey, hideDeleteConfirmation)}
       onCancel={hideDeleteConfirmation}
     >
-      {t('Messages:DeleteConfirm', { name: '$t(Labels:TheItem)' })}
+      {t('Messages:DeleteConfirm', { name: '$t(Labels:TheApiKey)' })}
     </Confirm>
   ), [apiKey]);
   

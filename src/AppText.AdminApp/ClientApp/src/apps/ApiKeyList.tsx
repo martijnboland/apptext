@@ -9,23 +9,31 @@ import ApiKeyListItem from './ApiKeyListItem';
 import CreateApiKeyForm from './CreateApiKeyForm';
 import { toast } from 'react-toastify';
 import GeneratedApiKey from './GeneratedApiKey';
+import { useModal } from 'react-modal-hook';
+import Modal from '../common/components/dialogs/Modal';
 
 const ApiKeyList: React.FunctionComponent = () => {
   const { t } = useTranslation(['Labels', 'Messages']);
   const { currentApp } = useContext(AppContext);
   const url = `${appConfig.apiBaseUrl}/${currentApp.id}/apikeys`;
   const { data: apiKeys, isLoading, doGet: getApiKeys } = useApiGet<ApiKey[]>(url, []);
-  const [isNewFormVisible, setIsNewFormVisible] = useState(false);
   const createApiKeyCommand = useApi<CreateApiKeyCommand>(url, 'POST');
   const [generatedApiKey, setGeneratedApiKey] = useState();
 
-  const newApiKey = () => {
-    setIsNewFormVisible(true);
-    setGeneratedApiKey(undefined);
-  }
+  const [showNewApiKey, hideNewApiKey] = useModal(() => 
+    <Modal visible={true} title={t('Labels:NewApiKey')} onClose={hideNewApiKey}>
+      <CreateApiKeyForm onCreate={createApiKey} onClose={hideNewApiKey} />
+    </Modal>
+  );
+  const [showGeneratedKey, hideGeneratedKey] = useModal(() =>
+    <Modal visible={true} title="API key" onClose={closeGeneratedApiKey}>
+      <GeneratedApiKey generatedKey={generatedApiKey} onClose={closeGeneratedApiKey} />
+    </Modal>
+  , [generatedApiKey]);
 
-  const closeNewApiKey = () => {
-    setIsNewFormVisible(false);
+  const newApiKey = () => {
+    showNewApiKey();
+    setGeneratedApiKey(undefined);
   }
 
   const handleApiKeyDeleted = () => {
@@ -37,7 +45,8 @@ const ApiKeyList: React.FunctionComponent = () => {
       .then(res => {
         if (res.ok) {
           setGeneratedApiKey(res.data.apiKey);
-          setIsNewFormVisible(false);
+          hideNewApiKey();
+          showGeneratedKey();
           getApiKeys(url, true);
           toast.success(t('Messages:ApiKeyCreated', { name: name }));
         }
@@ -47,6 +56,7 @@ const ApiKeyList: React.FunctionComponent = () => {
 
   const closeGeneratedApiKey = () => {
     setGeneratedApiKey(undefined);
+    hideGeneratedKey();
   }
 
   return (
@@ -61,16 +71,6 @@ const ApiKeyList: React.FunctionComponent = () => {
       <p>
         <small className="text-muted">{t('Labels:ApiKeysHelpText')}</small>
       </p>
-      {isNewFormVisible &&
-        <div className="mb-3">
-          <CreateApiKeyForm onCreate={createApiKey} onClose={closeNewApiKey} />
-        </div>
-      }
-      {generatedApiKey &&
-        <div className="mb-3">
-          <GeneratedApiKey generatedKey={generatedApiKey} onClose={closeGeneratedApiKey} />
-        </div>
-      }
       {apiKeys && apiKeys.map(apiKey => 
         <ApiKeyListItem key={apiKey.id} apiKey={apiKey} onApiKeyDeleted={handleApiKeyDeleted} />
       )}

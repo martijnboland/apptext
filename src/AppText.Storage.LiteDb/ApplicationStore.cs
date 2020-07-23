@@ -56,6 +56,7 @@ namespace AppText.Storage.LiteDb
 
         public Task<string> AddApiKey(ApiKey apiKey)
         {
+            apiKey.Id = ObjectId.NewObjectId().ToString();
             _liteRepository.Insert(apiKey);
             return Task.FromResult(apiKey.Id);
         }

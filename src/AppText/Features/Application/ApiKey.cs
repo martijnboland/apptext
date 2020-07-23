@@ -18,7 +18,6 @@ namespace AppText.Features.Application
 
         public DateTimeOffset CreatedAt { get; set; }
 
-        [JsonIgnore]
         public string Key { get; set; }
 
         public static string HashKey(string key, string appId)

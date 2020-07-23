@@ -19,16 +19,14 @@ const GeneratedApiKey: React.FunctionComponent<IGeneratedApiKeyProps> = ({ gener
     }
   }
   return (
-    <div className="card">
-      <div className="card-body">
-        <p>{t('Labels:GeneratedApiKeyIs')}</p>
-        <pre><strong>{generatedKey}</strong></pre>
-        <p>
-          <small className="text-muted">{t('Labels:GeneratedApiKeyHelpText')}</small>
-        </p>
-        <button type="button" className="btn btn-primary" onClick={copyToClipboard}>{t('Labels:CopyToClipboardButton')}</button>
-        <button type="button" className="btn btn-link" onClick={onClose}>{t('Labels:CloseButton')}</button>
-      </div>
+    <div>
+      <p>{t('Labels:GeneratedApiKeyIs')}</p>
+      <pre><strong>{generatedKey}</strong></pre>
+      <p>
+        <small className="text-muted">{t('Labels:GeneratedApiKeyHelpText')}</small>
+      </p>
+      <button type="button" className="btn btn-primary" onClick={copyToClipboard}>{t('Labels:CopyToClipboardButton')}</button>
+      <button type="button" className="btn btn-link" onClick={onClose}>{t('Labels:CloseButton')}</button>
     </div>
   );
 };

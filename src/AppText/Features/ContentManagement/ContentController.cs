@@ -1,5 +1,6 @@
 ﻿using AppText.Shared.Infrastructure;
 using AppText.Shared.Infrastructure.Mvc;
+using AppText.Shared.Infrastructure.Security;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace AppText.Features.ContentManagement
         }
 
         [HttpGet]
+        [AllowApiKey]
         public async Task<IActionResult> Get(string appId, [FromQuery]ContentItemQuery query)
         {
             query.AppId = appId;
@@ -24,6 +26,7 @@ namespace AppText.Features.ContentManagement
         }
 
         [HttpGet("{id}")]
+        [AllowApiKey]
         public async Task<IActionResult> GetOne(string id)
         {
             var result = await _dispatcher.ExecuteQuery(new ContentItemQuery { Id = id });
