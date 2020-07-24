@@ -1,10 +1,10 @@
 # AppText
 AppText is a Content Management System for Applications. A hybrid between a headless Content Management System and a Translation Management System.
 
+AppText is built with [ASP.NET Core](https://dotnet.microsoft.com/apps/aspnet) and [React](https:reactjs.org). It is installed via [NuGet packages](https://www.nuget.org/packages?q=apptext).
+
 ![.NET Core Build](https://github.com/martijnboland/apptext/workflows/.NET%20Core%20Build/badge.svg)
 ![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/apptext)
-
-![Screenshot edit translations](media/screenshots/edit-translations-800.png?raw=true "Edit translations")
 
 ## Why?
 Many custom software applications (web, mobile, native) are shipped with embedded content. Think of labels, tooltips or even complete pages with information. This content often needs to be localized in multiple languages.
@@ -14,10 +14,99 @@ Once an application is released, updating the embedded content can become a bit 
 The primary goal of AppText is to enable content updates in applications without having to go through the entire process of deploying a new version of the application.
 
 ## Who should use it?
-AppText is intended for application developers who want an easy way of managing content for their applications and being able to delegate content management to non-developers.
+AppText is intended for .NET application developers who want an easy way of managing content for their applications and being able to delegate content management to non-developers.
 
 ## Getting started
-This project is still in the early stages. To try it out, you have to clone this repository and build a version yourself. 
+AppText needs an ASP.NET Core 3.1 (or newer) host application to run on. For this example we'll create a new MVC application with ASP.NET Identity authentication (you can always add it to your own .NET Core applications as well):
+
+```
+dotnet new mvc --auth individual
+```
+
+### Adding the AppText Admin interface
+
+Add the AppText API and Admin app NuGet packages (the version is required because we only have pre-releases so far):
+
+```
+dotnet add package AppText.AdminApp --version 0.3.0-alpha1
+```
+
+Register AppText components in the ConfigureServices method of Startup.cs:
+
+```csharp
+public class Startup
+{
+    public Startup(IConfiguration configuration, IHostEnvironment env)
+    {
+        Configuration = configuration;
+        Env = env; // Added IHostEnvironment via DI. This is used later to obtain the physical directory for storage.
+    }
+
+    public IConfiguration Configuration { get; }
+    public IHostEnvironment Env { get; }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlite(
+                Configuration.GetConnectionString("DefaultConnection")));
+        services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            .AddEntityFrameworkStores<ApplicationDbContext>();
+        services.AddControllersWithViews();
+        services.AddRazorPages();
+
+        // Add AppText components
+
+        // Get physical directory for storage
+        var dataPath = Path.Combine(Env.ContentRootPath, "App_Data");
+
+        services.AddAppText() // Adds AppText API to /apptext
+            .AddNoDbStorage(dataPath) // Adds file-based storage
+            .AddAdmin(); // Add admin UI, by default it is accessible at /apptext
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        // Unchanged...
+    }
+}
+```
+
+The AppText Admin interface is now available at: https://localhost:5001/apptext
+
+[![Screenshot AppText dashboard](media/screenshots/apptext-dashboard-480.png?raw=true "Edit translations")](media/screenshots/apptext-dashboard.png?raw=true)
+
+You'll notice that there already is some content in there. That's because AppText uses itself for the localization of the Admin interface :-). Go and try to change some content. This will be reflected immediately in the Admin interface.
+
+### Secure the Admin interface
+Until now, unauthenticated users can simply access the Admin interface. AppText itself doesn't know anything about authentication, but you can secure it with two configuration options. The first one, RequireAuthenticatedUser simply tells that only authenticated users can access AppText (ConfigureServices in Startup.cs):
+
+```csharp
+services.AddAppText(options => 
+{
+    options.RequireAuthenticatedUser = true;
+});
+```
+
+Alternatively, and this is the better option, it's possible to define an authorization Policy that AppText uses:
+
+```csharp
+services.AddAuthorization(options =>
+{
+    options.AddPolicy("AppText", policy => policy
+        .RequireAuthenticatedUser()
+        .AddAuthenticationSchemes(IdentityConstants.ApplicationScheme)); // Local accounts
+});
+
+services.AddAppText(options => 
+{
+    options.RequiredAuthorizationPolicy = "AppText";
+})
+```
+
+This way, it's entirely up to you how AppText is secured. Local accounts, Azure AD, OpenID Connect, everything that is supported by ASP.NET Core can be used.
+
+## Development
 
 ### Prerequisites
 
@@ -31,6 +120,7 @@ git clone https://github.com/martijnboland/apptext.git
 Navigate to the folder where you cloned the sources. You'll see a /src folder and in that folder the following components:
 - AppText - the core logic with the REST and Graphql api's and a [file-based storage engine](https://github.com/cloudscribe/NoDb);
 - AppText.AdminApp - the management application;
+- AppText.Localization - enables .NET Core apps to use AppText dynamic resources with the standard .NET Core localization API;
 - AppText.Storage.LiteDB - storage engine based on [LiteDB](https://www.litedb.org/);
 - AppText.Translations - module that adds a global 'Translation' content type and provides a REST endpoint to retrieve content as JSON, .NET resx or GNU gettext PO files.
 - HostAppExample - ASP.NET Core template app with authentication that hosts AppText as embedded application. This one is also configured by default to use the LiteDB storage engine.
@@ -72,15 +162,9 @@ Finally go to the src/HostAppExample folder and execute
 ```
 dotnet run
 ```
-The host app is available at https://localhost:5001 and the AppText admin app is at https://localhost:5001/admin. Note that you have to create an account first and log in before you can access the admin app.
+The host app is available at https://localhost:5001 and the AppText admin app is at https://localhost:5001/apptext. Note that you have to create an account first and log in before you can access the admin app.
 
-## Screenshots
-
-[![Screenshot edit translations](media/screenshots/edit-translations-240.png?raw=true "Edit translations")](media/screenshots/edit-translations.png?raw=true)
-[![Screenshot edit pages](media/screenshots/edit-pages-240.png?raw=true "Edit pages")](media/screenshots/edit-pages.png?raw=true)
-[![Screenshot GraphQL api](media/screenshots/graphiql-240.png?raw=true "Edit pages")](media/screenshots/graphiql.png?raw=true)
-
-## Concepts
+## AppText Concepts
 
 ### App
 The App is the top level object in AppText. It defines which languages are available, which one is the default and has a list of ContentTypes. You can not do anything unless you have at least one App object.
