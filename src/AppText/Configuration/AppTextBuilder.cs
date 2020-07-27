@@ -109,9 +109,6 @@ namespace AppText.Configuration
                 mvcOptions.Conventions.Add(new AppTextGraphiqlConvention(options.EnableGraphiql));
                 mvcOptions.Conventions.Add(new AppTextNewtonsoftJsonConvention(assembly));
             });
-
-            var authenticationBuilder = Services.AddAuthentication();
-            authenticationBuilder.AddApiKeySupport(o => { });
         }
 
         private AppTextApiConfigurationOptions GetOptions(

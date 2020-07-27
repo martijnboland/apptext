@@ -37,25 +37,25 @@ namespace HostAppExample
                 options.UseSqlite($"Data Source={Path.Combine(Env.ContentRootPath, "App_Data", "Application.db")}"));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            
-            services.AddAuthentication()
-                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, cfg =>
-                {
-                    cfg.SaveToken = true;
 
-                    cfg.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidIssuer = Configuration["Tokens:Issuer"],
-                        ValidAudience = Configuration["Tokens:Issuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
-                    };
-                });
+            services.AddAuthentication();
+                //.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, cfg =>
+                //{
+                //    cfg.SaveToken = true;
+
+                //    cfg.TokenValidationParameters = new TokenValidationParameters()
+                //    {
+                //        ValidIssuer = Configuration["Tokens:Issuer"],
+                //        ValidAudience = Configuration["Tokens:Issuer"],
+                //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
+                //    };
+                //});
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AppText", policy => policy
-                    .RequireAuthenticatedUser()
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, IdentityConstants.ApplicationScheme));
+                //options.AddPolicy("AppText", policy => policy
+                //    .RequireAuthenticatedUser()
+                //    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, IdentityConstants.ApplicationScheme));
             });
 
             // AppText configuration
@@ -63,7 +63,8 @@ namespace HostAppExample
 
             services.AddAppText(options => // content api is available at /apptext/hostappexample
                 {
-                    options.RequiredAuthorizationPolicy = "AppText";
+                    options.RequireAuthenticatedUser = true;
+                    //options.RequiredAuthorizationPolicy = "AppText";
                     options.EnableGraphiql = true; // graphiql is available at /apptext/hostappexample/graphql/graphiql
                 })
                 .AddLiteDbStorage(connectionString)

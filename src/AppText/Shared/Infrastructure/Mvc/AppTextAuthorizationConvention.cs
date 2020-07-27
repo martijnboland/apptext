@@ -1,4 +1,5 @@
 ﻿using AppText.Shared.Infrastructure.Security;
+using AppText.Shared.Infrastructure.Security.ApiKey;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -34,14 +35,6 @@ namespace AppText.Shared.Infrastructure.Mvc
                     var requiredUserPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                     action.Filters.Add(new AuthorizeFilter(requiredUserPolicy));
                 }
-            }
-            if (ShouldApplyApiKeyConvention(action))
-            {
-                action.Filters.Add(
-                    new AuthorizeFilter(new AuthorizationPolicyBuilder()
-                        .AddAuthenticationSchemes(new[] { ApiKeyAuthenticationOptions.DefaultScheme })
-                        .RequireAssertion(ctx => true)
-                        .Build()));
             }
         }
 
