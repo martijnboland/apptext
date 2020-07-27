@@ -1,6 +1,7 @@
 ﻿using AppText.Shared.Infrastructure;
 using AppText.Shared.Infrastructure.Mvc;
 using AppText.Shared.Infrastructure.Security;
+using AppText.Shared.Infrastructure.Security.ApiKey;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;

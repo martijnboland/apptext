@@ -3,6 +3,7 @@ using AppText.Shared.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using AppText.Shared.Infrastructure.Security;
+using AppText.Shared.Infrastructure.Security.ApiKey;
 
 namespace AppText.Features.ContentManagement
 {

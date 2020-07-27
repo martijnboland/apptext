@@ -11,6 +11,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using ApiKeyClass = AppText.Features.Application.ApiKey;
 
 namespace AppText.Shared.Infrastructure.Security.ApiKey
 {
@@ -45,7 +46,7 @@ namespace AppText.Shared.Infrastructure.Security.ApiKey
             }
 
             var appId = Context.GetRouteValue("appId").ToString();
-            var hashedApiKey = ApiKey.HashKey(providedApiKey, appId);
+            var hashedApiKey = ApiKeyClass.HashKey(providedApiKey, appId);
             var apiKey = (await _applicationStore.GetApiKeys(new ApiKeysQuery { AppId = appId, Key = hashedApiKey })).FirstOrDefault();
             if (apiKey != null)
             {

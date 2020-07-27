@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using AppText.Shared.Infrastructure.Security;
+using AppText.Shared.Infrastructure.Security.ApiKey;
 
 namespace AppText.Features.Controllers
 {
