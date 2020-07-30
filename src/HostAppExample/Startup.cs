@@ -38,39 +38,34 @@ namespace HostAppExample
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-                options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
-            });
-                //.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, cfg =>
-                //{
-                //    cfg.SaveToken = true;
+            services.AddAuthentication()
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, cfg =>
+                {
+                    cfg.SaveToken = true;
 
-                //    cfg.TokenValidationParameters = new TokenValidationParameters()
-                //    {
-                //        ValidIssuer = Configuration["Tokens:Issuer"],
-                //        ValidAudience = Configuration["Tokens:Issuer"],
-                //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
-                //    };
-                //});
+                    cfg.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidIssuer = Configuration["Tokens:Issuer"],
+                        ValidAudience = Configuration["Tokens:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
+                    };
+                });
 
             services.AddAuthorization(options =>
             {
-                //options.AddPolicy("AppText", policy => policy
-                //    .RequireAuthenticatedUser()
-                //    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, IdentityConstants.ApplicationScheme));
+                options.AddPolicy("AppText", policy => policy
+                    .RequireAuthenticatedUser()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, IdentityConstants.ApplicationScheme));
             });
 
             // AppText configuration
             var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
 
             services.AddAppText(options => // content api is available at /apptext/hostappexample
-                {
-                    options.RequireAuthenticatedUser = true;
-                    //options.RequiredAuthorizationPolicy = "AppText";
-                    options.EnableGraphiql = true; // graphiql is available at /apptext/hostappexample/graphql/graphiql
-                })
+            {
+                options.RequiredAuthorizationPolicy = "AppText";
+                options.EnableGraphiql = true; // graphiql is available at /apptext/hostappexample/graphql/graphiql
+            })
                 .AddLiteDbStorage(connectionString)
                 .AddAdmin() // admin api is available at /apptext
                 .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en")
@@ -87,7 +82,7 @@ namespace HostAppExample
             services.AddControllersWithViews()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
-            
+
             services.AddRazorPages();
         }
 
