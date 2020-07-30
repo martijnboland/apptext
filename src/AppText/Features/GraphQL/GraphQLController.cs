@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using AppText.Shared.Infrastructure.Security;
+using Microsoft.AspNetCore.Authorization;
+using AppText.Shared.Infrastructure.Security.ApiKey;
 
 namespace AppText.Features.Controllers
 {
@@ -36,8 +37,7 @@ namespace AppText.Features.Controllers
         }
 
         [HttpGet]
-        [AllowApiKey]
-        public async Task<ActionResult> ExecuteGet(string appId)
+        public async Task<IActionResult> ExecuteGet(string appId)
         {
             var gqlRequest = new GraphQLRequest();
             ExtractGraphQLRequestFromQueryString(Request.Query, gqlRequest);
@@ -45,9 +45,15 @@ namespace AppText.Features.Controllers
             return await ExecuteInternal(gqlRequest, appId);
         }
 
+        [HttpGet("public")]
+        [Authorize(AuthenticationSchemes = ApiKeyAuthenticationOptions.DefaultScheme)]
+        public Task<IActionResult> ExecuteGetWithApiKey(string appId)
+        {
+            return ExecuteGet(appId);
+        }
+
         [HttpPost]
-        [AllowApiKey]
-        public async Task<ActionResult> ExecutePost(string appId)
+        public async Task<IActionResult> ExecutePost(string appId)
         {
             var gqlRequest = new GraphQLRequest();
             if (!MediaTypeHeaderValue.TryParse(Request.ContentType, out var mediaTypeHeader))
@@ -74,6 +80,13 @@ namespace AppText.Features.Controllers
             return await ExecuteInternal(gqlRequest, appId);
         }
 
+        [HttpPost("public")]
+        [Authorize(AuthenticationSchemes = ApiKeyAuthenticationOptions.DefaultScheme)]
+        public Task<IActionResult> ExecutePostWithApiKey(string appId)
+        {
+            return ExecutePost(appId);
+        }
+
         [HttpGet("graphiql")]
         public IActionResult GetGraphiql(string appId)
         {
@@ -86,7 +99,7 @@ namespace AppText.Features.Controllers
             return Content(content, "text/html");
         }
 
-        private async Task<ActionResult> ExecuteInternal(GraphQLRequest gqlRequest, string appId)
+        private async Task<IActionResult> ExecuteInternal(GraphQLRequest gqlRequest, string appId)
         {
             var schema = await _schemaResolver.Resolve(appId);
             if (schema == null)

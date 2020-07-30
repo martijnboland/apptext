@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace AppText.Shared.Infrastructure.Security
+namespace AppText.Shared.Infrastructure.Security.ApiKey
 {
     public class ForbiddenProblemDetails : ProblemDetails
     {

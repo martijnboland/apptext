@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using System;
 
-namespace AppText.Shared.Infrastructure.Security
+namespace AppText.Shared.Infrastructure.Security.ApiKey
 {
     public static class AuthenticationBuilderExtensions
     {

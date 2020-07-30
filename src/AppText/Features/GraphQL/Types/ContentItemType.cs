@@ -69,22 +69,25 @@ namespace AppText.Features.GraphQL.Types
                                     }
                                 }
 
-                                var field = contentItem.Content[contentField.Name];
-                                Dictionary<string, object> fieldValues = null;
+                                if (contentItem.Content.ContainsKey(contentField.Name))
+                                {
+                                    var field = contentItem.Content[contentField.Name];
+                                    Dictionary<string, object> fieldValues = null;
 
-                                // Source can be a JObject or Dictionary
-                                if (field is JObject)
-                                {
-                                    fieldValues = JObject.FromObject(field).ToObject<Dictionary<string, object>>();
-                                }
-                                else
-                                {
-                                    fieldValues = field as Dictionary<string, object>;
-                                }
+                                    // Source can be a JObject or Dictionary
+                                    if (field is JObject)
+                                    {
+                                        fieldValues = JObject.FromObject(field).ToObject<Dictionary<string, object>>();
+                                    }
+                                    else
+                                    {
+                                        fieldValues = field as Dictionary<string, object>;
+                                    }
 
-                                if (fieldValues != null && fieldValues.ContainsKey(language))
-                                {
-                                    return fieldValues[language];
+                                    if (fieldValues != null && fieldValues.ContainsKey(language))
+                                    {
+                                        return fieldValues[language];
+                                    }
                                 }
                                 return null;
                             }

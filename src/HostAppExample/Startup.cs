@@ -37,7 +37,7 @@ namespace HostAppExample
                 options.UseSqlite($"Data Source={Path.Combine(Env.ContentRootPath, "App_Data", "Application.db")}"));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            
+
             services.AddAuthentication()
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, cfg =>
                 {
@@ -62,10 +62,10 @@ namespace HostAppExample
             var connectionString = $"FileName={Path.Combine(Env.ContentRootPath, "App_Data", "AppText.db")};Mode=Exclusive";
 
             services.AddAppText(options => // content api is available at /apptext/hostappexample
-                {
-                    options.RequiredAuthorizationPolicy = "AppText";
-                    options.EnableGraphiql = true; // graphiql is available at /apptext/hostappexample/graphql/graphiql
-                })
+            {
+                options.RequiredAuthorizationPolicy = "AppText";
+                options.EnableGraphiql = true; // graphiql is available at /apptext/hostappexample/graphql/graphiql
+            })
                 .AddLiteDbStorage(connectionString)
                 .AddAdmin() // admin api is available at /apptext
                 .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en")
@@ -82,7 +82,7 @@ namespace HostAppExample
             services.AddControllersWithViews()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
-            
+
             services.AddRazorPages();
         }
 

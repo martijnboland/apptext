@@ -1,5 +1,4 @@
-﻿using AppText.Shared.Infrastructure.Security;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using System;
@@ -25,23 +24,17 @@ namespace AppText.Shared.Infrastructure.Mvc
         {
             if (ShouldApplyConvention(action))
             {
-                if (! String.IsNullOrEmpty(_requiredAuthorizationPolicy))
+                if (!String.IsNullOrEmpty(_requiredAuthorizationPolicy))
                 {
                     action.Filters.Add(new AuthorizeFilter(_requiredAuthorizationPolicy));
                 }
                 if (_requireAuthenticatedUser)
                 {
-                    var requiredUserPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                    var requiredUserPolicy = new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .Build();
                     action.Filters.Add(new AuthorizeFilter(requiredUserPolicy));
                 }
-            }
-            if (ShouldApplyApiKeyConvention(action))
-            {
-                action.Filters.Add(
-                    new AuthorizeFilter(new AuthorizationPolicyBuilder()
-                        .AddAuthenticationSchemes(new[] { ApiKeyAuthenticationOptions.DefaultScheme })
-                        .RequireAssertion(ctx => true)
-                        .Build()));
             }
         }
 
@@ -53,14 +46,6 @@ namespace AppText.Shared.Infrastructure.Mvc
             return action.Controller.ControllerType.Assembly == assemblyType &&
                 !action.Attributes.Any(x => x.GetType() == typeof(AuthorizeAttribute)) &&
                 !action.Attributes.Any(x => x.GetType() == typeof(AllowAnonymousAttribute));
-        }
-
-        private bool ShouldApplyApiKeyConvention(ActionModel action)
-        {
-            var assemblyType = this._assembly ?? this.GetType().Assembly;
-
-            return action.Controller.ControllerType.Assembly == assemblyType &&
-                action.Attributes.Any(x => x.GetType() == typeof(AllowApiKeyAttribute));
         }
     }
 }

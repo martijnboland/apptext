@@ -4,6 +4,7 @@ using AppText.Shared.Commands;
 using AppText.Shared.Infrastructure;
 using AppText.Shared.Infrastructure.Mvc;
 using AppText.Shared.Infrastructure.Security;
+using AppText.Shared.Infrastructure.Security.ApiKey;
 using AppText.Shared.Queries;
 using AppText.Shared.Validation;
 using AppText.Storage;
@@ -92,6 +93,10 @@ namespace AppText.Configuration
 
             // Cache
             Services.AddMemoryCache();
+
+            // ApiKey authentication scheme
+            var authenticationBuilder = Services.AddAuthentication();
+            authenticationBuilder.AddApiKeySupport(o => { });
         }
 
         private void AddApi(Action<AppTextApiConfigurationOptions> configureOptionsAction = null)
@@ -109,9 +114,6 @@ namespace AppText.Configuration
                 mvcOptions.Conventions.Add(new AppTextGraphiqlConvention(options.EnableGraphiql));
                 mvcOptions.Conventions.Add(new AppTextNewtonsoftJsonConvention(assembly));
             });
-
-            var authenticationBuilder = Services.AddAuthentication();
-            authenticationBuilder.AddApiKeySupport(o => { });
         }
 
         private AppTextApiConfigurationOptions GetOptions(

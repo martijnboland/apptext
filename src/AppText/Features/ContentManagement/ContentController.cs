@@ -1,6 +1,7 @@
 ﻿using AppText.Shared.Infrastructure;
 using AppText.Shared.Infrastructure.Mvc;
-using AppText.Shared.Infrastructure.Security;
+using AppText.Shared.Infrastructure.Security.ApiKey;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,23 +19,35 @@ namespace AppText.Features.ContentManagement
         }
 
         [HttpGet]
-        [AllowApiKey]
         public async Task<IActionResult> Get(string appId, [FromQuery]ContentItemQuery query)
         {
             query.AppId = appId;
             return Ok(await _dispatcher.ExecuteQuery(query));
         }
 
-        [HttpGet("{id}")]
-        [AllowApiKey]
-        public async Task<IActionResult> GetOne(string id)
+        [HttpGet("public")]
+        [Authorize(AuthenticationSchemes = ApiKeyAuthenticationOptions.DefaultScheme)]
+        public Task<IActionResult> GetWithApiKey(string appId, [FromQuery] ContentItemQuery query)
         {
-            var result = await _dispatcher.ExecuteQuery(new ContentItemQuery { Id = id });
+            return Get(appId, query);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOne(string appId, string id)
+        {
+            var result = await _dispatcher.ExecuteQuery(new ContentItemQuery { AppId = appId, Id = id });
             if (result.Length == 0)
             {
                 return NotFound();
             }
             return Ok(result.First());
+        }
+
+        [HttpGet("public/{id}")]
+        [Authorize(AuthenticationSchemes = ApiKeyAuthenticationOptions.DefaultScheme)]
+        public Task<IActionResult> GetOnWithApiKey(string appId, string id)
+        {
+            return GetOne(appId, id);
         }
 
         [HttpPost]
