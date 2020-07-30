@@ -38,7 +38,11 @@ namespace HostAppExample
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddAuthentication();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+                options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+            });
                 //.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, cfg =>
                 //{
                 //    cfg.SaveToken = true;

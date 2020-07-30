@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using AppText.Features.ContentDefinition;
 using AppText.Features.ContentManagement;
+using AppText.Shared.Infrastructure.Security.ApiKey;
 using AppText.Storage;
 using AppText.Translations.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
@@ -83,6 +85,13 @@ namespace AppText.Translations.Controllers
                 }
             }
             return Ok(result);
+        }
+
+        [HttpGet("public/{language}/{collection?}")]
+        [Authorize(AuthenticationSchemes = ApiKeyAuthenticationOptions.DefaultScheme)]
+        public Task<IActionResult> GetWithApiKey(string appId, string language, string collection = null)
+        {
+            return Get(appId, language, collection);
         }
     }
 }
