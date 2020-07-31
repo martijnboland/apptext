@@ -334,3 +334,4 @@ ASALocalRun/
 .localhistory/
 /src/AppText.AdminApp/wwwroot/dist
 /src/AppText.AdminApp/Views/Admin/AppTextAdmin.cshtml
+/examples/AspNetCoreMvcExample/App_Data/nodb_storage
