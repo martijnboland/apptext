@@ -28,7 +28,7 @@ dotnet new mvc --auth individual
 Add the AppText API and Admin app NuGet packages (the version is required because we only have pre-releases so far, please check the actual latest version):
 
 ```
-dotnet add package AppText.AdminApp --version 0.3.1-alpha1
+dotnet add package AppText.AdminApp --version 0.3.2-alpha
 ```
 
 Register AppText components in the ConfigureServices method of Startup.cs:
@@ -113,7 +113,7 @@ ASP.NET Core supports [localization via the IStringLocalizer and IViewLocalizer 
 Add it to your existing application with:
 
 ```
-dotnet add package AppText.Localization --version 0.3.1-alpha1
+dotnet add package AppText.Localization --version 0.3.2-alpha
 ```
 
 Then configure it in the ConfigureServices() method of Startup.cs:
