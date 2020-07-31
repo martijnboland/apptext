@@ -46,7 +46,9 @@ const LatestContentList: React.FunctionComponent<ILatestContentListProps> = ({ i
           contentItems.map(contentItem => {
             var collection = collections.find(c => c.id === contentItem.collectionId);
             var displayText = collection.listDisplayField
-              ? contentItem.content[collection.listDisplayField][currentApp.defaultLanguage]
+              ? contentItem.content[collection.listDisplayField] 
+                ? contentItem.content[collection.listDisplayField][currentApp.defaultLanguage]
+                : ''
               : '';
             var itemUrl = `/content/${collection.id}/${contentItem.contentKey}`;
             var collectionUrl = `/content/${collection.id}`;
