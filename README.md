@@ -108,7 +108,7 @@ This way, it's entirely up to you how AppText is secured. Local accounts, Azure 
 
 ### Localization of ASP.NET Core applications
 
-ASP.NET Core supports localization via the IStringLocalizer and IViewLocalizer interfaces. AppText has a NuGet package that implements those interfaces: AppText.Localization.
+ASP.NET Core supports [localization via the IStringLocalizer and IViewLocalizer interfaces](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization?view=aspnetcore-3.1). AppText has a NuGet package that implements those interfaces: AppText.Localization.
 
 Add it to your existing application with:
 
