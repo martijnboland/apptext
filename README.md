@@ -25,10 +25,10 @@ dotnet new mvc --auth individual
 
 ### Adding the AppText Admin interface
 
-Add the AppText API and Admin app NuGet packages (the version is required because we only have pre-releases so far):
+Add the AppText API and Admin app NuGet packages (the version is required because we only have pre-releases so far, please check the actual latest version):
 
 ```
-dotnet add package AppText.AdminApp --version 0.3.0-alpha1
+dotnet add package AppText.AdminApp --version 0.3.1-alpha1
 ```
 
 Register AppText components in the ConfigureServices method of Startup.cs:
@@ -62,7 +62,7 @@ public class Startup
 
         services.AddAppText() // Adds AppText API to /apptext
             .AddNoDbStorage(dataPath) // Adds file-based storage
-            .AddAdmin(); // Add admin UI, by default it is accessible at /apptext
+            .AddAdmin(); // Adds admin UI, by default it is accessible at /apptext
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -106,7 +106,53 @@ services.AddAppText(options =>
 
 This way, it's entirely up to you how AppText is secured. Local accounts, Azure AD, OpenID Connect, everything that is supported by ASP.NET Core can be used.
 
-## Development
+### Localization of ASP.NET Core applications
+
+ASP.NET Core supports localization via the IStringLocalizer and IViewLocalizer interfaces. AppText has a NuGet package that implements those interfaces: AppText.Localization.
+
+Add it to your existing application with:
+
+```
+dotnet add package AppText.Localization --version 0.3.1-alpha1
+```
+
+Then configure it in the ConfigureServices() method of Startup.cs:
+
+```csharp
+services.AddAppText() // Adds AppText API to /apptext
+    .AddNoDbStorage(PHYSICAL_DATA_FOLDER) // Adds file-based storage
+    .AddAdmin() // Adds admin UI, by default it is accessible at /apptext
+    .AddAppTextLocalization(options =>
+    {
+        // Identifies that AppText app under which the content is stored
+        options.AppId = "my_aspnetcore_app";
+        // Content items will be created with the keys that are used with ASP.NET Core Localization
+        options.CreateItemsWhenNotFound = true;
+        // Use the AppText app configuration to set the default culture and the supported cultures of you application
+        options.ConfigureRequestLocalizationOptions = true;
+    });
+```
+
+And we're done! All localized strings in your ASP.NET Core application are now managed via AppText instead of the default Resource .resx files. On top of that, changes are reflected immediately in the application!
+
+ASP.NET Core has a standard way to configure request localization by configuring localization middleware (Configure() method in Startup.cs) that usually looks something like:
+
+```csharp
+var supportedCultures = new[] { "en-US", "fr" };
+var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+app.UseRequestLocalization(localizationOptions);
+```
+
+When the AppText.Localization option ConfigureRequestLocalizationOptions is set to true as in the example above, you only have to enable request localization and the supported cultures and default culture come from AppText (Configure() method in Startup.cs):
+
+```csharp
+app.UseRequestLocalization();
+```
+
+## Development and contributing
 
 ### Prerequisites
 
@@ -179,17 +225,17 @@ A collection is a container for Content and is linked to a specific ContentType.
 Content is linked to a Collection and consists of a unique key (within the Collection) with field values for the fields that are specified in the ContentType of the Collection.
 
 ### Example object structure:
-- AppTextAdmin (App)
+- apptext_admin (App)
   - Languages
     - en
     - nl
     - de
-  - SimpleText (ContentType)
+  - Translation (ContentType)
     - Text (Field)
   - HelpPage (ContentType)
     - Title (Field)
     - Body (Field)
-  - Labels (Collection with SimpleText as ContentType)
+  - Labels (Collection with Translation as ContentType)
     - Label1 (Content)
       - Text (FieldValue)
         - en: 'Text for Label1'
@@ -200,7 +246,7 @@ Content is linked to a Collection and consists of a unique key (within the Colle
         - en: 'Text for Label2'
         - nl: 'Tekst voor Label2'
         - de: 'Text für Label2'
-  - Tooltips (Collection with SimpleText as ContentType)
+  - Tooltips (Collection with Translation as ContentType)
     - Tooltip1 (Content)
       - Text (FieldValue)
         - en: 'Text for Tooltip1'
