@@ -76,6 +76,8 @@ namespace AspNetCoreMvcExample
 
             app.UseRouting();
 
+            app.UseRequestLocalization();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
