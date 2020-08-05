@@ -7,7 +7,6 @@ on:
   release:
     types:
       - published
-      - edited
 env:
   # Stop wasting time caching packages
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
