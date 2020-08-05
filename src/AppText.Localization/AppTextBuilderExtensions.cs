@@ -64,7 +64,7 @@ namespace AppText.Localization
                         using (var scope = serviceScopeFactory.CreateScope())
                         {
                             var applicationStore = scope.ServiceProvider.GetRequiredService<IApplicationStore>();
-                            var app = AsyncHelper.RunSync(() => applicationStore.GetApp(options.AppId));
+                            var app = AsyncHelper.RunSync(() => applicationStore.GetApp(App.SanitizeAppId(options.AppId)));
                             locOptions.SupportedUICultures = app.Languages.Select(lang => new CultureInfo(lang)).ToList();
                             locOptions.DefaultRequestCulture = new RequestCulture(CultureInfo.CurrentCulture, new CultureInfo(app.DefaultLanguage));
                         }
