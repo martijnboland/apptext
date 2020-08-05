@@ -28,7 +28,7 @@ dotnet new mvc --auth individual
 Add the AppText API and Admin app NuGet packages (the version is required because we only have pre-releases so far, please check the actual latest version):
 
 ```
-dotnet add package AppText.AdminApp --version 0.3.1-alpha1
+dotnet add package AppText.AdminApp
 ```
 
 Register AppText components in the ConfigureServices method of Startup.cs:
@@ -76,7 +76,7 @@ The AppText Admin interface is now available at: https://localhost:5001/apptext
 
 [![Screenshot AppText dashboard](media/screenshots/apptext-dashboard-480.png?raw=true "Edit translations")](media/screenshots/apptext-dashboard.png?raw=true)
 
-You'll notice that there already is some content in there. That's because AppText uses itself for the localization of the Admin interface :-). Go and try to change some content. This will be reflected immediately in the Admin interface.
+You'll notice that there already is some content in there. That's because AppText uses itself for the localization of the Admin interface. Go and try to change some content. This will be reflected immediately in the Admin interface.
 
 ### Secure the Admin interface
 Until now, unauthenticated users can simply access the Admin interface. AppText itself doesn't know anything about authentication, but you can secure it with two configuration options. The first one, RequireAuthenticatedUser simply tells that only authenticated users can access AppText (ConfigureServices in Startup.cs):
@@ -113,7 +113,7 @@ ASP.NET Core supports [localization via the IStringLocalizer and IViewLocalizer 
 Add it to your existing application with:
 
 ```
-dotnet add package AppText.Localization --version 0.3.1-alpha1
+dotnet add package AppText.Localization
 ```
 
 Then configure it in the ConfigureServices() method of Startup.cs:
