@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AppText.AdminApp" Version="0.3.2-alpha" />
-    <PackageReference Include="AppText.Localization" Version="0.3.2-alpha" />
+    <PackageReference Include="AppText.AdminApp" Version="0.4.1" />
+    <PackageReference Include="AppText.Localization" Version="0.4.1" />
   </ItemGroup>
 
 </Project>
