@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using AppText.Features.Application;
+using System.Reflection;
 
 namespace AppText.Localization
 {
@@ -7,6 +8,8 @@ namespace AppText.Localization
     /// </summary>
     public class AppTextLocalizationOptions
     {
+        private string _appId;
+
         /// <summary>
         /// Prefix localization keys with type or paths? (default true)
         /// </summary>
@@ -23,9 +26,13 @@ namespace AppText.Localization
         public bool CreateItemsWhenNotFound { get; set; }
 
         /// <summary>
-        /// AppText App id for which the content items should be stored. Default is the Assembly name of the entry assembly.
+        /// AppText App id for which the content items should be stored. Default is the Assembly name of the entry assembly (lowercased).
         /// </summary>
-        public string AppId { get; set; }
+        public string AppId
+        {
+            get { return _appId; }
+            set { _appId = App.SanitizeAppId(value); }
+        }
 
         /// <summary>
         /// Default language. Note that when using an existing AppText app, this option has no effect.

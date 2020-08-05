@@ -37,6 +37,11 @@ namespace AppText.Features.Application
                 foreach (var app in _appsToInitialize)
                 {
                     logger.LogInformation($"Initializing app {app.Id}");
+
+                    // Sanitize appId first
+                    app.SanitizeAppId();
+                    logger.LogInformation($"Sanitized app.Id: {app.Id}");
+
                     if (!await applicationStore.AppExists(app.Id))
                     {
                         logger.LogInformation($"App {app.Id} doesn't exist yet. Initializing...");
@@ -47,7 +52,6 @@ namespace AppText.Features.Application
                     {
                         logger.LogInformation($"App {app.Id} is already initialized");
                     }
-
                 }
             }
         }
