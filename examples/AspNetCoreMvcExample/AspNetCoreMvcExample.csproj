@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AppText.AdminApp" Version="0.4.1" />
+    <PackageReference Include="AppText.Localization" Version="0.4.1" />
+  </ItemGroup>
+
+</Project>

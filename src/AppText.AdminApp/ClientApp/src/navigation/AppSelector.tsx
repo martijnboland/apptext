@@ -41,7 +41,7 @@ const AppSelector: React.FunctionComponent = () => {
             <div className="current-app-inner">
               <div className="d-flex justify-content-center">
                 <div className="app-id"><Link to="/"><FaDesktop className="mr-1" />{currentApp.id}</Link></div>
-                <div className="ml-auto">
+                <div className="ml-auto text-nowrap">
                   <Link to="/apps/editcurrent">
                     <FaEdit />
                   </Link>
