@@ -25,7 +25,7 @@ dotnet new mvc --auth individual
 
 ### Adding the AppText Admin interface
 
-Add the AppText API and Admin app NuGet packages (the version is required because we only have pre-releases so far, please check the actual latest version):
+Add the Admin app NuGet package. This will also install the core AppText package:
 
 ```
 dotnet add package AppText.AdminApp
