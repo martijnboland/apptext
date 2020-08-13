@@ -1,8 +1,7 @@
 ---
+id: introduction
 title: Introduction
 ---
-
-# Introduction
 
 AppText is a Content Management System for Applications. A hybrid between a headless Content Management System and a Translation Management System.
 

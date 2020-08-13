@@ -1,16 +1,15 @@
 ---
+id: concepts
 title: Concepts
 ---
 
-# Concepts
-
-With a single AppText installation, you can manage content for multiple applications. In AppText, these are represented by an App.
+![AppText Concepts diagram](../../media/diagrams/concepts.svg)
 
 ## App
 
 The App is the top level container for content. It contains Collections and Content Types. It also contains the available languages and the default language.
 
-For API Authorization, you can generate API keys within an App that allow read-only access to all content of that App.  
+A single AppText installation can contain multiple Apps.
 
 ## Collection
 
@@ -45,8 +44,3 @@ A simplified example a of Content Item:
 }
 ```
 
-## Diagram
-
-The diagram below shows how the concepts are linked together.
-
-![AppText Concepts diagram](../media/diagrams/concepts.svg)

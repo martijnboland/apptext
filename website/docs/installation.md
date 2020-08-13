@@ -1,8 +1,7 @@
 ---
-title: Getting started
+id: installation
+title: Installation
 ---
-
-# Getting started
 
 AppText requires an ASP.NET Core 3.1+ host application to run on and is installed via [NuGet packages](https://www.nuget.org/packages?q=apptext).
 
@@ -89,8 +88,8 @@ Once the App is created, you can create collections and content items with the s
 
 By now, you have a fully operational Content Management System for your app. Next step is to actually display this content in your own app.
 
-- Use AppText content in .NET Core applications with AppText.Localization
-- Use AppText content in JavaScript applications with i18Next
+- [Use AppText content in ASP.NET Core applications with AppText.Localization](gettingstarted-aspnetcore)
+- [Use AppText content in JavaScript applications with i18Next](gettingstarted-js)
 
 ## One word of warning
 

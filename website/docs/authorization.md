@@ -1,4 +1,5 @@
 ---
+id: authorization
 title: Authorization
 ---
 

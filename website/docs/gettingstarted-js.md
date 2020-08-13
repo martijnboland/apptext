@@ -1,10 +1,9 @@
 ---
+id: gettingstarted-js
 title: AppText for JavaScript applications
 ---
 
-# AppText for JavaScript applications
-
-This page continues where Getting Started finished: a working AppText installation in an ASP.NET Core host application. 
+This page continues where [Installation](installation) finished: a working AppText installation in an ASP.NET Core host application. 
 
 Now, we're going to use the AppText installation to localize a JavaScript application with [i18next](https://www.i18next.com/).
 
