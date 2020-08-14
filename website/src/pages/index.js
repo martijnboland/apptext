@@ -59,8 +59,8 @@ function Home() {
   const {siteConfig = {}} = context;
   return (
     <Layout
-      title={`${siteConfig.title} | ${siteConfig.tagline}`}
-      description="Description will go into a meta tag in <head />">
+      title={`${siteConfig.tagline}`}
+      description="AppText is an ASP.NET Core Content Management System for Applications. A hybrid between a headless Content Management System and a Translation Management System.">
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <h1 className="hero__title">{siteConfig.title}</h1>
