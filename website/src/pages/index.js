@@ -8,32 +8,32 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: <>Easy to Use</>,
-    imageUrl: 'img/undraw_docusaurus_mountain.svg',
+    imageUrl: 'img/undraw_relaxation_1_wbr7.svg',
+    title: <>No deployment</>,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Update content such as labels, tooltips or help pages in your application
+        without having to redeploy new versions of your application.
       </>
     ),
   },
   {
-    title: <>Focus on What Matters</>,
-    imageUrl: 'img/undraw_docusaurus_tree.svg',
+    imageUrl: 'img/undraw_Around_the_world_re_n353.svg',
+    title: <>Multi-language</>,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Edit content in multiple languages side-by-side and add new languages on the fly.
       </>
     ),
   },
   {
-    title: <>Powered by React</>,
-    imageUrl: 'img/undraw_docusaurus_react.svg',
+    imageUrl: 'img/undraw_server_cluster_jwwq.svg',
+    title: <>Powered by ASP.NET Core</>,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        AppText runs as add-on in <a href="https://dotnet.microsoft.com/apps/aspnet">ASP.NET Core</a> host 
+        applications and you <a href="docs/installation">install it</a> from
+        <a href="https://www.nuget.org/packages/AppText/">NuGet packages</a>.
       </>
     ),
   },
@@ -59,7 +59,7 @@ function Home() {
   const {siteConfig = {}} = context;
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
+      title={`${siteConfig.title} | ${siteConfig.tagline}`}
       description="Description will go into a meta tag in <head />">
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
@@ -68,16 +68,35 @@ function Home() {
           <div className={styles.buttons}>
             <Link
               className={clsx(
-                'button button--outline button--secondary button--lg',
+                'button button--secondary button--lg',
+                styles.getStarted,
+              )}
+              to={useBaseUrl('docs/installation')}>
+              Get Started
+            </Link>
+            <Link
+              className={clsx(
+                'button button--secondary button--lg',
                 styles.getStarted,
               )}
               to={useBaseUrl('docs/')}>
-              Get Started
+              Learn more
             </Link>
           </div>
         </div>
       </header>
       <main>
+        {features && features.length > 0 && (
+          <section className={styles.features}>
+            <div className="container">
+              <div className="row">
+                {features.map((props, idx) => (
+                  <Feature key={idx} {...props} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
       </main>
     </Layout>
   );

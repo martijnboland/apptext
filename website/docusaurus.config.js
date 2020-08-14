@@ -12,7 +12,7 @@ module.exports = {
       title: 'AppText',
       logo: {
         alt: 'AppText Logo',
-        src: 'img/logo.svg',
+        src: 'img/apptext-logo-64x64.png',
       },
       items: [
         {
@@ -33,6 +33,9 @@ module.exports = {
       links: [
       ],
       copyright: `Copyright © ${new Date().getFullYear()} AppText. Built with Docusaurus.`,
+    },
+    prism: {
+      additionalLanguages: ['csharp'],
     },
   },
   presets: [
