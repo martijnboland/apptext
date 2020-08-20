@@ -1,9 +1,9 @@
 ---
-id: apikeys
+id: api-keys
 title: API keys
 ---
 
-The public API endpoints (REST and GraphQL) are protected with an API key. Consumers of those endpoints need to add an HTTP header `X-API-KEY` with a valid Api Key.
+The [public API endpoints](api-public) are protected with an API key. Consumers of those endpoints need to add an HTTP header `X-API-KEY` with a valid Api Key.
 
 You can create API keys via the Admin interface:
 

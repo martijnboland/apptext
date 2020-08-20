@@ -96,3 +96,5 @@ By now, you have a fully operational Content Management System for your app. Nex
 AppText is security-agnostic, which means that you have to define authentication and authorization in the ASP.NET Core host application and AppText can use that to secure the API endpoints and the Admin interface.
 
 However, out of the box, no security is in place and anonymous users can probably access AppText. Therefore it's wise to always secure your AppText installation directly after installation.
+
+Don't forget to check [the authorization docs](authorization) for more information.

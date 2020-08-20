@@ -10,6 +10,6 @@ module.exports = {
         items: ['configuration', 'authorization'],
       }
     ],
-    'API': ['apikeys']
+    'API': ['api-public', 'api-keys']
   } 
 };
