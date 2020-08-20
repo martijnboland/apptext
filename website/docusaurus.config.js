@@ -30,9 +30,7 @@ module.exports = {
     },
     footer: {
       style: 'dark',
-      links: [
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} AppText. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} AppText.`,
     },
     prism: {
       additionalLanguages: ['csharp'],

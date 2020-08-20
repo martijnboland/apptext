@@ -5,11 +5,11 @@ title: Authorization
 
 AppText has two authorization modes:
 - **full access** to API, Admin interface and all Apps based on the ASP.NET Core host application configuration in Startup.cs;
-- **read-only access** to the REST and GraphQL API's based on an [api key](apikeys) that is created with the Admin interface for a single app.
+- **read-only access** to the REST and GraphQL API's based on an [API key](api-keys) that is created with the Admin interface for a single app.
 
 That's it. No users, no roles, no groups.
 
-This page covers full-access authorization via the host application. See [Api Key authorization](apikeys) how to configure read-only API access.
+This page covers full-access authorization via the host application. See [API key authorization](api-keys) how to configure read-only API access.
 
 ## Authorization via ASP.NET Core host application
 
