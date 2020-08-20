@@ -2,6 +2,14 @@ module.exports = {
   docs: {
     'AppText': ['introduction', 'concepts'],
     'Getting started': ['installation', 'gettingstarted-aspnetcore', 'gettingstarted-js'],
-    'Configuration': ['configuration']
+    'Guides': [
+      {
+        type: 'category',
+        label: 'ASP.NET Core',
+        collapsed: false,
+        items: ['configuration', 'authorization'],
+      }
+    ],
+    'API': ['apikeys']
   } 
 };

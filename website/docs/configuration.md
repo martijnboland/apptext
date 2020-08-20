@@ -1,6 +1,6 @@
 ---
 id: configuration
-title: ASP.NET Core
+title: Configuration
 ---
 
 You add AppText to an existing ASP.NET Core application in Startup.cs with the `services.AddAppText()` extension method. 

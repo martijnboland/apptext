@@ -37,6 +37,7 @@ module.exports = {
     prism: {
       additionalLanguages: ['csharp'],
     },
+    sidebarCollapsible: false,
   },
   presets: [
     [
