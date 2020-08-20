@@ -8,6 +8,7 @@ namespace AppText.Features.User
     [ApiController]
     public class UserController : ControllerBase
     {
+        [HttpGet]
         public IActionResult GetCurrentUser()
         {
             var user = new User();
