@@ -1,5 +1,6 @@
 ﻿using AppText.Features.ContentManagement;
 using AppText.Storage;
+using GraphQL;
 using GraphQL.Types;
 using System;
 

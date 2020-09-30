@@ -33,7 +33,7 @@ namespace AppText.Features.GraphQL.Types
 
                 foreach (var metaField in contentCollection.ContentType.MetaFields)
                 {
-                    Func<ResolveFieldContext, object> resolveFunc = ctx =>
+                    Func<IResolveFieldContext, object> resolveFunc = ctx =>
                     {
                         var contentItem = ctx.Source as ContentItem;
                         if (contentItem != null)
@@ -50,7 +50,7 @@ namespace AppText.Features.GraphQL.Types
 
                 foreach (var contentField in contentCollection.ContentType.ContentFields)
                 {
-                    Func<ResolveFieldContext, object> resolveFunc = ctx =>
+                    Func<IResolveFieldContext, object> resolveFunc = ctx =>
                     {
                         var contentItem = ctx.Source as ContentItem;
                         if (contentItem != null)
@@ -111,7 +111,7 @@ namespace AppText.Features.GraphQL.Types
             }
         }
 
-        private void AddField(Field field, Func<ResolveFieldContext, object> resolveFunc, string description = null)
+        private void AddField(Field field, Func<IResolveFieldContext, object> resolveFunc, string description = null)
         {
             if (NameConverter.TryConvertToGraphQLName(field.Name, out string graphQLFieldName))
             {

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AppText.Features.GraphQL.Graphiql;
 using AppText.Features.GraphQL;
 using GraphQL;
-using GraphQL.Http;
 using GraphQL.Instrumentation;
 using GraphQL.Validation.Complexity;
 using Microsoft.AspNetCore.Http;
@@ -117,7 +116,7 @@ namespace AppText.Features.Controllers
 
                 options.ComplexityConfiguration = new ComplexityConfiguration { MaxDepth = 15 };
                 options.FieldMiddleware.Use<InstrumentFieldsMiddleware>();
-                options.ExposeExceptions = true;
+                options.ThrowOnUnhandledException = true;
 
             }).ConfigureAwait(false);
 
