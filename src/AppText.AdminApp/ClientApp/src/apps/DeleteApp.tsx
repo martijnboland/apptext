@@ -38,7 +38,7 @@ const DeleteApp: React.FunctionComponent<IDeleteAppProps> = ({ app, onAppDeleted
     return deleteApp.callApi()
       .then(res => {
         if (res.ok) {
-          toast.success(t('Messages:AppDeleted', { name: app }));
+          toast.success(t('Messages:AppDeleted', { name: app.id }));
           onAppDeleted();
         }
         else {
@@ -61,7 +61,7 @@ const DeleteApp: React.FunctionComponent<IDeleteAppProps> = ({ app, onAppDeleted
         ?
           <div className="d-flex flex-row justify-content-between align-items-center">
             <p className="text-danger">{t('Labels:DeleteAppWarning')}</p>
-            <button type="button" className="btn btn-danger" onClick={showDeleteConfirmation}>
+            <button type="button" className="btn btn-danger text-nowrap" onClick={showDeleteConfirmation}>
               <FaTrash className="mr-1" />
               {t('Labels:DeleteButton')}
             </button>    

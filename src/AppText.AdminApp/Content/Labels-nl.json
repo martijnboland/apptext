@@ -54,7 +54,7 @@
   { "NoCollectionsFound": "Geen collection(s) gevonden" },
   { "CreateApp": "Nieuwe app" },
   { "EditApp": "Wijzig app" },
-  { "ApiKeysFor":  "API keys voor {{app}}" },
+  { "ApiKeysFor": "API keys voor {{app}}" },
   { "CreateButton": "Aanmaken" },
   { "NewApiKey": "Nieuwe API key" },
   { "ApiKeysHelpText": "API keys zijn app-specifiek en kunnen gebruikt worden om read-only toegang tot de AppText API te verkrijgen." },
@@ -62,5 +62,10 @@
   { "TheApiKey": "de API key" },
   { "GeneratedApiKeyIs": "De gegenereerde API key is:" },
   { "GeneratedApiKeyHelpText": "BELANGRIJK: Dit is de enige keer dat de API key hier getoond wordt. Sla deze op op een veilige locatie." },
-  { "CopyToClipboardButton": "Kopieer naar klembord" }
+  { "CopyToClipboardButton": "Kopieer naar klembord" },
+  { "CreateAppHelpText": "De 'app' is het overkoepelende object dat alle content voor een bepaalde app bevat. De App ID is een unieke identifier voor de app die later niet meer gewijzigd kan worden en alleen kleine letters, getallen underscores kan bevatten." },
+  { "DeleteApp": "Verwijder app" },
+  { "DeleteAppHelpText": "Apps kunnen verwijderd worden wanneer er geen content meer in zit, dus geen content items en collections." },
+  { "DeleteAppWarning": "Let op dat verwijderen van de app niet ongedaan kan worden. Alle gerelateerde API keys en content types worden ook verwijderd." },
+  { "DeleteAppDisabledBecauseCollections": "Deze app kan niet verwijderd worden omdat er nog 1 of meerdere collections zijn." }
 ]

@@ -45,7 +45,7 @@
   { "SelectButton": "Select" },
   { "ManageItems": "Manage items" },
   { "LatestChanges": "Latest changes" },
-  { "CollectionsHelpText": "The collections are containers for content. Click 'Manage items' to go to manage the content for the container." },
+  { "CollectionsHelpText": "The collections are containers for content. Click 'Manage items' to manage the content for the container, or 'New collection' to create a new collection." },
   { "ContentListHelpText": "Manage content items for the active collection. Every content item has a unique content key. When there are multiple languages defined in the app, you can edit items for the same key side-by-side." },
   { "ContentTypesHelpText": "Content types define the structure of the content. There are system-defined global content types that are shared between apps and app-specific content types that you define yourself." },
   { "LatestContentListHelpText": "The {{itemsToShow}} latest modified content items." },
@@ -62,5 +62,10 @@
   { "TheApiKey": "the API key" },
   { "GeneratedApiKeyIs": "The generated API key is:" },
   { "GeneratedApiKeyHelpText": "IMPORTANT: This is the only time the API key is displayed. Please store it in a safe location." },
-  { "CopyToClipboardButton": "Copy to clipboard" }
+  { "CopyToClipboardButton": "Copy to clipboard" },
+  { "CreateAppHelpText": "In AppText, the app is the top-level container for content. It represents the app for which you want to manage content. The App ID is a unique identifier for the app that can not be changed later on and may contain only lowercase characters, numbers and underscores."},
+  { "DeleteApp": "Delete app" },
+  { "DeleteAppHelpText": "You can delete apps when they have no content items and no collections (anymore)." },
+  { "DeleteAppWarning": "Please note that deleting the app cannot be undone. All associated content types and API keys will also be deleted." },
+  { "DeleteAppDisabledBecauseCollections":  "You can not delete this app because it has collections. If you want to delete this app you'll have to remove all collections first." }
 ]

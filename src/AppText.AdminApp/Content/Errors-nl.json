@@ -20,5 +20,6 @@
   { "InvalidMetaFieldValue": "De waarde {{0}} is ongeldig voor een {{1}} veld" },
   { "DeleteCollectionContainsContent": "Kan collection niet verwijderen omdat deze nog content items bevat" },
   { "AppIdInvalid": "App id bevat ongeldige tekens. Alleen lowercase letters, nummers en underscores zijn toegstaan." },
-  { "DuplicateApiKeyName": "Er bestaat al een API key met de naam {{0}}" }
+  { "DuplicateApiKeyName": "Er bestaat al een API key met de naam {{0}}" },
+  { "AppToDeleteHasCollections": "De app met ID {{0}} kan niet verwijderd worden omdat deze nog collections bevat." }
 ]

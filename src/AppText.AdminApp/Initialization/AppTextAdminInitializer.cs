@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
@@ -91,63 +92,70 @@ namespace AppText.AdminApp.Initialization
             }
 
             // Ensure content
-            var collectionContainsItems = (await contentStore.GetContentItems(new ContentItemQuery
+            var existingContentItems = await contentStore.GetContentItems(new ContentItemQuery
             {
                 AppId = Constants.AppTextAdminAppId,
-                CollectionId = collection.Id,
-                First = 1
-            })).Length > 0;
-            if (!collectionContainsItems)
+                CollectionId = collection.Id
+            });
+
+            // Read content from embedded json files and add to storage
+            var contentFiles = _translationsContents.Where(tc => tc.Name.StartsWith($"Content.{collectionName}"));
+            var initPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "apptextadmin-init") }));
+            var saveContentItemCommandHandler = new SaveContentItemCommandHandler(
+                serviceProvider.GetRequiredService<IContentStore>(),
+                serviceProvider.GetRequiredService<IVersioner>(),
+                serviceProvider.GetRequiredService<ContentItemValidator>(),
+                initPrincipal,
+                serviceProvider.GetRequiredService<IDispatcher>());
+            foreach (var contentFile in contentFiles)
             {
-                // Read content from embedded json files and add to storage
-                var contentFiles = _translationsContents.Where(tc => tc.Name.StartsWith($"Content.{collectionName}"));
-                var initPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "apptextadmin-init") }));
-                var saveContentItemCommandHandler = new SaveContentItemCommandHandler(
-                    serviceProvider.GetRequiredService<IContentStore>(),
-                    serviceProvider.GetRequiredService<IVersioner>(),
-                    serviceProvider.GetRequiredService<ContentItemValidator>(),
-                    initPrincipal,
-                    serviceProvider.GetRequiredService<IDispatcher>());
-                foreach (var contentFile in contentFiles)
+                _logger.LogInformation("Syncing content from {0}", contentFile.Name);
+                var language = contentFile.Name.Substring($"Content.{collectionName}".Length + 1).Replace(".json", String.Empty);
+                using (var contentStream = contentFile.CreateReadStream())
+                using (var sr = new StreamReader(contentStream))
+                using (var jsonReader = new JsonTextReader(sr))
                 {
-                    _logger.LogInformation("Importing content from {0}", contentFile.Name);
-                    var language = contentFile.Name.Substring($"Content.{collectionName}".Length + 1).Replace(".json", String.Empty);
-                    using (var contentStream = contentFile.CreateReadStream())
-                    using (var sr = new StreamReader(contentStream))
-                    using (var jsonReader = new JsonTextReader(sr))
+                    var items = JArray.Load(jsonReader).Children<JObject>();
+                    foreach (var item in items)
                     {
-                        var items = JArray.Load(jsonReader).Children<JObject>();
-                        foreach (var item in items)
+                        foreach (var prop in item.Properties())
                         {
-                            foreach (var prop in item.Properties())
+                            var saveContentItemCommand = new SaveContentItemCommand
                             {
-                                var saveContentItemCommand = new SaveContentItemCommand
-                                {
-                                    AppId = Constants.AppTextAdminAppId,
-                                    CollectionId = collection.Id,
-                                    LanguagesToValidate = new[] { language },
-                                    ContentKey = prop.Name
-                                };
-                                var contentItem = (await contentStore.GetContentItems(new ContentItemQuery
-                                {
-                                    AppId = Constants.AppTextAdminAppId,
-                                    CollectionId = collection.Id,
-                                    ContentKey = prop.Name,
-                                    First = 1
-                                })).FirstOrDefault();
+                                AppId = Constants.AppTextAdminAppId,
+                                CollectionId = collection.Id,
+                                LanguagesToValidate = new[] { language },
+                                ContentKey = prop.Name
+                            };
+                            var contentItem = existingContentItems.FirstOrDefault(ci => ci.ContentKey == prop.Name);
+                            // Only store text when contentItem does not exist, or when the text is changed and the contentItem was not edited by
+                            // another user than apptextadmin-init
+                            var contentFieldValue = contentItem != null
+                                ? JObject.FromObject(contentItem.Content[TranslationConstants.TranslationTextFieldName])
+                                : new JObject();
+                            if (contentItem == null ||
+                                (contentFieldValue[language]?.ToString() != prop.Value?.ToString() && contentItem.LastModifiedBy == "apptextadmin-init"))
+                            {
                                 if (contentItem != null)
                                 {
+                                    _logger.LogDebug("Updating content item with key {0}", prop.Name);
                                     saveContentItemCommand.Id = contentItem.Id;
                                     saveContentItemCommand.Version = contentItem.Version;
                                     saveContentItemCommand.Content = contentItem.Content;
                                 }
-                                var contentFieldValue = contentItem != null
-                                ? JObject.FromObject(contentItem.Content[TranslationConstants.TranslationTextFieldName])
-                                : new JObject();
+                                else
+                                {
+                                    _logger.LogDebug("Creating new content item with key {0}", prop.Name);
+                                }
+
                                 contentFieldValue[language] = prop.Value;
                                 saveContentItemCommand.Content[TranslationConstants.TranslationTextFieldName] = contentFieldValue;
 
                                 var result = await saveContentItemCommandHandler.Handle(saveContentItemCommand);
+                            }
+                            else
+                            {
+                                _logger.LogDebug("Content for content items with key {0} is not changed, or the content in the database has been changed by the user and we won't overwrite that. Skipping update...", prop.Name);
                             }
                         }
                     }

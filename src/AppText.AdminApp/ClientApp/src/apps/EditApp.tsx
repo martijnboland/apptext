@@ -61,6 +61,7 @@ const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
                 : [];
               return (
                 <form onSubmit={handleSubmit}>
+                  <Field name="id" label={t('Labels:AppId')} component={TextInput} readonly="readonly" />
                   <Field name="displayName" label={t('Labels:AppDisplayName')} component={TextInput} />
                   <Field name="languages" label={t('Labels:Languages')} component={CustomSelect} isMulti={true} options={languageOptions} />
                   <Field name="defaultLanguage" label={t('Labels:DefaultLanguage')} component={CustomSelect} options={defaultLanguageOptions} />

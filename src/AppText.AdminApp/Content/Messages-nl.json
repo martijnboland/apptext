@@ -19,5 +19,6 @@
   { "ApiKeyCreated": "API key {{name}} is aangemaakt" },
   { "ApiKeyDeleted": "API key {{name}} is verwijderd" },
   { "ApiKeyCopiedToClipboard": "API key is is naar het klembord gekopieerd" },
-  { "BrowserDoesNotSupportCopyToClipboard": "De browser ondersteunt kopieren naar het klembord niet" }
+  { "BrowserDoesNotSupportCopyToClipboard": "De browser ondersteunt kopieren naar het klembord niet" },
+  { "AppDeleted": "App {{name}} is verwijderd" }
 ]
