@@ -23,6 +23,15 @@ namespace AppText.Shared.Extensions
             return theString;
         }
 
+        public static string EnsureDoesNotEndWith(this String theString, string endsWith)
+        {
+            while (theString.EndsWith(endsWith))
+            {
+                theString = theString.Substring(0, theString.Length - 1);
+            }
+            return theString;
+        }
+
         public static string ToCamelCase(this string theString, bool invariantCulture = true)
         {
             if (String.IsNullOrEmpty(theString))

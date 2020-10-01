@@ -1,40 +1,42 @@
-﻿using AppText.AdminApp.Configuration;
+using System.IO;
+using AppText.AdminApp.Configuration;
+using AppText.Configuration;
+using AppText.Storage.LiteDb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using AppText.Configuration;
-using AppText.Storage.NoDb;
-using System.IO;
+using Microsoft.Extensions.Hosting;
 
-namespace AppText.AdminApp
+namespace AppText.Host
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            Env = env;
         }
 
         public IConfiguration Configuration { get; }
-        public IWebHostEnvironment Env { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            var dataPath = Path.Combine(Env.ContentRootPath, "App_Data");
-            services.AddAppText(o =>
+            var dataFolder = Configuration["DataFolder"];
+
+            // AppText configuration
+            var connectionString = $"FileName={Path.Combine(dataFolder, "AppText.db")};Mode=Exclusive";
+
+            services.AddAppText(options =>
             {
-                o.EnableGraphiql = true;
-                o.RoutePrefix = "";
+                options.RoutePrefix = "";
+                options.EnableGraphiql = true;
             })
-                .AddNoDbStorage(dataPath)
-                .AddAdmin(o =>
-                {
-                    o.EmbeddedViewsDisabled = true;
-                });
+                .AddLiteDbStorage(connectionString)
+                .AddAdmin();
+
+            // MVC
             services.AddControllersWithViews();
         }
 
@@ -45,18 +47,17 @@ namespace AppText.AdminApp
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseHsts();
-            }
+
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseHttpsRedirection();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
