@@ -19,6 +19,7 @@ class AppContextProvider extends React.Component<AppContextProviderProps & WithT
     super(props);
 
     this.state = {
+      apps: [],
       initApps: this.initApps,
       setCurrentApp: this.setCurrentApp
     };
@@ -38,7 +39,8 @@ class AppContextProvider extends React.Component<AppContextProviderProps & WithT
           // Always ensure that the storage is up to date
           sessionStorage.setItem(currentAppStorageKey, JSON.stringify(currentApp));
         } else if (apps.length === 1) {
-          currentApp = apps[0];
+          // Just set first non-system app as currentApp when none is set.
+          currentApp = apps.find(a => !a.isSystemApp);
         }
         this.setState({ apps: apps, currentApp: currentApp });
       });
@@ -52,6 +54,9 @@ class AppContextProvider extends React.Component<AppContextProviderProps & WithT
 
   render() {
     const { apps, currentApp } = this.state;
+    const nonSystemApps = apps !== undefined
+      ? apps.filter(a => !a.isSystemApp)
+      : [];
     const { location, i18n } = this.props;
     const shouldRender = currentApp !== undefined || location.pathname === '/apps/select' || location.pathname === '/apps/create';
 
@@ -62,9 +67,9 @@ class AppContextProvider extends React.Component<AppContextProviderProps & WithT
         <AppContext.Provider value={this.state}>
           {this.props.children}
         </AppContext.Provider>
-      : apps !== undefined
+      : nonSystemApps !== undefined
         ?
-          apps.length == 0 
+        nonSystemApps.length == 0 
             ?
               <Redirect to="/apps/create" />
             :

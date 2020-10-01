@@ -27,7 +27,8 @@ const CreateApp: React.FunctionComponent = () => {
     id: undefined,
     displayName: undefined,
     languages: [],
-    defaultLanguage: undefined
+    defaultLanguage: undefined,
+    isSystemApp: false
   }
 
   const onSubmit = (values: any, actions: FormikHelpers<any>) => {
