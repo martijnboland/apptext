@@ -52,6 +52,9 @@ const CreateApp: React.FunctionComponent = () => {
   return (
     <>
       <h1>{t('Labels:CreateApp')}</h1>
+      <p>
+        <small className="text-muted">{t('Labels:CreateAppHelpText')}</small>
+      </p>
       <div className="row">
         <div className="col-lg-8">
           <Formik
