@@ -19,6 +19,7 @@ class AppContextProvider extends React.Component<AppContextProviderProps & WithT
     super(props);
 
     this.state = {
+      apps: [],
       initApps: this.initApps,
       setCurrentApp: this.setCurrentApp
     };
@@ -31,16 +32,20 @@ class AppContextProvider extends React.Component<AppContextProviderProps & WithT
   initApps = (): Promise<any> => {
     return getApps()
       .then(apps => {
+        const nonSystemApps = apps !== undefined
+        ? apps.filter(a => !a.isSystemApp)
+        : [];
         let currentApp: App;
         const currentAppFromStorage = JSON.parse(sessionStorage.getItem(currentAppStorageKey));
         if (currentAppFromStorage && apps.some(a => a.id === currentAppFromStorage.id)) {
           currentApp = apps.find(a => a.id ===currentAppFromStorage.id);
           // Always ensure that the storage is up to date
           sessionStorage.setItem(currentAppStorageKey, JSON.stringify(currentApp));
-        } else if (apps.length === 1) {
-          currentApp = apps[0];
+        } else if (nonSystemApps.length === 1) {
+          // Just set first non-system app as currentApp when none is set.
+          currentApp = nonSystemApps[0];
         }
-        this.setState({ apps: apps, currentApp: currentApp });
+        this.setState({ apps: apps, nonSystemApps: nonSystemApps, currentApp: currentApp });
       });
   }
 
@@ -51,7 +56,8 @@ class AppContextProvider extends React.Component<AppContextProviderProps & WithT
   }
 
   render() {
-    const { apps, currentApp } = this.state;
+    const { nonSystemApps, currentApp } = this.state;
+    
     const { location, i18n } = this.props;
     const shouldRender = currentApp !== undefined || location.pathname === '/apps/select' || location.pathname === '/apps/create';
 
@@ -62,9 +68,9 @@ class AppContextProvider extends React.Component<AppContextProviderProps & WithT
         <AppContext.Provider value={this.state}>
           {this.props.children}
         </AppContext.Provider>
-      : apps !== undefined
+      : nonSystemApps !== undefined
         ?
-          apps.length == 0 
+        nonSystemApps.length == 0 
             ?
               <Redirect to="/apps/create" />
             :

@@ -2,7 +2,8 @@ export interface App {
   id: string,
   displayName?: string,
   languages: string[],
-  defaultLanguage?: string
+  defaultLanguage?: string,
+  isSystemApp: boolean
 }
 
 export interface Language {

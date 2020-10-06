@@ -26,7 +26,7 @@ const LanguageSelector: React.FunctionComponent = () => {
 
   const currentLanguage = i18n.language;
 
-  const { apps} = useContext(AppContext);
+  const { apps } = useContext(AppContext);
   const adminApp = apps.find(a => a.id === appTextAdminAppId);
   const languages = adminApp?.languages.filter(l => l !== currentLanguage) || [];
 

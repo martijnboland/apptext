@@ -72,6 +72,14 @@ jobs:
           do
             curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
           done
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v1
+        with:
+          username: $GITHUB_USER
+          password: $GITHUB_TOKEN
+          registry: docker.pkg.github.com
+          repository: martijnboland/apptext/apptext-prerelease
+          tag_with_ref: true
   deploy:
     needs: build
     if: github.event_name == 'release'

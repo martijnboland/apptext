@@ -1,7 +1,7 @@
 [
   { "LoadingAppContext": "Loading app context..." },
-  { "AppUpdated": "App {{name}} updated" },
-  { "AppCreated": "App {{name}} created" },
+  { "AppUpdated": "App {{name}} is updated" },
+  { "AppCreated": "App {{name}} is created" },
   { "AccessDenied": "Access denied" },
   { "CompletingAuthentication": "Completing authentication..." },
   { "Authenticating": "Authenticating..." },
@@ -19,5 +19,6 @@
   { "ApiKeyCreated": "API key {{name}} is created" },
   { "ApiKeyDeleted": "API key {{name}} is deleted" },
   { "ApiKeyCopiedToClipboard": "API key is copied to the clipboard" },
-  { "BrowserDoesNotSupportCopyToClipboard":  "Your browser does not support copying to the clipboard" }
+  { "BrowserDoesNotSupportCopyToClipboard": "Your browser does not support copying to the clipboard" },
+  { "AppDeleted":  "App {{name}} is deleted" }
 ]

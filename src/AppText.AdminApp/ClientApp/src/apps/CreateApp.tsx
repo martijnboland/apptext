@@ -27,7 +27,8 @@ const CreateApp: React.FunctionComponent = () => {
     id: undefined,
     displayName: undefined,
     languages: [],
-    defaultLanguage: undefined
+    defaultLanguage: undefined,
+    isSystemApp: false
   }
 
   const onSubmit = (values: any, actions: FormikHelpers<any>) => {
@@ -53,6 +54,9 @@ const CreateApp: React.FunctionComponent = () => {
       <h1>{t('Labels:CreateApp')}</h1>
       <div className="row">
         <div className="col-lg-8">
+          <p>
+            <small className="text-muted">{t('Labels:CreateAppHelpText')}</small>
+          </p>
           <Formik
             initialValues={initialApp}
             onSubmit={onSubmit}

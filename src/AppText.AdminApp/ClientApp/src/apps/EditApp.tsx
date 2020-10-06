@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ApiKeyList from './ApiKeyList';
+import DeleteApp from './DeleteApp';
 
 const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
 
@@ -36,6 +37,11 @@ const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
       });
   };
 
+  const handleAppDeleted = () => {
+    initApps()
+      .then(() => history.push('/'));
+  }
+
   const languageOptions = languages 
     ? languages.map(l => { return { value: l.code, label: `${l.code} (${l.description})` } })
     : [];
@@ -55,6 +61,7 @@ const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
                 : [];
               return (
                 <form onSubmit={handleSubmit}>
+                  <Field name="id" label={t('Labels:AppId')} component={TextInput} readonly="readonly" />
                   <Field name="displayName" label={t('Labels:AppDisplayName')} component={TextInput} />
                   <Field name="languages" label={t('Labels:Languages')} component={CustomSelect} isMulti={true} options={languageOptions} />
                   <Field name="defaultLanguage" label={t('Labels:DefaultLanguage')} component={CustomSelect} options={defaultLanguageOptions} />
@@ -71,7 +78,13 @@ const EditApp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
           <ApiKeyList />
         </div>
       </div>
-
+      {!currentApp.isSystemApp &&
+        <div className="row">
+          <div className="col-lg-8">
+            <DeleteApp app={currentApp} onAppDeleted={handleAppDeleted} />
+          </div>
+        </div>
+      }
     </React.Fragment>
   );
 };

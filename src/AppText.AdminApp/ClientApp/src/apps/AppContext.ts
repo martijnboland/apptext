@@ -3,7 +3,8 @@ import React from 'react';
 import { App } from './models';
 
 export type AppContextState = {
-  apps?: App[]
+  apps?: App[],
+  nonSystemApps?: App[],
   currentApp?: App,
   setCurrentApp(app: App): void,
   initApps(): Promise<any>
