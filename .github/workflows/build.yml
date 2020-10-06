@@ -73,25 +73,6 @@ jobs:
           do
             curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
           done
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1 
-        with:
-          registry: ghcr.io
-          username: $GITHUB_USER
-          password: $GITHUB_CONTAINER_REPO_TOKEN
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: |
-            martijnboland/apptext:prerelease
-            martijnboland/apptext:main
   deploy:
     needs: build
     if: github.event_name == 'release'
@@ -130,20 +111,16 @@ jobs:
           done
       - name: Push to NuGet Feed
         run: dotnet nuget push './nupkg/*.nupkg' --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      -
-        name: Login to DockerHub
+      - name: Login to DockerHub
         uses: docker/login-action@v1 
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      -
-        name: Build and push
+      - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
@@ -151,6 +128,5 @@ jobs:
           tags: |
             martijnboland/apptext:latest
             martijnboland/apptext:${{steps.releaseversion.outputs.version}}
-      -
-        name: Image digest
+      - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
