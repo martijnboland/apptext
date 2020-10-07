@@ -6,23 +6,23 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x |  bash -
 RUN apt-get install -y nodejs
 
 # Copy csproj and restore as distinct layers
-COPY host/AppText.Host/*.csproj ./host/AppText.Host
-COPY src/AppText/*.csproj ./src/AppText
-COPY src/AppText.Translations/*.csproj ./src/AppText.Translations
-COPY src/AppText.Storage.LiteDb/*.csproj ./src/AppText.Storage.LiteDb
-RUN dotnet restore ./host/AppText.Host
+COPY host/AppText.Host/*.csproj ./host/AppText.Host/
+COPY src/AppText/*.csproj ./src/AppText/
+COPY src/AppText.Translations/*.csproj ./src/AppText.Translations/
+COPY src/AppText.Storage.LiteDb/*.csproj ./src/AppText.Storage.LiteDb/
+RUN dotnet restore ./host/AppText.Host/
 
 #Copy package.json and install Javascript dependencies
 COPY ["src/AppText.AdminApp/ClientApp/package.json", "./src/AppText.AdminApp/ClientApp/"]
 COPY ["src/AppText.AdminApp/ClientApp/package-lock.json", "./src/AppText.AdminApp/ClientApp/"]
-WORKDIR src/AppText.AdminApp/ClientApp
+WORKDIR /app/src/AppText.AdminApp/ClientApp
 RUN npm install
 
 # Copy everything else and build
-WORKDIR /app
-COPY . ./
+COPY . /app/
+
 # Build Javascript AppText.AdminApp before the .NET build
-WORKDIR src/AppText.AdminApp/ClientApp
+WORKDIR /app/src/AppText.AdminApp/ClientApp
 RUN npm run prod
 WORKDIR /app
 RUN dotnet publish ./host/AppText.Host -c Release -o out
