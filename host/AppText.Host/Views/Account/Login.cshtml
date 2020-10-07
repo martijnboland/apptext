@@ -1,0 +1,20 @@
+﻿@model AppText.Host.Controllers.LoginViewModel
+@{ 
+    ViewBag.Title = "Login";
+}
+<form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+  <div asp-validation-summary="ModelOnly"></div>
+  <div>
+    <label asp-for="Username"></label>
+    <input asp-for="Username" />
+    <span asp-validation-for="Username"></span>
+  </div>
+  <div>
+    <label asp-for="Password"></label>
+    <input asp-for="Password" />
+    <span asp-validation-for="Password" class="text-danger small"></span>
+  </div>
+  <div>
+    <button type="submit">Log in</button>
+  </div>
+  </form>

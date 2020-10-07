@@ -1,9 +1,12 @@
 using System.IO;
 using AppText.AdminApp.Configuration;
 using AppText.Configuration;
+using AppText.Host.Data;
 using AppText.Storage.LiteDb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,6 +28,18 @@ namespace AppText.Host
         {
             var dataFolder = Configuration["DataFolder"];
 
+            // Auth
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlite($"Data Source={Path.Combine(dataFolder, "Application.db")}"));
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+            services.AddAuthentication();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AppText", policy => policy.RequireAuthenticatedUser());
+            });
+
             // AppText configuration
             var connectionString = $"FileName={Path.Combine(dataFolder, "AppText.db")};Mode=Exclusive";
 
@@ -32,6 +47,7 @@ namespace AppText.Host
             {
                 options.RoutePrefix = "";
                 options.EnableGraphiql = true;
+                options.RequiredAuthorizationPolicy = "AppText";
             })
                 .AddLiteDbStorage(connectionString)
                 .AddAdmin();
@@ -52,6 +68,9 @@ namespace AppText.Host
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
