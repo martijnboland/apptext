@@ -91,13 +91,6 @@ namespace AppText.AdminApp.Initialization
                 await contentCollectionSaveCommandHandler.Handle(new SaveContentCollectionCommand(Constants.AppTextAdminAppId, collection));
             }
 
-            // Ensure content
-            var existingContentItems = await contentStore.GetContentItems(new ContentItemQuery
-            {
-                AppId = Constants.AppTextAdminAppId,
-                CollectionId = collection.Id
-            });
-
             // Read content from embedded json files and add to storage
             var contentFiles = _translationsContents.Where(tc => tc.Name.StartsWith($"Content.{collectionName}"));
             var initPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "apptextadmin-init") }));
@@ -110,6 +103,14 @@ namespace AppText.AdminApp.Initialization
             foreach (var contentFile in contentFiles)
             {
                 _logger.LogInformation("Syncing content from {0}", contentFile.Name);
+
+                // Read/refresh exisiting content items before reading content file
+                var existingContentItems = await contentStore.GetContentItems(new ContentItemQuery
+                {
+                    AppId = Constants.AppTextAdminAppId,
+                    CollectionId = collection.Id
+                });
+
                 var language = contentFile.Name.Substring($"Content.{collectionName}".Length + 1).Replace(".json", String.Empty);
                 using (var contentStream = contentFile.CreateReadStream())
                 using (var sr = new StreamReader(contentStream))
@@ -152,6 +153,11 @@ namespace AppText.AdminApp.Initialization
                                 saveContentItemCommand.Content[TranslationConstants.TranslationTextFieldName] = contentFieldValue;
 
                                 var result = await saveContentItemCommandHandler.Handle(saveContentItemCommand);
+                                if (result.Status != ResultStatus.Success)
+                                {
+                                    _logger.LogWarning("Error initializing content item with key {0} and language {1}: {2}",
+                                        saveContentItemCommand.ContentKey, language, String.Join(";", result.ValidationErrors.Select(err => err.ErrorMessage)));
+                                }
                             }
                             else
                             {
