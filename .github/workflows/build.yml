@@ -128,7 +128,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            martijnboland/apptext:latest
-            martijnboland/apptext:${{steps.releaseversion.outputs.version}}
+            apptextio/apptext:latest
+            apptextio/apptext:${{steps.releaseversion.outputs.version}}
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
