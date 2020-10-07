@@ -1,0 +1,75 @@
+body {
+  background-color: #eee;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 2rem;
+}
+
+h1 {
+  margin: 0.5rem 0;
+}
+
+.container{
+  margin: 1rem auto;
+  padding: 1rem;
+  width: 420px;
+  background-color: #fff;
+  border-radius: 3px;
+}
+
+label {
+  display: inline-block;
+  margin: 5px 0;
+}
+
+input {
+  margin-bottom: 10px;
+  border-radius: 3px;
+  border: 2px solid transparent;
+  transition: border .2s, background-color .2s;
+  display: block;
+  width: 100%;
+  font-size: 1rem;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+form .field{
+  background-color: #ECF0F1;
+}
+form .field:focus {
+  border: 2px solid #3498DB;
+}
+form .field.input-validation-error {
+  border-color: #c00;
+  background-color: #fee;
+}
+form .field-validation-error {
+  color: #c00;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+form .validation-summary-errors {
+  margin: 10px 0;
+  border-radius: 3px;
+  border: 2px solid #c00;
+  color: #c00;
+  background-color: #fee;
+}
+form .validation-summary-errors ul {
+  list-style: none;
+  padding-inline-start: 1rem;
+}
+form .btn{
+  display: inline-block;
+  background-color: #3498DB;
+  color: #fff;
+  line-height: 25px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+form .btn:hover,
+form .btn:active {
+  background-color: #1F78B4;
+  border: 2px solid #1F78B4;
+}
