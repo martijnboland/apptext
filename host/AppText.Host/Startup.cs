@@ -54,7 +54,13 @@ namespace AppText.Host
             {
                 options.RoutePrefix = "";
                 options.EnableGraphiql = true;
-                options.RequiredAuthorizationPolicy = "AppText";
+
+                bool.TryParse(Configuration["DISABLE_AUTH"], out bool authDisabled);
+                
+                if (! authDisabled)
+                {
+                    options.RequiredAuthorizationPolicy = "AppText";
+                }
             })
                 .AddLiteDbStorage(connectionString)
                 .AddAdmin();
