@@ -2,7 +2,7 @@
 
 namespace AppText.Host.Controllers
 {
-    public class LoginViewModel
+    public class CreateViewModel
     {
         [Required]
         public string Username { get; set; }

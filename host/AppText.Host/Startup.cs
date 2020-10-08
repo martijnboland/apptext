@@ -2,6 +2,7 @@ using System.IO;
 using AppText.AdminApp.Configuration;
 using AppText.Configuration;
 using AppText.Host.Data;
+using AppText.Host.Services;
 using AppText.Storage.LiteDb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,10 +29,16 @@ namespace AppText.Host
         {
             var dataFolder = Configuration["DataFolder"];
 
+            // Init
+            services.AddHostedService<InitAdminUserHostedService>();
+
             // Auth
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite($"Data Source={Path.Combine(dataFolder, "Application.db")}"));
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 8;
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
             services.AddAuthentication();

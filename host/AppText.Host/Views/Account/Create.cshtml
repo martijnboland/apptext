@@ -1,0 +1,23 @@
+﻿@model AppText.Host.Controllers.CreateViewModel
+@{
+  ViewBag.Title = "Create user";
+}
+<p>
+  Please create a user for AppText Admin. 
+</p>
+<form asp-controller="Account" asp-action="Create" method="post">
+  <div asp-validation-summary="ModelOnly"></div>
+
+  <div>
+    <label asp-for="Username"></label>
+    <input asp-for="Username" class="field" />
+    <span asp-validation-for="Username"></span>
+  </div>
+  <div>
+    <label asp-for="Password"></label>
+    <input asp-for="Password" class="field" />
+    <span asp-validation-for="Password"></span>
+  </div>
+
+  <input type="submit" class="btn" value="Register">
+</form>
