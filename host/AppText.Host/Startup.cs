@@ -1,9 +1,13 @@
 using System.IO;
 using AppText.AdminApp.Configuration;
 using AppText.Configuration;
+using AppText.Host.Data;
+using AppText.Host.Services;
 using AppText.Storage.LiteDb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,7 +18,7 @@ namespace AppText.Host
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            Configuration = configuration; 
         }
 
         public IConfiguration Configuration { get; }
@@ -25,6 +29,24 @@ namespace AppText.Host
         {
             var dataFolder = Configuration["DataFolder"];
 
+            // Init
+            services.AddHostedService<InitAdminUserHostedService>();
+
+            // Auth
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlite($"Data Source={Path.Combine(dataFolder, "Application.db")}"));
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 8;
+            })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+            services.AddAuthentication();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AppText", policy => policy.RequireAuthenticatedUser());
+            });
+
             // AppText configuration
             var connectionString = $"FileName={Path.Combine(dataFolder, "AppText.db")};Mode=Exclusive";
 
@@ -32,6 +54,7 @@ namespace AppText.Host
             {
                 options.RoutePrefix = "";
                 options.EnableGraphiql = true;
+                options.RequiredAuthorizationPolicy = "AppText";
             })
                 .AddLiteDbStorage(connectionString)
                 .AddAdmin();
@@ -52,6 +75,9 @@ namespace AppText.Host
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
