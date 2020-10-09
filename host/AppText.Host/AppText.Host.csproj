@@ -8,26 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.8" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     
     <ProjectReference Include="..\..\src\AppText.AdminApp\AppText.AdminApp.csproj" />
     <ProjectReference Include="..\..\src\AppText.Storage.LiteDb\AppText.Storage.LiteDb.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
 </Project>

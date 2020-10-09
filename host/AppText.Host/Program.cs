@@ -1,6 +1,4 @@
-using AppText.Host.Data;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -33,7 +31,7 @@ namespace AppText.Host
 
                 try
                 {
-                    services.GetRequiredService<ApplicationDbContext>().Database.Migrate();
+//                    services.GetRequiredService<ApplicationDbContext>().Database.Migrate();
                 }
                 catch (Exception ex)
                 {

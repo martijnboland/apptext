@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AspNetCore.Identity.LiteDB.Data;
+using AspNetCore.Identity.LiteDB.Models;
+using LiteDB;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppText.Host.Controllers
@@ -11,24 +14,27 @@ namespace AppText.Host.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<AccountController> _logger;
         private readonly IConfiguration _configuration;
+        private readonly ILiteDbContext _liteDbContext;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ILogger<AccountController> logger, IConfiguration configuration)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<AccountController> logger, IConfiguration configuration, ILiteDbContext liteDbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _configuration = configuration;
+            _liteDbContext = liteDbContext;
         }
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Login()
+        public IActionResult Login()
         {
-            if (! await _userManager.Users.AnyAsync())
+            var collection = _liteDbContext.LiteDatabase.GetCollection<ApplicationUser>("users");
+            if (collection.Count() == 0)
             {
                 return RedirectToAction("Create");
             }
@@ -74,10 +80,11 @@ namespace AppText.Host.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             // Only display create form when no user exists
-            if (await _userManager.Users.AnyAsync())
+            var collection = _liteDbContext.LiteDatabase.GetCollection<ApplicationUser>("users");
+            if (collection.Count() > 0)
             {
                 return Redirect("~/");
             }
@@ -95,7 +102,7 @@ namespace AppText.Host.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser(model.Username);
+                var user = new ApplicationUser { UserName = model.Username, Email = "admin@apptext.io" };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AspNetCore.Identity.LiteDB.Models;
 
 namespace AppText.Host.Services
 {
@@ -29,7 +30,7 @@ namespace AppText.Host.Services
             var adminPassword = _configuration["AdminPassword"];
 
             using (var serviceScope = _serviceProvider.CreateScope())
-            using (var userManager = serviceScope.ServiceProvider.GetService<UserManager<IdentityUser>>())
+            using (var userManager = serviceScope.ServiceProvider.GetService<UserManager<ApplicationUser>>())
             {
                 if (!string.IsNullOrEmpty(adminUser) && !String.IsNullOrEmpty(adminPassword))
                 {
@@ -37,7 +38,7 @@ namespace AppText.Host.Services
                     IdentityResult result;
                     if (user == null)
                     {
-                        user = new IdentityUser(adminUser);
+                        user = new ApplicationUser { UserName = adminUser, Email = "admin@apptext.io" };
                         result = await userManager.CreateAsync(user, adminPassword);
                     }
                     else
