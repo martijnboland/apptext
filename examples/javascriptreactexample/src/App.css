@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 
-h2 {
+h1, h2, h3, p {
   margin-top: 0;
 }
 
@@ -79,6 +79,12 @@ label, input, select, textarea {
 .form-error {
   margin-bottom: 0.5em;
   color: #c00;
+}
+
+.card {
+  background-color: #fff;
+  padding: 0.5em;
+  margin-bottom: 1em;
 }
 
 @media (min-width: 768px) {

@@ -12,7 +12,13 @@ function App() {
   const createFormRef = useRef(null);
   const [ showIntro, setShowIntro ] = useState(true);
   const [ showForm, setShowForm ] = useState(false);
-  const [ notes, setNotes ] = useState<Note[]>([]);
+  const [ notes, setNotes ] = useState<Note[]>(
+    JSON.parse(localStorage.getItem('NOTES') || '[]') || []
+  );
+
+  React.useEffect(() => {
+    localStorage.setItem('NOTES', JSON.stringify(notes));
+  }, [notes]);
 
   const addNote = (note: Note): Promise<void> => {
     setNotes([...notes, note]);

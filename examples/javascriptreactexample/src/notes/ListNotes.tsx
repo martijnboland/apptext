@@ -12,7 +12,7 @@ const List: React.FC<ListProps> = ({ notes, onRemoveNote }) => {
       <h2>Notes</h2>
       <p>There are {notes.length} notes</p>
       {notes.map((note, idx) => 
-        <div key={idx}>
+        <div key={idx} className="card">
           <div className="heading-withbutton">
             <h3>{note.title}</h3>
             <div>
