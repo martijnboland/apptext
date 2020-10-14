@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Note } from './models';
 
 interface ListProps {
@@ -7,10 +8,12 @@ interface ListProps {
 }
 
 const List: React.FC<ListProps> = ({ notes, onRemoveNote }) => {
+  const { t } = useTranslation('labels');
+
   return (
     <section className="notes">
-      <h2>Notes</h2>
-      <p>There are {notes.length} notes</p>
+      <h2>{t('Notes')}</h2>
+      <p>{t('There are n notes', { count: notes.length })}</p>
       {notes.map((note, idx) => 
         <div key={idx} className="card">
           <div className="heading-withbutton">

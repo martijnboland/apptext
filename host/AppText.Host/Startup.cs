@@ -2,6 +2,7 @@ using System.IO;
 using AppText.AdminApp.Configuration;
 using AppText.Configuration;
 using AppText.Host.Services;
+using AppText.Shared.Infrastructure.Security.ApiKey;
 using AppText.Storage.LiteDb;
 using AspNetCore.Identity.LiteDB;
 using AspNetCore.Identity.LiteDB.Data;
@@ -56,10 +57,26 @@ namespace AppText.Host
                 .AddDefaultTokenProviders();
             */
 
+            var corsOrigins = Configuration["CorsOrigins"].Split(new [] { ',',';' });
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .WithOrigins(corsOrigins);
+                });
+            });
+
             services.AddAuthentication();
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AppText", policy => policy.RequireAuthenticatedUser());
+                options.AddPolicy("AppText", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.AddAuthenticationSchemes(ApiKeyAuthenticationOptions.DefaultScheme, IdentityConstants.ApplicationScheme);
+                });
             });
 
             // AppText configuration
@@ -98,6 +115,7 @@ namespace AppText.Host
 
             app.UseRouting();
 
+            app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
 

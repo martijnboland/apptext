@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "i18next": "^19.8.2",
+    "i18next-http-backend": "^1.0.21",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hook-form": "^6.9.2",
+    "react-i18next": "^11.7.3",
     "react-scripts": "3.4.3",
     "react-transition-group": "^4.4.1"
   },

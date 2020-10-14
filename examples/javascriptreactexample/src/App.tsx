@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { Suspense, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import Header from './Header';
 import Intro from './Intro';
 import CreateNote from './notes/CreateNote';
 import ListNotes from './notes/ListNotes';
 
+import './localization/i18n';
 import './App.css';
 import { Note } from './notes/models';
 
@@ -32,24 +33,26 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <Header />
-      {showIntro &&
-        <Intro onCreateNote={() => setShowForm(true)} />
-      }
-      <CSSTransition
-        nodeRef={createFormRef}
-        in={showForm}
-        timeout={300}
-        classNames="notes-form"
-        unmountOnExit
-        onEnter={() => setShowIntro(false)}
-        onExited={() => setShowIntro(true)}
-      >
-        <CreateNote ref={createFormRef} onClose={() => setShowForm(false)} onCreate={addNote} />
-      </CSSTransition>
-      <ListNotes notes={notes} onRemoveNote={removeNote} />
-    </div>
+    <Suspense fallback="loading">
+      <div className="app">
+        <Header />
+        {showIntro &&
+          <Intro onCreateNote={() => setShowForm(true)} />
+        }
+        <CSSTransition
+          nodeRef={createFormRef}
+          in={showForm}
+          timeout={300}
+          classNames="notes-form"
+          unmountOnExit
+          onEnter={() => setShowIntro(false)}
+          onExited={() => setShowIntro(true)}
+        >
+          <CreateNote ref={createFormRef} onClose={() => setShowForm(false)} onCreate={addNote} />
+        </CSSTransition>
+        <ListNotes notes={notes} onRemoveNote={removeNote} />
+      </div>
+    </Suspense>
   );
 }
 
