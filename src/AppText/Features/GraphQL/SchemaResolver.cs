@@ -2,6 +2,7 @@
 using GraphQL.Types;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualBasic;
 using System;
 using System.Threading.Tasks;
 
@@ -32,8 +33,17 @@ namespace AppText.Features.GraphQL
 
             return await _memoryCache.GetOrCreateAsync(cacheKey, async cacheEntry =>
             {
+                _logger.LogInformation("GraphQL schema for app {0} is not found in the cache. Creating new instance...", appId);
                 return await CreateSchema(appId);
             });
+        }
+
+        public void Clear(string appId)
+        {
+            _logger.LogInformation("Clearing GraphQL schema for app {0}", appId);
+
+            var cacheKey = $"Schema_{appId}";
+            _memoryCache.Remove(cacheKey);
         }
 
         private async Task<Schema> CreateSchema(string appId)

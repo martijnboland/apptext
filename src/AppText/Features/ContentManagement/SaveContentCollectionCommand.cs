@@ -1,4 +1,5 @@
 ﻿using AppText.Shared.Commands;
+using AppText.Shared.Infrastructure;
 using AppText.Storage;
 using System.Threading.Tasks;
 
@@ -21,12 +22,14 @@ namespace AppText.Features.ContentManagement
         private readonly IContentStore _contentStore;
         private readonly ContentCollectionValidator _validator;
         private readonly IVersioner _versioner;
+        private readonly IDispatcher _dispatcher;
 
-        public SaveContentCollectionCommandHandler(IContentStore contentStore, ContentCollectionValidator validator, IVersioner versioner)
+        public SaveContentCollectionCommandHandler(IContentStore contentStore, ContentCollectionValidator validator, IVersioner versioner, IDispatcher dispatcher)
         {
             _contentStore = contentStore;
             _validator = validator;
             _versioner = versioner;
+            _dispatcher = dispatcher;
         }
 
         public async Task<CommandResult> Handle(SaveContentCollectionCommand command)
@@ -57,6 +60,13 @@ namespace AppText.Features.ContentManagement
                     {
                         await _contentStore.UpdateContentCollection(command.ContentCollection);
                     }
+                    await _dispatcher.PublishEvent(new ContentCollectionChangedEvent
+                    {
+                        AppId = command.AppId,
+                        CollectionId = command.ContentCollection.Id,
+                        Name = command.ContentCollection.Name,
+                        Version = command.ContentCollection.Version
+                    });
                 }
             }
             return result;

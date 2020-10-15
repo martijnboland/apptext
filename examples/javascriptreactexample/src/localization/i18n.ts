@@ -13,7 +13,7 @@ i18n
     fallbackLng: 'en',
     returnNull: false,
     backend: {
-      loadPath: `${appTextApiBaseUrl}/${appTextAppId}/translations/{{lng}}/{{ns}}`,
+      loadPath: `${appTextApiBaseUrl}/${appTextAppId}/translations/public/{{lng}}/{{ns}}`,
       customHeaders: {
         'X-Api-Key': process.env.REACT_APP_APPTEXT_APIKEY,
         // ...

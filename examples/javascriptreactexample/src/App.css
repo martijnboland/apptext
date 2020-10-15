@@ -19,10 +19,15 @@ label, input, select, textarea {
   width: 100%;
 }
 
+.form-inline label, .form-inline input, .form-inline select {
+  display: inline;
+  width: auto;
+}
+
 .app {
   height: 100vh;
   display: grid;
-  grid-template-rows: 60px 1fr 1fr;
+  grid-template-rows: 70px 1fr 1fr;
   grid-template-columns: none;
 }
 
@@ -30,6 +35,10 @@ label, input, select, textarea {
   grid-row: 1 / 2;
   padding: 1em;
   background-color: #ddd;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
 }
 
 .heading-withbutton {
@@ -90,7 +99,7 @@ label, input, select, textarea {
 @media (min-width: 768px) {
   .app {
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 60px 1fr;
+    grid-template-rows: 70px 1fr;
   }
   .header-top {
     grid-column: 1 / 3;

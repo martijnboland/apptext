@@ -2,7 +2,6 @@ using System.IO;
 using AppText.AdminApp.Configuration;
 using AppText.Configuration;
 using AppText.Host.Services;
-using AppText.Shared.Infrastructure.Security.ApiKey;
 using AppText.Storage.LiteDb;
 using AspNetCore.Identity.LiteDB;
 using AspNetCore.Identity.LiteDB.Data;
@@ -69,13 +68,11 @@ namespace AppText.Host
                 });
             });
 
-            services.AddAuthentication();
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("AppText", policy =>
                 {
                     policy.RequireAuthenticatedUser();
-                    policy.AddAuthenticationSchemes(ApiKeyAuthenticationOptions.DefaultScheme, IdentityConstants.ApplicationScheme);
                 });
             });
 
