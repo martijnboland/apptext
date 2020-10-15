@@ -8,17 +8,24 @@ interface IntroProps {
 }
 
 const Intro: React.FC<IntroProps> = ({ onCreateNote }) => {
-  const { t, i18n } = useTranslation('labels');
-  const { page } = useAppTextPage('intro', i18n.language);
+  const { t, i18n } = useTranslation(['labels','messages']);
+  const { page, fetching, error } = useAppTextPage('intro', i18n.language);
 
   return (
     <section className="intro">
-      {page && 
+      {page
+        ? 
         <React.Fragment>
           <h2>{page.title}</h2>
           <ReactMarkdown source={page.content} />
-          <button onClick={onCreateNote}>{t('Create note')}</button>
+          <button onClick={onCreateNote}>{t('labels:Create note')}</button>
         </React.Fragment>
+        : fetching
+          ? <p>Loading</p>
+          : <p>{t('messages:Page not found', { contentKey: 'intro' })}</p>
+      }
+      {error &&
+        <p>{error.message}</p>
       }
     </section>
   )

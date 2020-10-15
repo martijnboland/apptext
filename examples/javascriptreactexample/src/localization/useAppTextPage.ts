@@ -13,7 +13,7 @@ const AppTextPageQuery = `
 `;
 
 export function useAppTextPage(contentKey: string, language: string) {
-  const [{ data, fetching,  }] = useQuery({
+  const [{ data, fetching, error }] = useQuery({
     query: AppTextPageQuery,
     variables: { language: language, contentKey: contentKey }
   });
@@ -22,6 +22,9 @@ export function useAppTextPage(contentKey: string, language: string) {
     ? data.pages.items[0]
     : null;
 
-  return { page, fetching };
+  if (error) {
+    console.error(error);
+  }
+  return { page, fetching, error };
 }
 
