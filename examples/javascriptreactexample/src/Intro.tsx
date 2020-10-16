@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
+import Loader from './loader/Loader';
 import { useAppTextPage } from './localization/useAppTextPage';
 
 interface IntroProps {
@@ -21,7 +22,7 @@ const Intro: React.FC<IntroProps> = ({ onCreateNote }) => {
           <button onClick={onCreateNote}>{t('labels:Create note')}</button>
         </React.Fragment>
         : fetching
-          ? <p>Loading</p>
+          ? <Loader />
           : <p>{t('messages:Page not found', { contentKey: 'intro' })}</p>
       }
       {error &&
