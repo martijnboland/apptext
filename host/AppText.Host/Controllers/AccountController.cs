@@ -1,12 +1,10 @@
-﻿using AspNetCore.Identity.LiteDB.Data;
-using AspNetCore.Identity.LiteDB.Models;
-using LiteDB;
+﻿using LiteDB.Identity.Database;
+using LiteDB.Identity.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppText.Host.Controllers
@@ -14,26 +12,31 @@ namespace AppText.Host.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<LiteDbUser> _userManager;
+        private readonly SignInManager<LiteDbUser> _signInManager;
         private readonly ILogger<AccountController> _logger;
         private readonly IConfiguration _configuration;
-        private readonly ILiteDbContext _liteDbContext;
+        private readonly ILiteDbIdentityContext _liteDbIdentityContext;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<AccountController> logger, IConfiguration configuration, ILiteDbContext liteDbContext)
+        public AccountController(
+            UserManager<LiteDbUser> userManager,
+            SignInManager<LiteDbUser> signInManager,
+            ILogger<AccountController> logger,
+            IConfiguration configuration,
+            ILiteDbIdentityContext liteDbIdentityContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _configuration = configuration;
-            _liteDbContext = liteDbContext;
+            _liteDbIdentityContext = liteDbIdentityContext;
         }
 
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
         {
-            var collection = _liteDbContext.LiteDatabase.GetCollection<ApplicationUser>("users");
+            var collection = _liteDbIdentityContext.LiteDatabase.GetCollection<LiteDbUser>();
             if (collection.Count() == 0)
             {
                 return RedirectToAction("Create");
@@ -83,7 +86,7 @@ namespace AppText.Host.Controllers
         public IActionResult Create()
         {
             // Only display create form when no user exists
-            var collection = _liteDbContext.LiteDatabase.GetCollection<ApplicationUser>("users");
+            var collection = _liteDbIdentityContext.LiteDatabase.GetCollection<LiteDbUser>();
             if (collection.Count() > 0)
             {
                 return Redirect("~/");
@@ -102,7 +105,7 @@ namespace AppText.Host.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Username, Email = "admin@apptext.io" };
+                var user = new LiteDbUser { UserName = model.Username, Email = "admin@apptext.io" };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -3,10 +3,6 @@ using AppText.AdminApp.Configuration;
 using AppText.Configuration;
 using AppText.Host.Services;
 using AppText.Storage.LiteDb;
-using AspNetCore.Identity.LiteDB;
-using AspNetCore.Identity.LiteDB.Data;
-using AspNetCore.Identity.LiteDB.Models;
-using LiteDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -14,7 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using IdentityRole = AspNetCore.Identity.LiteDB.IdentityRole;
+using LiteDB.Identity.Extensions;
+using LiteDB.Identity.Models;
 
 namespace AppText.Host
 {
@@ -37,13 +34,10 @@ namespace AppText.Host
             services.AddHostedService<InitAdminUserHostedService>();
 
             // Auth
-            services.AddSingleton<ILiteDbContext, LiteDbContext>(x => new LiteDbContext(new LiteDatabase($"Filename={Path.Combine(dataFolder, "Identity.db")}")));
-            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-            {
-                options.Password.RequiredLength = 8;
-            })
-                .AddUserStore<LiteDbUserStore<ApplicationUser>>()
-                .AddRoleStore<LiteDbRoleStore<IdentityRole>>()
+            //services.AddSingleton<ILiteDbContext, LiteDbContext>(x => new LiteDbContext(new LiteDatabase($"Filename={Path.Combine(dataFolder, "Identity.db")}")));
+            services.AddLiteDBIdentity($"Filename={Path.Combine(dataFolder, "Identity.db")};Connection=Shared")
+                .AddUserManager<UserManager<LiteDbUser>>()
+                .AddSignInManager()
                 .AddDefaultTokenProviders();
             /*
             services.AddDbContext<ApplicationDbContext>(options =>
