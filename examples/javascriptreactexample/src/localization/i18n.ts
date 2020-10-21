@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-http-backend';
-import { appTextApiBaseUrl, appTextAppId, currentLanguageStorageKey } from './config';
+import { appTextApiBaseUrl, appTextAppId, currentLanguageStorageKey, appTextApiKey } from './config';
 
 const language = localStorage.getItem(currentLanguageStorageKey) || 'en';
 
@@ -15,7 +15,7 @@ i18n
     backend: {
       loadPath: `${appTextApiBaseUrl}/${appTextAppId}/translations/public/{{lng}}/{{ns}}`,
       customHeaders: {
-        'X-Api-Key': process.env.REACT_APP_APPTEXT_APIKEY,
+        'X-Api-Key': appTextApiKey,
         // ...
       },
     },
