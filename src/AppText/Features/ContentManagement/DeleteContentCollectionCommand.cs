@@ -1,7 +1,9 @@
 ﻿using AppText.Shared.Commands;
+using AppText.Shared.Infrastructure;
 using AppText.Shared.Validation;
 using AppText.Storage;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace AppText.Features.ContentManagement
@@ -21,10 +23,12 @@ namespace AppText.Features.ContentManagement
     public class DelecteContentCollectionCommandHandler : ICommandHandler<DeleteContentCollectionCommand>
     {
         private readonly IContentStore _contentStore;
+        private readonly IDispatcher _dispatcher;
 
-        public DelecteContentCollectionCommandHandler(IContentStore contentStore)
+        public DelecteContentCollectionCommandHandler(IContentStore contentStore, IDispatcher dispatcher)
         {
             _contentStore = contentStore;
+            _dispatcher = dispatcher;
         }
 
         public async Task<CommandResult> Handle(DeleteContentCollectionCommand command)
@@ -38,6 +42,7 @@ namespace AppText.Features.ContentManagement
             if (! result.ValidationErrors.Any())
             {
                 await _contentStore.DeleteContentCollection(command.Id, command.AppId);
+                await _dispatcher.PublishEvent(new ContentCollectionDeletedEvent { AppId = command.AppId, CollectionId = command.Id });
             }
             return result;
         }
