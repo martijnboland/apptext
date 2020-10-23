@@ -35,7 +35,7 @@ namespace AppText.Host
 
             // Auth
             //services.AddSingleton<ILiteDbContext, LiteDbContext>(x => new LiteDbContext(new LiteDatabase($"Filename={Path.Combine(dataFolder, "Identity.db")}")));
-            services.AddLiteDBIdentity($"Filename={Path.Combine(dataFolder, "Identity.db")};Connection=Shared")
+            services.AddLiteDBIdentity($"Filename={Path.Combine(dataFolder, "Identity.db")};Mode=Exclusive")
                 .AddUserManager<UserManager<LiteDbUser>>()
                 .AddSignInManager()
                 .AddDefaultTokenProviders();
