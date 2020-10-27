@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using LiteDB.Identity.Extensions;
 using LiteDB.Identity.Models;
+using System.Net.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace AppText.Host
 {
@@ -34,21 +36,10 @@ namespace AppText.Host
             services.AddHostedService<InitAdminUserHostedService>();
 
             // Auth
-            //services.AddSingleton<ILiteDbContext, LiteDbContext>(x => new LiteDbContext(new LiteDatabase($"Filename={Path.Combine(dataFolder, "Identity.db")}")));
             services.AddLiteDBIdentity($"Filename={Path.Combine(dataFolder, "Identity.db")};Mode=Exclusive")
                 .AddUserManager<UserManager<LiteDbUser>>()
                 .AddSignInManager()
                 .AddDefaultTokenProviders();
-            /*
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite($"Data Source={Path.Combine(dataFolder, "Application.db")}"));
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
-            {
-                options.Password.RequiredLength = 8;
-            })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-            */
 
             var corsOrigins = Configuration["CorsOrigins"].Split(new [] { ',',';' });
             services.AddCors(options =>
@@ -109,6 +100,24 @@ namespace AppText.Host
             app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            bool.TryParse(Configuration["DISABLE_DELETE"], out bool deleteDisabled);
+
+            if (deleteDisabled)
+            {
+                app.Use(async (context, next) =>
+                {
+                    if (context.Request.Method == HttpMethod.Delete.ToString())
+                    {
+                        context.Response.StatusCode = 405;
+                        await context.Response.WriteAsync("DELETE Method is not allowed");
+                    }
+                    else
+                    {
+                        await next.Invoke();
+                    }
+                });
+            }
 
             app.UseEndpoints(endpoints =>
             {
