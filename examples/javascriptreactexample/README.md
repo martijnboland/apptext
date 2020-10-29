@@ -2,6 +2,8 @@
 
 This is an example React Single Page Application that uses [i18next](https://www.i18next.com/) and [AppText](https://apptext.io) for localization.
 
+![AppText JavaScript example screenshot](../../media/screenshots/apptext-jsexample.png)
+
 ## Getting started
 The example is configured to use the [apptext-demo docker image](https://hub.docker.com/r/apptextio/apptext-demo) as AppText backend.
 
