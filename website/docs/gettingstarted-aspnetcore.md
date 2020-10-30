@@ -3,7 +3,7 @@ id: gettingstarted-aspnetcore
 title: AppText for ASP.NET Core applications
 ---
 
-This page continues where [Installation](installation) finished: a working AppText installation in an ASP.NET Core host application. 
+This page continues where [Installation](installation#install-into-an-aspnet-core-host-application) finished: a working AppText installation in an ASP.NET Core host application. 
 
 In this example, the host application itself is going to be localized with AppText.
 

@@ -1,6 +1,6 @@
 ---
 id: concepts
-title: Concepts
+title: AppText Concepts
 ---
 
 ![AppText Concepts diagram](../../media/diagrams/concepts.svg)
