@@ -6,7 +6,7 @@ slug: /
 
 AppText is a Content Management System for Applications. A hybrid between a headless Content Management System and a Translation Management System.
 
-AppText is built with [ASP.NET Core](https://dotnet.microsoft.com/apps/aspnet) and [React](https:reactjs.org). You can install it as a [Docker container](https://hub.docker.com/r/apptextio/apptext) via [NuGet packages](https://www.nuget.org/packages?q=apptext) into any existing ASP.NET Core web application.
+AppText is built with [ASP.NET Core](https://dotnet.microsoft.com/apps/aspnet) and [React](https:reactjs.org). You can install it as a [Docker container](https://hub.docker.com/r/apptextio/apptext) or via [NuGet packages](https://www.nuget.org/packages?q=apptext) into any existing ASP.NET Core web application.
 
 ## Why?
 

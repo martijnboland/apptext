@@ -30,7 +30,7 @@ module.exports = {
     },
     footer: {
       style: 'dark',
-      copyright: `Copyright © ${new Date().getFullYear()} AppText.`,
+      copyright: `Copyright © ${new Date().getFullYear()} AppText. Powered by Docusaurus. Enabled by <a href="https://taiga.nl/en">Taiga</a>.`,
     },
     prism: {
       additionalLanguages: ['csharp'],
