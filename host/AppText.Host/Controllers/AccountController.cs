@@ -34,13 +34,14 @@ namespace AppText.Host.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
             var collection = _liteDbIdentityContext.LiteDatabase.GetCollection<LiteDbUser>();
             if (collection.Count() == 0)
             {
                 return RedirectToAction("Create");
             }
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
