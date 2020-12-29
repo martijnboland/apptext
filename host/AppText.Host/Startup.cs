@@ -14,11 +14,14 @@ using LiteDB.Identity.Extensions;
 using LiteDB.Identity.Models;
 using System.Net.Http;
 using Microsoft.AspNetCore.Http;
+using Microsoft.OpenApi.Models;
 
 namespace AppText.Host
 {
     public class Startup
     {
+        private const string API_VERSION = "v1";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration; 
@@ -81,6 +84,16 @@ namespace AppText.Host
 
             // MVC
             services.AddControllersWithViews();
+
+            // Swagger/OpenAPI
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc(API_VERSION, new OpenApiInfo
+                {
+                    Title = "AppText API",
+                    Version = API_VERSION
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,6 +107,17 @@ namespace AppText.Host
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint($"/swagger/{API_VERSION}/swagger.json", $"AppText API {API_VERSION}");
+                c.DocumentTitle = "AppText API Swagger";
+            });
 
             app.UseRouting();
 
