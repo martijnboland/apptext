@@ -12,19 +12,12 @@ namespace AppText.Features.User
         public IActionResult GetCurrentUser()
         {
             var user = new User();
-            if (this.User.Identity.IsAuthenticated)
             {
-                user.Identifier = this.User.FindFirstValue("sub") ?? this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                user.Name = this.User.Identity.Name;
+                user.Identifier = this.User.Identity.IsAuthenticated ? this.User.FindFirstValue("sub") ?? this.User.FindFirstValue(ClaimTypes.NameIdentifier) : null;
+                user.Name = this.User.Identity.IsAuthenticated ? user.Name = this.User.Identity.Name : "Anonymous";
+                user.Claims = this.User.Claims;
             }
-            else
-            {
-                user.Name = "Anonymous";
-            }
-            user.Name = this.User.Identity.IsAuthenticated
-                ? user.Name = this.User.Identity.Name
-                : "Anonymous";
-            user.Claims = this.User.Claims.ToDictionary(c => c.Type, c => c.Value);
+            
             return Ok(user);
         }
     }
