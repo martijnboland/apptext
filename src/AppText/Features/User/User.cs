@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace AppText.Features.User
 {
@@ -6,6 +7,6 @@ namespace AppText.Features.User
     {
         public string Identifier { get; set; }
         public string Name { get; set; }
-        public IDictionary<string, string> Claims { get; set; }
+        public IEnumerable<Claim> Claims { get; set; }
     }
 }
