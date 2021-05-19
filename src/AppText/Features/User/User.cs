@@ -7,6 +7,6 @@ namespace AppText.Features.User
     {
         public string Identifier { get; set; }
         public string Name { get; set; }
-        public IEnumerable<Claim> Claims { get; set; }
+        public IDictionary<string, object> Claims { get; set; }
     }
 }
