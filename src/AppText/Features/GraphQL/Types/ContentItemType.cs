@@ -60,9 +60,9 @@ namespace AppText.Features.GraphQL.Types
                                 // Localizable field, check if a valid language argument is given and return the value for the requested language.
                                 // Otherwise, return the value for the default language of the app.
                                 var language = _defaultLanguage;
-                                if (ctx.Arguments.ContainsKey("language"))
+                                if (ctx.HasArgument("language"))
                                 {
-                                    language = ctx.Arguments["language"].ToString();
+                                    language = ctx.Arguments["language"].Value?.ToString();
                                     if (!_languages.Any(l => l == language))
                                     {
                                         ctx.Errors.Add(new ExecutionError($"The language argument '{language}' for the '{contentField.Name}' field is not allowed for this app."));
@@ -121,7 +121,10 @@ namespace AppText.Features.GraphQL.Types
                 {
                     arguments.Add(new QueryArgument<StringGraphType>() { Name = "language" });
                 }
-                this.Field(graphQLFieldName, field.FieldType.GraphQLType, resolve: resolveFunc, description: description, arguments: arguments);
+                this.Field(graphQLFieldName, field.FieldType.GraphQLType)
+                    .Resolve(resolveFunc)
+                    .Description(description)
+                    .Arguments(arguments);
             }
         }
     }

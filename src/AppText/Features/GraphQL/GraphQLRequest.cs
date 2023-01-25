@@ -1,7 +1,5 @@
 ﻿using GraphQL;
-using GraphQL.NewtonsoftJson;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace AppText.Features.GraphQL
 {
@@ -15,19 +13,9 @@ namespace AppText.Features.GraphQL
         public string Query { get; set; }
 
         [JsonProperty(VariablesKey)]
-        public JObject Variables { get; set; }
+        public Inputs Variables { get; set; }
 
         [JsonProperty(OperationNameKey)]
         public string OperationName { get; set; }
-
-        public Inputs GetInputs()
-        {
-            return GetInputs(Variables);
-        }
-
-        public static Inputs GetInputs(JObject variables)
-        {
-            return variables?.ToInputs();
-        }
     }
 }

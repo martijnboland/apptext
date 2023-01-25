@@ -39,7 +39,8 @@ namespace AppText.Features.GraphQL
                 if (NameConverter.TryConvertToGraphQLName(collection.Name, out string convertedName))
                 {
                     var contentCollectionType = new ContentCollectionType(collection, _getContentStore, _app.Languages, _app.DefaultLanguage);
-                    this.Field(convertedName, contentCollectionType, resolve: ctx => collection);
+                    this.Field(convertedName, contentCollectionType)
+                        .Resolve(ctx => collection);
                 }
                 else
                 {
@@ -48,8 +49,10 @@ namespace AppText.Features.GraphQL
             }
 
             // Languages
-            this.Field("languages", new ListGraphType(new StringGraphType()), resolve: ctx => _app.Languages);
-            this.Field("defaultLanguage", new StringGraphType(), resolve: ctx => _app.DefaultLanguage);
+            this.Field("languages", new ListGraphType(new StringGraphType()))
+                .Resolve(ctx => _app.Languages);
+            this.Field("defaultLanguage", new StringGraphType())
+                .Resolve(ctx => _app.DefaultLanguage);
 
             return this;
         }

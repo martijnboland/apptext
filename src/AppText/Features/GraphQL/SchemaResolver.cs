@@ -2,7 +2,6 @@
 using GraphQL.Types;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic;
 using System;
 using System.Threading.Tasks;
 
@@ -56,7 +55,6 @@ namespace AppText.Features.GraphQL
             }
 
             var schema = new Schema();
-
             schema.Query = await AppTextQuery.CreateAsync(app, _getContentStore);
 
             return schema;

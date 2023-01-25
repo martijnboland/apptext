@@ -22,16 +22,15 @@ namespace AppText.Features.GraphQL.Types
 
                 var contentItemType = new ContentItemType(contentCollection, languages, defaultLanguage);
                 var itemsType = new ListGraphType(contentItemType);
-                this.Field("items",
-                    itemsType,
-                    arguments: new QueryArguments(
+                this.Field("items", itemsType)
+                    .Arguments(new QueryArguments(
                         new QueryArgument<StringGraphType>() { Name = "contentKeyStartsWith" },
                         new QueryArgument<IntGraphType>() { Name = "first" },
                         new QueryArgument<IntGraphType>() { Name = "offset" }
-                    ),
-                    resolve: ctx =>
+                    ))
+                    .ResolveAsync(async ctx =>
                     {
-                        var collection = ctx.Source as ContentCollection;
+                        var collection = ctx.Source;
                         if (collection != null)
                         {
                             var contentStore = getContentStore();
@@ -43,7 +42,7 @@ namespace AppText.Features.GraphQL.Types
                                 First = ctx.GetArgument<int?>("first"),
                                 Offset = ctx.GetArgument<int?>("offset")
                             };
-                            return contentStore.GetContentItems(contentItemQuery);
+                            return await contentStore.GetContentItems(contentItemQuery);
                         }
                         else
                         {

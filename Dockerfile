@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:6.0 AS build-env
 WORKDIR /app
 
 # Install nodejs
@@ -28,7 +28,7 @@ WORKDIR /app
 RUN dotnet publish ./host/AppText.Host -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+FROM mcr.microsoft.com/dotnet/core/aspnet:6.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "AppText.Host.dll"]

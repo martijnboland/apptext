@@ -5,14 +5,12 @@ using System.Threading.Tasks;
 using AppText.Features.GraphQL.Graphiql;
 using AppText.Features.GraphQL;
 using GraphQL;
-using GraphQL.Instrumentation;
-using GraphQL.Validation.Complexity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Microsoft.AspNetCore.Authorization;
 using AppText.Shared.Infrastructure.Security.ApiKey;
+using AuthorizeAttribute = Microsoft.AspNetCore.Authorization.AuthorizeAttribute;
 
 namespace AppText.Features.Controllers
 {
@@ -25,13 +23,13 @@ namespace AppText.Features.Controllers
         private const string FormUrlEncodedContentType = "application/x-www-form-urlencoded";
 
         private readonly IDocumentExecuter _executer;
-        private readonly IDocumentWriter _writer;
+        private readonly IGraphQLTextSerializer _serializer;
         private readonly SchemaResolver _schemaResolver;
 
-        public GraphQLController(IDocumentExecuter executer, IDocumentWriter writer, SchemaResolver schemaResolver)
+        public GraphQLController(IDocumentExecuter executer, IGraphQLTextSerializer serializer, SchemaResolver schemaResolver)
         {
             _executer = executer;
-            _writer = writer;
+            _serializer = serializer;
             _schemaResolver = schemaResolver;
         }
 
@@ -112,15 +110,12 @@ namespace AppText.Features.Controllers
                 options.Schema = schema;
                 options.Query = gqlRequest.Query;
                 options.OperationName = gqlRequest.OperationName;
-                options.Inputs = gqlRequest.GetInputs();
-
-                options.ComplexityConfiguration = new ComplexityConfiguration { MaxDepth = 15 };
-                options.FieldMiddleware.Use<InstrumentFieldsMiddleware>();
+                options.Variables = gqlRequest.Variables;
                 options.ThrowOnUnhandledException = true;
 
             }).ConfigureAwait(false);
 
-            var json = await _writer.WriteToStringAsync(result);
+            var json = _serializer.Serialize(result);
 
             var actionResult = new ContentResult
             {
@@ -150,17 +145,17 @@ namespace AppText.Features.Controllers
             }
         }
 
-        private static void ExtractGraphQLRequestFromQueryString(IQueryCollection qs, GraphQLRequest gqlRequest)
+        private void ExtractGraphQLRequestFromQueryString(IQueryCollection qs, GraphQLRequest gqlRequest)
         {
             gqlRequest.Query = qs.TryGetValue(GraphQLRequest.QueryKey, out var queryValues) ? queryValues[0] : null;
-            gqlRequest.Variables = qs.TryGetValue(GraphQLRequest.VariablesKey, out var variablesValues) ? JObject.Parse(variablesValues[0]) : null;
+            gqlRequest.Variables = qs.TryGetValue(GraphQLRequest.VariablesKey, out var variablesValues) ? _serializer.Deserialize<Inputs>(variablesValues[0]) : null;
             gqlRequest.OperationName = qs.TryGetValue(GraphQLRequest.OperationNameKey, out var operationNameValues) ? operationNameValues[0] : null;
         }
 
-        private static void ExtractGraphQLRequestFromPostBody(IFormCollection fc, GraphQLRequest gqlRequest)
+        private void ExtractGraphQLRequestFromPostBody(IFormCollection fc, GraphQLRequest gqlRequest)
         {
             gqlRequest.Query = fc.TryGetValue(GraphQLRequest.QueryKey, out var queryValues) ? queryValues[0] : null;
-            gqlRequest.Variables = fc.TryGetValue(GraphQLRequest.VariablesKey, out var variablesValue) ? JObject.Parse(variablesValue[0]) : null;
+            gqlRequest.Variables = fc.TryGetValue(GraphQLRequest.VariablesKey, out var variablesValue) ? _serializer.Deserialize<Inputs>(variablesValue[0]) : null;
             gqlRequest.OperationName = fc.TryGetValue(GraphQLRequest.OperationNameKey, out var operationNameValues) ? operationNameValues[0] : null;
         }
     }
