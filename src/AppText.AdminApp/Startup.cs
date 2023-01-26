@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AppText.Configuration;
 using AppText.Storage.NoDb;
 using System.IO;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 
 namespace AppText.AdminApp
 {
@@ -53,11 +54,20 @@ namespace AppText.AdminApp
 
             app.UseRouting();
 
-            app.UseHttpsRedirection();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapFallbackToController("{*path:regex(^(?!dist).*$)}", "AppTextAdmin", "Admin");
             });
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSpa(spa =>
+                {
+                    spa.Options.SourcePath = "ClientApp";
+                    spa.Options.DevServerPort = 5173;
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                });
+            }
         }
     }
 }

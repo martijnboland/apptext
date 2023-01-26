@@ -1,27 +1,10 @@
 import '../styles/styles.scss';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
+import { AdminApp } from './AdminApp';
 
-const renderApp = () => {
-  const AdminApp = require('./AdminApp').AdminApp;
+const container = document.getElementById('app');
+const root = createRoot(container!);
 
-  ReactDOM.render(
-    <AdminApp />,
-    document.getElementById('app')
-  );
-};
-
-if (module.hot) {
-  const reRenderApp = () => {
-    renderApp();
-  };
-
-  module.hot.accept('./AdminApp', () => {
-    setImmediate(() => {
-      reRenderApp();
-    });
-  });
-}
-
-renderApp();
+root.render(<AdminApp />);

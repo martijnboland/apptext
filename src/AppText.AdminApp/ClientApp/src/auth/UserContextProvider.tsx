@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserManager, User } from 'oidc-client';
+import { UserManager, User, UserManagerSettings } from 'oidc-client-ts';
 
 import { appConfig, AuthType } from '../config/AppConfig';
 import UserContext, { UserContextState } from './UserContext';

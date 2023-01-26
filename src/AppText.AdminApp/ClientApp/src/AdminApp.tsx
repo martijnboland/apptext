@@ -2,7 +2,7 @@ import React, { useState, Suspense } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import classNames from 'classnames';
 import { ModalProvider } from 'react-modal-hook';
-import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import './i18n';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -35,8 +35,6 @@ export const AdminApp: React.FunctionComponent = () => {
     setSidebarToggled(!sidebarToggled);
   };
 
-  toast.configure();
-
   return (
     <Suspense fallback="Loading...">
       <BrowserRouter basename={appConfig.clientBaseRoute}>
@@ -61,6 +59,7 @@ export const AdminApp: React.FunctionComponent = () => {
                     </Switch>
                   </div>  
                 </main>
+                <ToastContainer />
               </div>
             </AppContextProvider>
           </UserContextProvider>

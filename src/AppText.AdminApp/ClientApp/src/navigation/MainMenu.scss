@@ -1,6 +1,6 @@
 @import '../../styles/variables';
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
 
 .main-menu {
   list-style: none;
@@ -8,7 +8,7 @@
   a {
     color: darken($light, 15%);
     display: block;
-    padding: $spacer/2 $spacer;
+    padding: calc($spacer / 2) $spacer;
     text-decoration: none;
     &:hover {
       color: $light;
