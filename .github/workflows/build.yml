@@ -32,11 +32,11 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.301
+          dotnet-version: 6.0.x
       - name: Setup Node.JS
         uses: actions/setup-node@v1
         with:
-          node-version: '12'
+          node-version: 18
       - name: Install AppText.AdminApp client packages
         run: npm install
         working-directory: src/AppText.AdminApp/ClientApp
