@@ -42,14 +42,6 @@ namespace AppText.AdminApp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
-            }
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -58,7 +50,7 @@ namespace AppText.AdminApp
             {
                 endpoints.MapFallbackToController("{*path:regex(^(?!dist).*$)}", "AppTextAdmin", "Admin");
             });
-            if (env.IsDevelopment())
+            if (env.IsEnvironment("Development-Admin"))
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSpa(spa =>
