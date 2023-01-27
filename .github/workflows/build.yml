@@ -53,7 +53,7 @@ jobs:
         run: dotnet test -c Release
       - name: Pack
         if: matrix.os == 'ubuntu-latest'
-        run: dotnet pack -v normal -c Release -o ./built-packages --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID.0.0-$NOW
+        run: dotnet pack -v normal -c Release -o ./built-packages --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_NUMBER.0.0-$NOW
       - name: Upload Artifact
         if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v2
