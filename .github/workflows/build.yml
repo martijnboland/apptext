@@ -27,6 +27,8 @@ jobs:
       matrix:
         os: [ ubuntu-latest, macos-latest ]
     steps:
+      - name: Set current date as env variable
+        run: echo "NOW=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup .NET Core
@@ -51,7 +53,7 @@ jobs:
         run: dotnet test -c Release
       - name: Pack
         if: matrix.os == 'ubuntu-latest'
-        run: dotnet pack -v normal -c Release -o ./built-packages --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID
+        run: dotnet pack -v normal -c Release -o ./built-packages --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID.0.0-$NOW
       - name: Upload Artifact
         if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v2
@@ -90,11 +92,11 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.301
+          dotnet-version: 6.0.x
       - name: Setup Node.JS
         uses: actions/setup-node@v1
         with:
-          node-version: '12'
+          node-version: 18
       - name: Install AppText.AdminApp client packages
         run: npm install
         working-directory: src/AppText.AdminApp/ClientApp
