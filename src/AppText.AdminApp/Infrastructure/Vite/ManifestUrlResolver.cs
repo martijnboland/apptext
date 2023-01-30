@@ -108,6 +108,7 @@ namespace AppText.AdminApp.Infrastructure.Vite
     {
         public FileSystemManifestUrlResolver(string contentRootPath)
         {
+            throw new NotImplementedException("Not yet implemented");
         }
 
         protected override ManifestConfig LoadManifestConfigFromManifestJson()

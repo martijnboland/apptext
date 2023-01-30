@@ -1,6 +1,6 @@
 ﻿namespace AppText.AdminApp.Infrastructure.Vite
 {
-    public enum Mode
+    public enum AssetMode
     {
         FileSystem,
         EmbeddedResource
