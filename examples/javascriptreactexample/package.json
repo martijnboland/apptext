@@ -11,7 +11,7 @@
     "react-hook-form": "^6.9.2",
     "react-i18next": "^11.7.3",
     "react-markdown": "^4.3.1",
-    "react-scripts": "^3.4.4",
+    "react-scripts": "^5.0.1",
     "react-transition-group": "^4.4.1",
     "urql": "^1.10.1"
   },
