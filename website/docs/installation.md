@@ -47,7 +47,7 @@ Password for the AppText admin account. Default empty and you have to enter the 
 
 ## Install into an ASP.NET Core host application
 
-AppText embedded in an ASP.NET Core application requires an ASP.NET Core 3.1+ host application to run on and is installed via [NuGet packages](https://www.nuget.org/packages?q=apptext).
+AppText embedded in an ASP.NET Core application requires an ASP.NET Core 6+ host application to run on and is installed via [NuGet packages](https://www.nuget.org/packages?q=apptext).
 
 You can choose to create a brand new host application with the dotnet CLI or Visual Studio or simply add AppText to an existing ASP.NET Core application.
 
