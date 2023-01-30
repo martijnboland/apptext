@@ -49,6 +49,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.13" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.13" />
+    <PackageReference Include="System.Runtime.Caching" Version="6.0.0" />
   </ItemGroup>
 
   <Target Name="EnsureNodeModules" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(ClientAppFolder)\node_modules') ">
