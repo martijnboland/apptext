@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <IsPackable>true</IsPackable>
     <PackageId>AppText.Storage.LiteDb</PackageId>
     <Description>AppText.Storage.LiteDb is a storage implementation for the AppText CMS that uses LiteDB as database.</Description>
@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LiteDB" Version="5.0.9" />
+    <PackageReference Include="LiteDB" Version="5.0.15" />
   </ItemGroup>
 
   <ItemGroup>

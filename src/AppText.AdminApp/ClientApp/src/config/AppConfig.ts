@@ -1,3 +1,5 @@
+import { UserManagerSettings } from "oidc-client-ts";
+
 export const AuthType = {
   DefaultCookie: 'DefaultCookie',
   Oidc: 'Oidc'
@@ -7,9 +9,7 @@ export interface AppConfig {
   clientBaseRoute: string,
   apiBaseUrl: string,
   authType: string,
-  oidcSettings: {
-    [key: string]: string
-  }
+  oidcSettings: UserManagerSettings
 }
 
 declare global {

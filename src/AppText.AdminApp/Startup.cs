@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AppText.Configuration;
 using AppText.Storage.NoDb;
 using System.IO;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 
 namespace AppText.AdminApp
 {
@@ -41,23 +42,24 @@ namespace AppText.AdminApp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
-            }
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseHttpsRedirection();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapFallbackToController("{*path:regex(^(?!dist).*$)}", "AppTextAdmin", "Admin");
             });
+            if (env.IsEnvironment("Development-Admin"))
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSpa(spa =>
+                {
+                    spa.Options.SourcePath = "ClientApp";
+                    spa.Options.DevServerPort = 5173;
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                });
+            }
         }
     }
 }

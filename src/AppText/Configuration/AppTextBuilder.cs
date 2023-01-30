@@ -78,7 +78,7 @@ namespace AppText.Configuration
 
             // Graphql
             Services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
-            Services.AddSingleton<IDocumentWriter, DocumentWriter>();
+            Services.AddSingleton<IGraphQLTextSerializer, GraphQLSerializer>();
             Services.AddSingleton<SchemaResolver>();
 
             // Store factories

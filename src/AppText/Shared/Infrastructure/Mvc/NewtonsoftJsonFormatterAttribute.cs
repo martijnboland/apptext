@@ -47,7 +47,8 @@ namespace AppText.Shared.Infrastructure.Mvc
                 objectResult.Formatters.Add(new NewtonsoftJsonOutputFormatter(
                     jsonOptions.Value.SerializerSettings,
                     context.HttpContext.RequestServices.GetRequiredService<ArrayPool<char>>(),
-                    context.HttpContext.RequestServices.GetRequiredService<IOptions<MvcOptions>>().Value));
+                    context.HttpContext.RequestServices.GetRequiredService<IOptions<MvcOptions>>().Value,
+                    jsonOptions.Value));
             }
             else
             {

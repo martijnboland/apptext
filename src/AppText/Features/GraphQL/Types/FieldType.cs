@@ -9,7 +9,8 @@ namespace AppText.Features.GraphQL.Types
         {
             Field(c => c.Name);
             Field(c => c.IsRequired);
-            Field<StringGraphType>("FieldType", resolve: ctx => ctx.Source.FieldType.GetType().Name);
+            Field<StringGraphType>("FieldType")
+                .Resolve(ctx => ctx.Source.FieldType.GetType().Name);
         }
     }
 }

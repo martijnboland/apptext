@@ -12,9 +12,8 @@
     "AppText.AdminApp": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:8080",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development-Admin"
       },
       "applicationUrl": "http://localhost:5100;https://localhost:5101"
     }
