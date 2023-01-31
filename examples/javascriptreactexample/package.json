@@ -3,17 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "graphql": "^15.3.0",
-    "i18next": "^19.8.2",
-    "i18next-http-backend": "^1.0.21",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-hook-form": "^6.9.2",
-    "react-i18next": "^11.7.3",
-    "react-markdown": "^4.3.1",
-    "react-scripts": "^3.4.4",
-    "react-transition-group": "^4.4.1",
-    "urql": "^1.10.1"
+    "graphql": "^16.6.0",
+    "i18next": "^22.4.9",
+    "i18next-http-backend": "^2.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.0",
+    "react-i18next": "^12.1.4",
+    "react-markdown": "^8.0.5",
+    "react-scripts": "^5.0.1",
+    "react-transition-group": "^4.4.5",
+    "urql": "^3.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -37,14 +37,14 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/jest": "^24.0.0",
-    "@types/node": "^12.0.0",
-    "@types/react": "^16.9.52",
-    "@types/react-dom": "^16.9.0",
-    "@types/react-transition-group": "^4.4.0",
-    "typescript": "~3.7.2"
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/jest": "^29.4.0",
+    "@types/node": "^18.11.18",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@types/react-transition-group": "^4.4.5",
+    "typescript": "~4.9.5"
   }
 }

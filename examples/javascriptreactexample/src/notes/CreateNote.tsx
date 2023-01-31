@@ -9,7 +9,7 @@ interface CreateProps {
 }
 
 const CreateNote = React.forwardRef<HTMLElement|null, CreateProps>(({ onClose, onCreate }, ref) => {
-  const { register, handleSubmit, errors, reset } = useForm<Note>();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<Note>();
   const { t } = useTranslation(['labels', 'messages']);
 
   const onSubmit = (note: Note): Promise<void> => {
@@ -28,8 +28,7 @@ const CreateNote = React.forwardRef<HTMLElement|null, CreateProps>(({ onClose, o
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="title">{t('Title')}</label>
         <input type="text" 
-          name="title" 
-          ref={register({
+          {...register('title', {
             required: { value: true, message: t('messages:Title is required') }, 
             maxLength: { value: 50, message: t('messages:Title may not be longer than 50 characters') }
           })}
@@ -38,8 +37,7 @@ const CreateNote = React.forwardRef<HTMLElement|null, CreateProps>(({ onClose, o
         
         <label htmlFor="content">{t('Content')}</label>
         <textarea 
-          name="content" 
-          ref={register({
+          {...register('content', {
             required: { value: true, message: t('messages:Content is required') }, 
             maxLength: { value: 500, message: t('messages:Content may not be longer than 500 characters') }
           })}
@@ -47,7 +45,7 @@ const CreateNote = React.forwardRef<HTMLElement|null, CreateProps>(({ onClose, o
         />
         {errors.content && <div className="form-error">{errors.content.message}</div>}
 
-        <button type="submit">{t('Create')}</button>
+        <button type="submit">{t('labels:Create')}</button>
       </form>
     </section>
   )

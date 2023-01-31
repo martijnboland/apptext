@@ -21,6 +21,7 @@ i18n
     },
     debug: true,
     ns: ['labels', 'messages'],
+    nsSeparator: ':',
     defaultNS: 'labels'
   });
 

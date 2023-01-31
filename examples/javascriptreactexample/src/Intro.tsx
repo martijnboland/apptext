@@ -18,7 +18,9 @@ const Intro: React.FC<IntroProps> = ({ onCreateNote }) => {
         ? 
         <React.Fragment>
           <h2>{page.title}</h2>
-          <ReactMarkdown source={page.content} />
+          <ReactMarkdown>
+            {page.content} 
+          </ReactMarkdown>
           <button onClick={onCreateNote}>{t('labels:Create note')}</button>
         </React.Fragment>
         : fetching
