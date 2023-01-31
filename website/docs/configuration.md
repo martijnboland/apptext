@@ -3,7 +3,7 @@ id: configuration
 title: Configuration
 ---
 
-You add AppText to an existing ASP.NET Core application in Startup.cs with the `services.AddAppText()` extension method. 
+You add AppText to an existing ASP.NET Core application add application startup with the `services.AddAppText()` extension method. 
 This method adds the core services with API and returns an `AppTextBuilder` object where all extensions are configured.
 
 An example:
@@ -13,7 +13,7 @@ services.AddAppText() // Adds AppText core services with API
     .AddAdmin() // Adds admin interface
 ```
 
-The different AppText packages all come with their own extensions and options which are all configured in `Startup.cs`. This page contains a complete overview of all configuration methods and options.
+The different AppText packages all come with their own extensions and options which are all configured at application startup. This page contains a complete overview of all configuration methods and options.
 
 ## AppText
 

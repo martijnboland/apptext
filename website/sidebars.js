@@ -12,6 +12,6 @@ module.exports = {
         id: 'concepts'
       }
     ],
-    'API': ['api-public', 'api-keys']
+    'REST/GraphQL API': ['api-public', 'api-keys']
   } 
 };

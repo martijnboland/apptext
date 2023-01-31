@@ -59,7 +59,15 @@ Add the AppText NuGet package. This package contains the REST API, the GraphQL A
 dotnet add package AppText
 ```
 
-To enable the AppText API's and storage you'll need to a add few lines in the `ConfigureServices()` method of the `Startup.cs` class:
+:::tip
+
+In .NET 6, the default application bootstrapping model has changed quite a bit with the minimal hosting model. For example, services configuration has moved from `Startup.cs` to `Program.cs`, see [the official docs](https://learn.microsoft.com/en-us/aspnet/core/migration/50-to-60-samples#access-additional-services) for more information. 
+
+However, the ServiceCollection abstraction for registering services has remained stable and everything in this page functions against that model, so it should be straightforward to implement it in all .NET versions.
+
+:::
+
+To enable the AppText API's and storage you'll need to a add few lines to the services configuration (`Startup.cs`):
 
 ```csharp
 public class Startup
@@ -100,7 +108,7 @@ The Admin interface comes in a separate NuGet package:
 dotnet add package AppText.AdminApp
 ```
 
-Enable it in `Startup.cs` by extending the existing AppText registration:
+Enable it in in de services configuration by extending the existing AppText registration:
 
 ```csharp
 services.AddAppText()
