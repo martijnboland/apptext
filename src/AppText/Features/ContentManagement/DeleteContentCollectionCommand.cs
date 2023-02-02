@@ -12,11 +12,13 @@ namespace AppText.Features.ContentManagement
     {
         public string Id { get; }
         public string AppId { get; }
+        public bool DeleteItems { get; }
 
-        public DeleteContentCollectionCommand(string id, string appId)
+        public DeleteContentCollectionCommand(string id, string appId, bool deleteItems = false)
         {
             this.Id = id;
             this.AppId = appId;
+            this.DeleteItems = deleteItems;
         }
     }
 
@@ -37,7 +39,14 @@ namespace AppText.Features.ContentManagement
             // Verify that the collection has no content.
             if (await _contentStore.CollectionContainsContent(command.Id, command.AppId))
             {
-                result.AddValidationError(new ValidationError() { Name = "", ErrorMessage = "DeleteCollectionContainsContent" });
+                if (command.DeleteItems)
+                {
+                    await _contentStore.DeleteContentItemsForCollection(command.Id, command.AppId);
+                }
+                else
+                {
+                    result.AddValidationError(new ValidationError() { Name = "", ErrorMessage = "DeleteCollectionContainsContent" });
+                }
             }
             if (! result.ValidationErrors.Any())
             {

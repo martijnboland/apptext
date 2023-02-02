@@ -139,5 +139,15 @@ namespace AppText.Storage.NoDb
             var contentItems = await _contentItemQueries.GetAllAsync(appId);
             return contentItems.Any(ci => ci.CollectionId == collectionId);
         }
+
+        public async Task DeleteContentItemsForCollection(string collectionId, string appId)
+        {
+            var contentItemIdsToDelete = (await _contentItemQueries.GetAllAsync(appId))
+                .Where(ci => ci.CollectionId == collectionId).Select(ci => ci.Id);
+            foreach (var contentItemId in contentItemIdsToDelete)
+            {
+                await _contentItemCommands.DeleteAsync(appId, contentItemId);
+            }
+        }
     }
 }

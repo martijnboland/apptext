@@ -67,9 +67,9 @@ namespace AppText.Features.ContentManagement
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id, string appId)
+        public async Task<IActionResult> Delete(string id, string appId, bool deleteItems = false)
         {
-            var result = await _dispatcher.ExecuteCommand(new DeleteContentCollectionCommand(id, appId));
+            var result = await _dispatcher.ExecuteCommand(new DeleteContentCollectionCommand(id, appId, deleteItems));
             return this.HandleDeleteCommandResult(result);
         }
     }
