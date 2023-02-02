@@ -25,6 +25,7 @@ const Edit: React.FC<EditProps> = ({ match, history }) => {
   const { data: contentTypes } = useApiGet<ContentType[]>(contentTypesUrl);
   const updateCollection = useApi<Collection>(url, 'PUT');
   const deleteCollection = useApi<Collection>(url, 'DELETE');
+  const deleteCollectionWithItems = useApi<Collection>(`${url}?deleteItems=true`, 'DELETE');
    
   const handleSave = (collection: Collection): Promise<any> => {
     return updateCollection.callApi(collection)
@@ -41,27 +42,44 @@ const Edit: React.FC<EditProps> = ({ match, history }) => {
       <Confirm
         visible={true}
         title={t('Labels:DeleteCollection')}
-        onOk={() => handleDelete(collection, hideDeleteConfirmation)}
+        onOk={() => handleDelete(collection, false, hideDeleteConfirmation)}
         onCancel={hideDeleteConfirmation}
       >
         {t('Messages:DeleteConfirm', { name: collection.name })}
       </Confirm>
   ), [collection]);
 
-  const handleDelete = (collection, hideDeleteConfirmation): Promise<any> => {
-    return deleteCollection.callApi(collection)
+  const [showDeleteItemsToo, hideDeleteItemsToo] = useModal(() => (
+    <Confirm
+      visible={true}
+      title={t('Labels:DeleteCollection')}
+      onOk={() => handleDelete(collection, true, hideDeleteItemsToo)}
+      onCancel={hideDeleteItemsToo}
+    >
+      {t('Messages:DeleteItemsTooConfirm')}
+    </Confirm>
+), [collection]);
+
+  const handleDelete = (collection, deleteItemsToo: boolean, hideConfirmation): Promise<any> => {
+    const deleteMutation = deleteItemsToo ? deleteCollectionWithItems : deleteCollection;
+    return deleteMutation.callApi(collection)
       .then(res => {
         if (res.ok) {
           toast.success(t('Messages:CollectionDeleted', { name: collection.name }));
           history.push('/');
         }
         else {
-          toast.error(Object.values(res.errors).join(','));
+          if (res.apiErrors?.length > 0 && res.apiErrors[0].errorMessage === 'DeleteCollectionContainsContent') {
+            hideConfirmation();
+            showDeleteItemsToo();
+          } else {
+            toast.error(Object.values(res.errors).join(','));
+          }
         }
         return res;
       })
       .catch(err => {
-        hideDeleteConfirmation();
+        hideConfirmation();
       })
   }
 

@@ -162,5 +162,11 @@ namespace AppText.Storage.LiteDb
                 .Exists();
             return Task.FromResult(containsContent);
         }
+
+        public Task DeleteContentItemsForCollection(string collectionId, string appId)
+        {
+            _liteRepository.DeleteMany<ContentItem>(ci => ci.CollectionId == collectionId);
+            return Task.CompletedTask;
+        }
     }
 }

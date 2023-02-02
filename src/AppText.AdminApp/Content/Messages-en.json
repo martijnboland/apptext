@@ -20,5 +20,6 @@
   { "ApiKeyDeleted": "API key {{name}} is deleted" },
   { "ApiKeyCopiedToClipboard": "API key is copied to the clipboard" },
   { "BrowserDoesNotSupportCopyToClipboard": "Your browser does not support copying to the clipboard" },
-  { "AppDeleted":  "App {{name}} is deleted" }
+  { "AppDeleted": "App {{name}} is deleted" },
+  { "DeleteItemsTooConfirm": "The collection contains items, these are deleted as well. Do you want to continue?" }
 ]

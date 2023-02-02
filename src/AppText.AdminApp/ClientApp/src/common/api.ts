@@ -8,7 +8,8 @@ export interface IApiResult {
   ok: boolean,
   message?: string,
   errors?: any,
-  data?: any
+  data?: any,
+  apiErrors?: any
 }
 
 export interface IPagedApiResult<T> {
@@ -39,7 +40,8 @@ export const handleApiError = (err: AxiosError): IApiResult => {
     const data = err.response.data;
     const result: IApiResult = {
       ok: false,
-      errors: {}
+      errors: {},
+      apiErrors: data.errors
     };
     if (data.errors && Array.isArray(data.errors)) {
       // Group errors by property name
