@@ -17,6 +17,7 @@ namespace AppText.AdminApp.Controllers
             _options = options;
         }
 
+        [HttpGet]
         public IActionResult AppTextAdmin()
         {
             var appBaseUrl = $"//{Request.Host}{Request.PathBase}";
