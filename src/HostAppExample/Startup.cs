@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Mvc.Razor;
 using AppText.Localization;
+using AppText.Storage.EfCore;
 
 namespace HostAppExample
 {
@@ -66,7 +67,11 @@ namespace HostAppExample
                 options.RequiredAuthorizationPolicy = "AppText";
                 options.EnableGraphiql = true; // graphiql is available at /apptext/hostappexample/graphql/graphiql
             })
-                .AddLiteDbStorage(connectionString)
+                //.AddLiteDbStorage(connectionString)
+                .AddEfCoreDbStorage(options =>
+                {
+                    options.UseSqlite($"Data Source={Path.Combine(Env.ContentRootPath, "App_Data", "AppTextSqlite.db")}");
+                })
                 .AddAdmin() // admin api is available at /apptext
                 .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en")
                 .AddAppTextLocalization(options =>
