@@ -91,7 +91,7 @@ namespace AppText.Configuration
                 () => sp.GetRequiredService<IScopedServiceFactory>().GetService<IContentStore>());
 
             // Cache
-            Services.AddMemoryCache();
+            Services.AddDistributedMemoryCache();
 
             // ApiKey authentication scheme
             var authenticationBuilder = Services.AddAuthentication();

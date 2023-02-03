@@ -1,7 +1,9 @@
 ﻿using AppText.Features.Application;
 using AppText.Features.ContentManagement;
+using AppText.Shared.Extensions;
 using AppText.Shared.Infrastructure;
 using AppText.Storage;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -25,13 +27,13 @@ namespace AppText.Localization
 
         private readonly ILogger<AppTextBridge> _logger;
         private readonly AppTextLocalizationOptions _options;
-        private readonly IMemoryCache _cache;
+        private readonly IDistributedCache _cache;
         private readonly IServiceProvider _serviceProvider;
         private ISet<string> _cacheKeys;
 
         public AppTextBridge(
             IServiceProvider serviceProvider,
-            IMemoryCache cache,
+            IDistributedCache cache,
             IOptions<AppTextLocalizationOptions> options,
             ILogger<AppTextBridge> logger
         )
@@ -83,7 +85,12 @@ namespace AppText.Localization
             // When culture is invariant, the name is an empty string. Use the default language in that case.
             if (culture == String.Empty)
             {
-                var currentApp = _cache.GetOrCreate(AppCacheKey, c => new Lazy<App>(LoadApp, LazyThreadSafetyMode.ExecutionAndPublication)).Value;
+                var currentApp = _cache.Get<App>(AppCacheKey);
+                if (currentApp == null)
+                {
+                    currentApp = LoadApp();
+                    _cache.Set(AppCacheKey, currentApp);
+                }
                 if (currentApp == null)
                 {
                     throw new InvalidOperationException($"Can not get the translations because the AppText app {_options.AppId} is not found");
@@ -91,19 +98,21 @@ namespace AppText.Localization
                 culture = currentApp.DefaultLanguage;
             }
 
-            var cachedDictionary = _cache.GetOrCreate(CacheKeyPrefix + culture, c => new Lazy<Dictionary<string, string>>(() =>
+            var cacheKey = CacheKeyPrefix + culture;
+            var cachedDictionary = _cache.Get<Dictionary<string, string>>(cacheKey);
+            if (cachedDictionary == null)
             {
                 _logger.LogInformation("Initializing translations dictionary for culture {0}", culture);
-                var dictionary = new Dictionary<string, string>();
-                LoadTranslationsIntoDictionary(culture, dictionary);
-                if (! _cacheKeys.Contains(c.Key))
+                cachedDictionary = new Dictionary<string, string>();
+                LoadTranslationsIntoDictionary(culture, cachedDictionary);
+                if (! _cacheKeys.Contains(cacheKey))
                 {
-                    _cacheKeys.Add(c.Key.ToString());
+                    _cacheKeys.Add(cacheKey);
                 }
-                return dictionary;
-            }, LazyThreadSafetyMode.ExecutionAndPublication));
+                _cache.Set(cacheKey, cachedDictionary);
+            }
 
-            return cachedDictionary.Value;
+            return cachedDictionary;
         }
 
         private App LoadApp()

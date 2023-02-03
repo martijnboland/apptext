@@ -1,5 +1,7 @@
-﻿using AppText.Storage;
+﻿using AppText.Shared.Extensions;
+using AppText.Storage;
 using GraphQL.Types;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,12 +14,12 @@ namespace AppText.Features.GraphQL
         private readonly ILogger<SchemaResolver> _logger;
         private readonly Func<IContentStore> _getContentStore;
         private readonly Func<IApplicationStore> _getApplicationStore;
-        private readonly IMemoryCache _memoryCache;
+        private readonly IDistributedCache _cache;
 
-        public SchemaResolver(ILogger<SchemaResolver> logger, IMemoryCache memoryCache, Func<IApplicationStore> getApplicationStore, Func<IContentStore> getContentStore)
+        public SchemaResolver(ILogger<SchemaResolver> logger, IDistributedCache cache, Func<IApplicationStore> getApplicationStore, Func<IContentStore> getContentStore)
         {
             _logger = logger;
-            _memoryCache = memoryCache;
+            _cache = cache;
             _getApplicationStore = getApplicationStore;
             _getContentStore = getContentStore;
         }
@@ -29,12 +31,13 @@ namespace AppText.Features.GraphQL
         public async Task<ISchema> Resolve(string appId)
         {
             var cacheKey = $"Schema_{appId}";
-
-            return await _memoryCache.GetOrCreateAsync(cacheKey, async cacheEntry =>
+            var schema = _cache.Get<ISchema>(cacheKey);
+            if (schema == null)
             {
                 _logger.LogInformation("GraphQL schema for app {0} is not found in the cache. Creating new instance...", appId);
-                return await CreateSchema(appId);
-            });
+                schema = await CreateSchema(appId);
+            }
+            return schema;
         }
 
         public void Clear(string appId)
@@ -42,7 +45,7 @@ namespace AppText.Features.GraphQL
             _logger.LogInformation("Clearing GraphQL schema for app {0}", appId);
 
             var cacheKey = $"Schema_{appId}";
-            _memoryCache.Remove(cacheKey);
+            _cache.Remove(cacheKey);
         }
 
         private async Task<Schema> CreateSchema(string appId)
