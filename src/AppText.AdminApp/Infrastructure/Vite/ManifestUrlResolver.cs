@@ -11,7 +11,6 @@ namespace AppText.AdminApp.Infrastructure.Vite
 {
     public abstract class ManifestUrlResolver
     {
-        private static readonly DateTimeOffset ManifestConfigCacheDuration = DateTimeOffset.Now.AddHours(1);
         protected const string ManifestConfigCacheKey = "VITE_MANIFEST_CONFIG";
 
         protected IDictionary<string, ManifestItem> Items { get; private set; }
@@ -26,8 +25,9 @@ namespace AppText.AdminApp.Infrastructure.Vite
                 var cache = MemoryCache.Default;
                 if (! cache.Contains(ManifestConfigCacheKey))
                 {
+                    var manifestConfigCacheDuration = DateTimeOffset.Now.AddHours(1);
                     var manifestConfig = LoadManifestConfigFromManifestJson();
-                    cache.Add(ManifestConfigCacheKey, manifestConfig, new CacheItemPolicy { AbsoluteExpiration =  ManifestConfigCacheDuration });
+                    cache.Add(ManifestConfigCacheKey, manifestConfig, new CacheItemPolicy { AbsoluteExpiration =  manifestConfigCacheDuration });
                 }
                 var cachedManifestConfig = cache[ManifestConfigCacheKey] as ManifestConfig;
                 Items = cachedManifestConfig.Items;
