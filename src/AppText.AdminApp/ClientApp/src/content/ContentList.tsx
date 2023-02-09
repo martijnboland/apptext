@@ -54,7 +54,7 @@ const ContentList: React.FC<ContentListProps> = ({ match, history }) => {
     initialContentItem = {
       id: undefined,
       collectionId: currentCollection.id,
-      appId: currentCollection.contentType.appId,
+      appId: currentCollection.appId,
       contentKey: undefined,
       content: initialContent,
       meta: undefined

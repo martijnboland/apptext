@@ -9,6 +9,9 @@ namespace AppText.Features.ContentManagement
         public string Id { get; set; }
 
         [Required(ErrorMessage = "Required")]
+        public string AppId { get; set; }
+
+        [Required(ErrorMessage = "Required")]
         public string Name { get; set; }
 
         public string Description { get; set; }

@@ -46,14 +46,14 @@ namespace AppText.Storage.NoDb
         public async Task<string> AddContentCollection(ContentCollection contentCollection)
         {
             contentCollection.Id = Guid.NewGuid().ToString();
-            var projectId = contentCollection.ContentType.AppId;
+            var projectId = contentCollection.AppId;
             await _contentCollectionCommands.CreateAsync(projectId, contentCollection.Id, contentCollection);
             return contentCollection.Id;
         }
 
         public Task UpdateContentCollection(ContentCollection contentCollection)
         {
-            return _contentCollectionCommands.UpdateAsync(contentCollection.ContentType.AppId, contentCollection.Id, contentCollection);
+            return _contentCollectionCommands.UpdateAsync(contentCollection.AppId, contentCollection.Id, contentCollection);
         }
 
         public Task DeleteContentCollection(string id, string appId)
