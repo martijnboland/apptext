@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AppText.AdminApp\AppText.AdminApp.csproj" />
     <ProjectReference Include="..\AppText.Localization\AppText.Localization.csproj" />
+    <ProjectReference Include="..\AppText.Storage.EfCore\AppText.Storage.EfCore.csproj" />
     <ProjectReference Include="..\AppText.Storage.LiteDb\AppText.Storage.LiteDb.csproj" />
     <ProjectReference Include="..\AppText\AppText.csproj" />
   </ItemGroup>

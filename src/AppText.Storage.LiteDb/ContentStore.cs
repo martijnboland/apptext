@@ -16,8 +16,11 @@ namespace AppText.Storage.LiteDb
             _liteRepository = new LiteRepository(liteDatabase);
             
             var db = _liteRepository.Database;
-            
-            db.GetCollection<ContentCollection>().EnsureIndex("IX_ContentCollection_AppId", cc => cc.ContentType.AppId);
+
+            // Ensure all collections have the AppId property at the root level (copy from ContentType).
+            db.GetCollection<ContentCollection>().UpdateMany("{ AppId: $.ContentType.AppId }", "AppId = null");
+
+            db.GetCollection<ContentCollection>().EnsureIndex("IX_ContentCollection_AppId_2", cc => cc.AppId);
             db.GetCollection<ContentCollection>().EnsureIndex("IX_ContentCollection_Name", cc => cc.Name);
 
             db.GetCollection<ContentItem>().EnsureIndex("IX_ContentItem_AppId", ci => ci.AppId);
@@ -30,7 +33,7 @@ namespace AppText.Storage.LiteDb
             var q = _liteRepository.Query<ContentCollection>();
             if (! string.IsNullOrEmpty(query.AppId))
             {
-                q = q.Where(cc => cc.ContentType.AppId == query.AppId);
+                q = q.Where(cc => cc.AppId == query.AppId);
             }
             if (!string.IsNullOrEmpty(query.Id))
             {
@@ -143,18 +146,6 @@ namespace AppText.Storage.LiteDb
             return Task.CompletedTask;
         }
 
-        private void ConvertJObjectsToDictionaries(ContentItem contentItem)
-        {
-            // Convert JObject instances to Dictionary<string, object>, so LiteDB can store these properly
-            foreach (var contentPart in contentItem.Content.ToList())
-            {
-                if (contentPart.Value is JObject)
-                {
-                    contentItem.Content[contentPart.Key] = JObject.FromObject(contentPart.Value).ToObject<Dictionary<string, object>>();
-                }
-            }
-        }
-
         public Task<bool> CollectionContainsContent(string collectionId, string appId)
         {
             var containsContent = _liteRepository.Query<ContentItem>()
@@ -167,6 +158,18 @@ namespace AppText.Storage.LiteDb
         {
             _liteRepository.DeleteMany<ContentItem>(ci => ci.CollectionId == collectionId);
             return Task.CompletedTask;
+        }
+
+        private void ConvertJObjectsToDictionaries(ContentItem contentItem)
+        {
+            // Convert JObject instances to Dictionary<string, object>, so LiteDB can store these properly
+            foreach (var contentPart in contentItem.Content.ToList())
+            {
+                if (contentPart.Value is JObject)
+                {
+                    contentItem.Content[contentPart.Key] = JObject.FromObject(contentPart.Value).ToObject<Dictionary<string, object>>();
+                }
+            }
         }
     }
 }
