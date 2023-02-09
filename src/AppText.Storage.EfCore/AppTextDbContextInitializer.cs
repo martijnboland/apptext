@@ -1,12 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using RunMethodsSequentially;
+using System;
+using System.Threading.Tasks;
 
 namespace AppText.Storage.EfCore
 {
-    public static class AppTextDbContextInitializer
+    public class AppTextDbContextInitializer : IStartupServiceToRunSequentially
     {
-        public static void Initialize(this AppTextDbContext context)
+        public int OrderNum => 10;
+
+        public async ValueTask ApplyYourChangeAsync(IServiceProvider scopedServices)
         {
-            context.Database.Migrate();
+            var context = scopedServices.GetRequiredService<AppTextDbContext>();
+            await context.Database.MigrateAsync();
         }
     }
 }

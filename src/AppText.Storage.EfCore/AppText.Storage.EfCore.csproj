@@ -2,11 +2,23 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <PackageId>AppText.Storage.EfCore</PackageId>
+    <Description>AppText.Storage.EfCore is a storage implementation for the AppText CMS that uses EntityFramework Core. Currently, only MS SQL Server is supported.</Description>
+    <Authors>Martijn Boland</Authors>
+    <PackageProjectUrl>https://github.com/martijnboland/apptext</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/martijnboland/apptext</RepositoryUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.13" />
+    <PackageReference Include="Net.RunMethodsSequentially" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>

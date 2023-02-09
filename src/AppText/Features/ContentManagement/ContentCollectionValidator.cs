@@ -21,7 +21,7 @@ namespace AppText.Features.ContentManagement
         {
             // Check content type
             var contentTypeId = objectToValidate.ContentType.Id;
-            var appId = objectToValidate.ContentType.AppId;
+            var appId = objectToValidate.AppId;
             var contentType = (await _contentDefinitionStore.GetContentTypes(new ContentTypeQuery { Id = contentTypeId, AppId = appId, IncludeGlobalContentTypes = true })).FirstOrDefault();
             if (contentType == null)
             {
@@ -31,7 +31,6 @@ namespace AppText.Features.ContentManagement
             {
                 // Sync content type with collection when valid
                 objectToValidate.ContentType = contentType;
-                objectToValidate.ContentType.AppId = appId; // Keep appId because that one can be empty in case of a global content type.
 
                 // Check uniqueness of name
                 var otherCollection = (await _contentStore.GetContentCollections(new ContentCollectionQuery { Name = objectToValidate.Name, AppId = appId })).FirstOrDefault();

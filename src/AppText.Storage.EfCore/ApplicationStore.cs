@@ -85,7 +85,7 @@ namespace AppText.Storage.EfCore
 
         public async Task UpdateApp(App app)
         {
-            _dbContext.Apps.Update(app);
+            _dbContext.ForceUpdate(app, a => a.Id == app.Id);
             await _dbContext.SaveChangesAsync();
         }
     }

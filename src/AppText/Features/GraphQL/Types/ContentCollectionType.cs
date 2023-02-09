@@ -36,7 +36,7 @@ namespace AppText.Features.GraphQL.Types
                             var contentStore = getContentStore();
                             var contentItemQuery = new ContentItemQuery
                             {
-                                AppId = contentCollection.ContentType.AppId,
+                                AppId = contentCollection.AppId,
                                 CollectionId = collection.Id,
                                 ContentKeyStartsWith = ctx.GetArgument<string>("contentKeyStartsWith"),
                                 First = ctx.GetArgument<int?>("first"),

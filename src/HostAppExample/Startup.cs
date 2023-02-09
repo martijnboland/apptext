@@ -67,11 +67,8 @@ namespace HostAppExample
                 options.RequiredAuthorizationPolicy = "AppText";
                 options.EnableGraphiql = true; // graphiql is available at /apptext/hostappexample/graphql/graphiql
             })
-                //.AddLiteDbStorage(connectionString)
-                .AddEfCoreDbStorage(options =>
-                {
-                    options.UseSqlite($"Data Source={Path.Combine(Env.ContentRootPath, "App_Data", "AppTextSqlite.db")}");
-                })
+                .AddLiteDbStorage(connectionString)
+                //.AddEfCoreDbStorage(ProviderType.SqlServer, Configuration.GetConnectionString("AppTextDb"))
                 .AddAdmin() // admin api is available at /apptext
                 .InitializeApp("hostappexample", "Host App Example", new string[] { "en", "nl" }, "en")
                 .AddAppTextLocalization(options =>
