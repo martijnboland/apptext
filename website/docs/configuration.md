@@ -123,6 +123,31 @@ services.AddAppText()
 |-----------|-------------|----------|
 | connectionString | The LiteDB [connection string](https://www.litedb.org/docs/connection-string/). | yes |
 
+## AppText.Storage.EfCore
+
+The AppText.Storage.EfCore NuGet package contains an AppText storage implementation that uses [Entity Framework Core](https://learn.microsoft.com/ef/core/) to support relational databases.
+
+### AddEfCoreDbStorage
+
+Configure AppText to use Entity Framework Core for storage.
+
+#### Example
+
+```csharp
+using AppText.Storage.EfCore;
+
+...
+
+services.AddAppText()
+    .AddEfCoreDbStorage(ProviderType.SqlServer, connectionString);
+```
+
+#### Parameters
+
+| parameter | description | required |
+|-----------|-------------|----------|
+| providerType | The database type (options: `SqlServer`, `Postgres`) | yes
+| connectionString | The database connection string | yes
 ## AppText.Translations
 
 The AppText.Translations NuGet package contains a standard Content Type, `Translation` for translations and extensions for the AppText REST API that make it easy to use AppText with external translation libraries. The package comes with support for RESX, GNU gettext .po and JSON formats.   
